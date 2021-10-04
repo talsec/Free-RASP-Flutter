@@ -1,9 +1,9 @@
 # freeRASP for Flutter
 
-freeRASP for Flutter is a part of security SDK for the app shielding and security monitoring. Learn more about provided features on the [freeRASP's main repository](https://github.com/talsec/Free-RASP-Community) first.
+freeRASP for Flutter is a part of security SDK for the app shielding and security monitoring. Learn more about provided features on the [freeRASP's main repository](https://github.com/talsec/Free-RASP-Community) first. You can find freeRASP Flutter plugin on [pub.dev](https://pub.dev/packages/freerasp).
 
 # Usage
-We will guide you step-by-step, but you can always check the expected result. This is how final implementation should look like:
+We will guide you step-by-step, but you can always check the expected result  This is how final implementation should look like:
 
 * [main.dart](https://github.com/talsec/Free-RASP-Flutter/blob/master/lib/main.dart)
 
@@ -70,13 +70,16 @@ defaultConfig {
 ### Dev vs. Release version
 Dev version is used during the development of application. It separates development and production data and disables some checks which won't be triggered during development process:
 
-* Emulator-usage
-* Debugging
-* Signing
+* Emulator-usage (onEmulatorDetected)
+* Debugging (onDebuggerDetected)
+* Signing (onTamperDetected)
 
+Which version of freeRASP is used is tied to development stage of application - more precisely, how application is compiled.
+* debug (assembleDebug) = dev version
+* release (assembleRelease) = release version
 
 ## Step 2: Setup the Configuration for your App
-Make (convert or create a new one) your "top-most" widget (typically one in `runApp(MyWidget())`) and override its `initState` in `State`
+Make (convert or create a new one) your root widget (typically one in `runApp(MyWidget())`) and override its `initState` in `State`
 ```dart
 void main() {
   runApp(MyApp());
@@ -97,7 +100,12 @@ class _MyAppState extends State<MyApp> {
 }
 
 ```
-and then create a Talsec config and insert `androidConfig` and/or `IOSConfig` with highlighted identifiers: `expectedPackageName` and `expectedSigningCertificateHash` are needed for Android version. Similarly, `appBundleId` and `appTeamId` are needed for iOS version of app. If you publish on the Google Play Store and/or Huawei AppGallery, you **don't have to assign anything** to `supportedAlternativeStores` as those are supported out of the box.
+and then create a Talsec config and insert `androidConfig` and/or `IOSConfig` with highlighted identifiers: `expectedPackageName` and `expectedSigningCertificateHash` are needed for Android version.  
+`expectedPackageName` - package name of your app which you chose when you created it  
+`expectedSigningCertificateHash` - hash of the certificate of the key which was used to sign the application. **Hash which is passed here must be encoded in Base64 form.**
+Similarly, `appBundleId` and `appTeamId` are needed for iOS version of app. If you publish on the Google Play Store and/or Huawei AppGallery, you **don't have to assign anything** to `supportedAlternativeStores` as those are supported out of the box.  
+
+Lastly, pass a mail address to `watcherMail` to be able to get reports. Mail has a strict form `name@domain.com` which is passed as String.
 
 ```dart
 @override
@@ -178,4 +186,22 @@ void initState(){
   app.start();
 }
 ```
-And you're done 🎉! You can open issue if you get stuck anywhere in the guide or show your appreciation by starring this repository ⭐!
+And you're done 🎉!  
+
+# Troubleshooting
+### `Could not find ... ` dependency issue  
+**Solution:** Add dependency manually (see this [issue](https://github.com/talsec/Free-RASP-Flutter/issues/1))  
+In android -> app -> build.gradle add these dependencies
+ ```gradle
+dependencies {
+
+    ...some other dependecies...
+
+    // Talsec Release
+    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community:2.6.0-release'
+
+    // Talsec Debug
+    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community:2.6.0-dev'
+}
+
+ ```
