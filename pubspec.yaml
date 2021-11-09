@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  freerasp: 1.0.0
+  freerasp: 1.1.0
 
   cupertino_icons: ^1.0.2
 

@@ -2,6 +2,13 @@
 
 freeRASP for Flutter is a part of security SDK for the app shielding and security monitoring. Learn more about provided features on the [freeRASP's main repository](https://github.com/talsec/Free-RASP-Community) first. You can find freeRASP Flutter plugin on [pub.dev](https://pub.dev/packages/freerasp).
 
+<table>
+<tbody>
+<td>⚠️ Attention ⚠️ Update to the latest (<strong>1.1.0</strong>) version. Previous versions contain a bug that impacts logged data.<br>
+</td>
+</tbody>
+</table>
+
 # Usage
 We will guide you step-by-step, but you can always check the expected result  This is how final implementation should look like:
 
@@ -11,7 +18,7 @@ We will guide you step-by-step, but you can always check the expected result  Th
 Add dependency to your `pubspec.yaml` file  
 ```yaml
 dependencies:
-  freerasp: 1.0.0
+  freerasp: 1.1.0
 ```  
 and then run: `pub get`
 
@@ -54,13 +61,13 @@ fi
 
 ### Android setup
 * From root of your project, go to **android > app > build.gradle**
-* In `defaultConfig` update `minSdkVersion` to at least **19** (Android 4.4) or higher
+* In `defaultConfig` update `minSdkVersion` to at least **21** (Android 5.0) or higher
 ```gradle
 android {
 ...
 defaultConfig {
     ...
-    minSdkVersion 19
+    minSdkVersion 21
     ...
     }
 ...
@@ -101,8 +108,8 @@ class _MyAppState extends State<MyApp> {
 
 ```
 and then create a Talsec config and insert `androidConfig` and/or `IOSConfig` with highlighted identifiers: `expectedPackageName` and `expectedSigningCertificateHash` are needed for Android version.  
-`expectedPackageName` - package name of your app which you chose when you created it  
-`expectedSigningCertificateHash` - hash of the certificate of the key which was used to sign the application. **Hash which is passed here must be encoded in Base64 form.**
+`expectedPackageName` - package name of your app you chose when you created it  
+`expectedSigningCertificateHash` - hash of the certificate of the key which was used to sign the application. **Hash which is passed here must be encoded in Base64 form**
 Similarly, `appBundleId` and `appTeamId` are needed for iOS version of app. If you publish on the Google Play Store and/or Huawei AppGallery, you **don't have to assign anything** to `supportedAlternativeStores` as those are supported out of the box.  
 
 Lastly, pass a mail address to `watcherMail` to be able to get reports. Mail has a strict form `name@domain.com` which is passed as String.
@@ -149,9 +156,10 @@ void initState(){
       androidCallback: AndroidCallback(
           onRootDetected: () => print('Root detected'),
           onEmulatorDetected: () => print('Emulator detected'),
-          onFingerprintDetected: () => print('Fingerprint detected'),
           onHookDetected: () => print('Hook detected'),
           onTamperDetected: () => print('Tamper detected'),
+          onDeviceBinding: () => print('Device binding detected'),
+          onUntrustedInstallationDetected: () => print('Untrusted installation detected'),
       ),
 
       // For iOS
@@ -163,6 +171,8 @@ void initState(){
         onPasscodeDetected: () => print('Passcode detected'),
         onSimulatorDetected: () => print('Simulator detected'),
         onMissingSecureEnclaveDetected: () => print('Missing secure enclave detected'),
+        onDeviceChangeDetected: () => print('Device change detected'),
+        onDeviceIdDetected: () => print('Device ID detected'),
       ),
 
       // Common for both platforms
@@ -189,19 +199,23 @@ void initState(){
 And you're done 🎉!  
 
 # Troubleshooting
-### `Could not find ... ` dependency issue  
-**Solution:** Add dependency manually (see this [issue](https://github.com/talsec/Free-RASP-Flutter/issues/1))  
+### \[Android] `Cloud not find ... ` dependency issue  
+**Solution:** Add dependency manually (see [issue](https://github.com/talsec/Free-RASP-Flutter/issues/1))  
 In android -> app -> build.gradle add these dependencies
  ```gradle
 dependencies {
 
-    ...some other dependecies...
+  ... some other dependecies ...
 
     // Talsec Release
-    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community:2.6.0-release'
+    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community:3.1.0-dev'
 
     // Talsec Debug
-    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community:2.6.0-dev'
+    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community:3.1.0-release'
 }
 
  ```
+
+### \[iOS] Unable to build release for simulator in Xcode (errors)
+**Solution:** Simulator does **not** support release build of Flutter - more about it [here](https://flutter.dev/docs/testing/build-modes#release).
+Use real device in order to build app in release mode.

@@ -18,7 +18,8 @@ class _MyAppState extends State<MyApp> {
   String _emulatorState = 'Secured';
   String _tamperState = 'Secured';
   String _hookState = 'Secured';
-  String _fingerPrintState = 'Secured';
+  String _untrustedInstallationSourceState = 'Secured';
+  String _deviceBindingState = 'Secured';
 
   // String to hold state (iOS)
   String _signatureState = 'Secured';
@@ -28,6 +29,8 @@ class _MyAppState extends State<MyApp> {
   String _passcodeChangeState = 'Secured';
   String _simulatorState = 'Secured';
   String _missingSecureEnclaveState = 'Secured';
+  String _deviceChangeState = 'Secured';
+  String _deviceIdDetectedState = 'Secured';
 
   // String to hold state (common)
   String _debuggerState = 'Secured';
@@ -41,7 +44,9 @@ class _MyAppState extends State<MyApp> {
         Text('Emulator: $_emulatorState\n'),
         Text('Tamper: $_tamperState\n'),
         Text('Hook: $_hookState\n'),
-        Text('Fingerprint: $_fingerPrintState\n'),
+        Text('Device binding: $_deviceBindingState\n'),
+        Text(
+            'Untrusted source of installation: $_untrustedInstallationSourceState\n'),
       ];
     }
     return [
@@ -53,6 +58,8 @@ class _MyAppState extends State<MyApp> {
       Text('Passcode change: $_passcodeChangeState\n'),
       Text('Simulator: $_simulatorState\n'),
       Text('Missing secure enclave: $_missingSecureEnclaveState\n'),
+      Text('Device change: $_deviceChangeState\n'),
+      Text('Device ID: $_deviceIdDetectedState\n')
     ];
   }
 
@@ -97,11 +104,6 @@ class _MyAppState extends State<MyApp> {
             _emulatorState = 'Detected';
           });
         },
-        onFingerprintDetected: () {
-          setState(() {
-            _fingerPrintState = 'Detected';
-          });
-        },
         onHookDetected: () {
           setState(() {
             _hookState = 'Detected';
@@ -110,6 +112,16 @@ class _MyAppState extends State<MyApp> {
         onTamperDetected: () {
           setState(() {
             _tamperState = 'Detected';
+          });
+        },
+        onDeviceBindingDetected: () {
+          setState(() {
+            _deviceBindingState = 'Detected';
+          });
+        },
+        onUntrustedInstallationDetected: () {
+          setState(() {
+            _untrustedInstallationSourceState = 'Detected';
           });
         },
       ),
@@ -149,6 +161,16 @@ class _MyAppState extends State<MyApp> {
         onMissingSecureEnclaveDetected: () {
           setState(() {
             _missingSecureEnclaveState = 'Detected';
+          });
+        },
+        onDeviceChangeDetected: () {
+          setState(() {
+            _deviceChangeState = 'Detected';
+          });
+        },
+        onDeviceIdDetected: () {
+          setState(() {
+            _deviceIdDetectedState = 'Detected';
           });
         },
       ),
