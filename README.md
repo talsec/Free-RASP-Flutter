@@ -2,13 +2,6 @@
 
 freeRASP for Flutter is a part of security SDK for the app shielding and security monitoring. Learn more about provided features on the [freeRASP's main repository](https://github.com/talsec/Free-RASP-Community) first. You can find freeRASP Flutter plugin on [pub.dev](https://pub.dev/packages/freerasp).
 
-<table>
-<tbody>
-<td>⚠️ Attention ⚠️ Update to the latest (<strong>1.1.0</strong>) version. Previous versions contain a bug that impacts logged data.<br>
-</td>
-</tbody>
-</table>
-
 # Usage
 We will guide you step-by-step, but you can always check the expected result  This is how final implementation should look like:
 
@@ -196,6 +189,11 @@ void initState(){
   app.start();
 }
 ```
+
+## Step 5: User Data policy
+Google Play’s User Data policy and App Store's App Privacy Details indicate that applications should inform users properly of the data that they are collecting and processing, and therefore reject the apps which do not comply with the policy. To comply with the policies, follow the manuals for given platforms: [Android](https://github.com/talsec/Free-RASP-Android#step-4-google-plays-user-data-policy), [iOS](https://github.com/talsec/Free-RASP-iOS/tree/master#step-4-app-store-user-data-policy).
+
+
 And you're done 🎉!  
 
 # Troubleshooting
