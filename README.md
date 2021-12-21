@@ -13,7 +13,7 @@ Add dependency to your `pubspec.yaml` file
 dependencies:
   freerasp: 1.1.0
 ```  
-and then run: `pub get`
+and then run: `flutter pub get`
 
 ### iOS setup
 After depending on plugin follow with these steps:
