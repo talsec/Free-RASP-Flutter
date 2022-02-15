@@ -1,19 +1,22 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:freerasp/talsec_app.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  // Strings to hold state (Android)
+  /// Strings to hold current state (Android)
   String _rootState = 'Secured';
   String _emulatorState = 'Secured';
   String _tamperState = 'Secured';
@@ -21,7 +24,7 @@ class _MyAppState extends State<MyApp> {
   String _untrustedInstallationSourceState = 'Secured';
   String _deviceBindingState = 'Secured';
 
-  // String to hold state (iOS)
+  /// Strings to hold current state (iOS)
   String _signatureState = 'Secured';
   String _jailbreakState = 'Secured';
   String _runtimeManipulationState = 'Secured';
@@ -32,10 +35,10 @@ class _MyAppState extends State<MyApp> {
   String _deviceChangeState = 'Secured';
   String _deviceIdDetectedState = 'Secured';
 
-  // String to hold state (common)
+  /// String to hold current state (common)
   String _debuggerState = 'Secured';
 
-  // Getter to determine which states we care about
+  /// Getter to determine which states we care about
   List<Widget> get overview {
     if (Platform.isAndroid) {
       return [
@@ -71,7 +74,7 @@ class _MyAppState extends State<MyApp> {
     initSecurityState();
   }
 
-  initSecurityState() {
+  Future<void> initSecurityState() async {
     /// Provide TalsecConfig your expected data and then use them in TalsecApp
     TalsecConfig config = TalsecConfig(
       /// For Android
@@ -82,7 +85,7 @@ class _MyAppState extends State<MyApp> {
       ),
 
       /// For iOS
-      IOSConfig: IOSconfig(
+      iosConfig: IOSconfig(
         appBundleId: 'YOUR_APP_BUNDLE_ID',
         appTeamId: 'YOUR_APP_TEAM_ID',
       ),
@@ -93,87 +96,72 @@ class _MyAppState extends State<MyApp> {
     /// Callbacks thrown by library
     TalsecCallback callback = TalsecCallback(
       /// For Android
-      androidCallback: AndroidCallback(
-        onRootDetected: () {
-          setState(() {
-            _rootState = 'Detected';
-          });
-        },
-        onEmulatorDetected: () {
-          setState(() {
-            _emulatorState = 'Detected';
-          });
-        },
-        onHookDetected: () {
-          setState(() {
-            _hookState = 'Detected';
-          });
-        },
-        onTamperDetected: () {
-          setState(() {
-            _tamperState = 'Detected';
-          });
-        },
-        onDeviceBindingDetected: () {
-          setState(() {
-            _deviceBindingState = 'Detected';
-          });
-        },
-        onUntrustedInstallationDetected: () {
-          setState(() {
+      androidCallback: AndroidCallback(onRootDetected: () {
+        setState(() {
+          _rootState = 'Detected';
+        });
+      }, onEmulatorDetected: () {
+        setState(() {
+          _emulatorState = 'Detected';
+        });
+      }, onHookDetected: () {
+        setState(() {
+          _hookState = 'Detected';
+        });
+      }, onTamperDetected: () {
+        setState(() {
+          _tamperState = 'Detected';
+        });
+      }, onDeviceBindingDetected: () {
+        setState(() {
+          _deviceBindingState = 'Detected';
+        });
+      }, onUntrustedInstallationDetected: () {
+        setState(
+          () {
             _untrustedInstallationSourceState = 'Detected';
-          });
-        },
-      ),
+          },
+        );
+      }),
 
       /// For iOS
-      IOSCallback: IOScallback(
-        onSignatureDetected: () {
-          setState(() {
-            _signatureState = 'Detected';
-          });
-        },
-        onRuntimeManipulationDetected: () {
-          setState(() {
-            _runtimeManipulationState = 'Detected';
-          });
-        },
-        onJailbreakDetected: () {
-          setState(() {
-            _jailbreakState = 'Detected';
-          });
-        },
-        onPasscodeChangeDetected: () {
-          setState(() {
-            _passcodeChangeState = 'Detected';
-          });
-        },
-        onPasscodeDetected: () {
-          setState(() {
-            _passcodeState = 'Detected';
-          });
-        },
-        onSimulatorDetected: () {
-          setState(() {
-            _simulatorState = 'Detected';
-          });
-        },
-        onMissingSecureEnclaveDetected: () {
-          setState(() {
-            _missingSecureEnclaveState = 'Detected';
-          });
-        },
-        onDeviceChangeDetected: () {
-          setState(() {
-            _deviceChangeState = 'Detected';
-          });
-        },
-        onDeviceIdDetected: () {
-          setState(() {
-            _deviceIdDetectedState = 'Detected';
-          });
-        },
-      ),
+      iosCallback: IOScallback(onSignatureDetected: () {
+        setState(() {
+          _signatureState = 'Detected';
+        });
+      }, onRuntimeManipulationDetected: () {
+        setState(() {
+          _runtimeManipulationState = 'Detected';
+        });
+      }, onJailbreakDetected: () {
+        setState(() {
+          _jailbreakState = 'Detected';
+        });
+      }, onPasscodeChangeDetected: () {
+        setState(() {
+          _passcodeChangeState = 'Detected';
+        });
+      }, onPasscodeDetected: () {
+        setState(() {
+          _passcodeState = 'Detected';
+        });
+      }, onSimulatorDetected: () {
+        setState(() {
+          _simulatorState = 'Detected';
+        });
+      }, onMissingSecureEnclaveDetected: () {
+        setState(() {
+          _missingSecureEnclaveState = 'Detected';
+        });
+      }, onDeviceChangeDetected: () {
+        setState(() {
+          _deviceChangeState = 'Detected';
+        });
+      }, onDeviceIdDetected: () {
+        setState(() {
+          _deviceIdDetectedState = 'Detected';
+        });
+      }),
 
       /// Debugger is common for both platforms
       onDebuggerDetected: () {
@@ -199,7 +187,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('freeRASP Demo App'),
+          title: const Text('Plugin example app'),
         ),
         body: Center(
           child: Column(
