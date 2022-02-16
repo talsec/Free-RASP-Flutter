@@ -161,7 +161,7 @@ void initState(){
       ),
 
       // For iOS
-      IOSCallback: IOScallback(
+      iosCallback: IOScallback(
         onSignatureDetected: () => print('Signature detected'),
         onRuntimeManipulationDetected: () => print('Runtime manipulation detected'),
         onJailbreakDetected: () => print('Jailbreak detected'),
@@ -412,7 +412,7 @@ We provide extended services (ie. malware detection, detailed configurable threa
 </table>
 
 # Troubleshooting
-### \[Android] `Cloud not find ... ` dependency issue  
+### \[Android] `Could not find ... ` dependency issue  
 **Solution:** Add dependency manually (see [issue](https://github.com/talsec/Free-RASP-Flutter/issues/1))  
 In android -> app -> build.gradle add these dependencies
  ```gradle
