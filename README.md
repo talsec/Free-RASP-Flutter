@@ -49,7 +49,9 @@ fi
     2. Click twice on **Update to recommended settings** under **Runner project** issue > **Perform changes**  
     3. Click twice on **Update to recommended settings** under **Pods project** issue  > **Perform changes**  
     
-    Issues should be clear now.  
+ Issues should be clear now.  
+    
+ **Note: You need Xcode 13 to be able to build application.**
 
 ### Android setup
 * From root of your project, go to **android > app > build.gradle**
@@ -424,10 +426,12 @@ dependencies {
     releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:*-release'
 
     // Talsec Debug
-    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:*-dev'
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:*-dev'
 }
 
  ```
+### \[Android] I am unable to build application for Profile. 
+**Solution:** Add edit dependencies manually (see [issue](https://github.com/talsec/Free-RASP-Flutter/issues/10)). Very similar solution as for first problem.
 
 ### \[iOS] Unable to build release for simulator in Xcode (errors)
 **Solution:** Simulator does **not** support release build of Flutter - more about it [here](https://flutter.dev/docs/testing/build-modes#release).
