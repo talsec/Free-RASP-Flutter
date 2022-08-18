@@ -337,7 +337,7 @@ dependencies {
 
 **Solution:** Technical limitation of Flutter - more about it [here](https://stackoverflow.com/questions/50459272/missingpluginexception-while-using-plugin-for-flutter). Use command `flutter run` to launch app (i.e. run app from scratch).
 
-## \[Android] Code throws `java.lang.UnsatisfiedLinkError: No implementation found for...` exception when building APK
+### \[Android] Code throws `java.lang.UnsatisfiedLinkError: No implementation found for...` exception when building APK
 
 **Solution:** Android version of freeRASP is already obfuscated.
 
