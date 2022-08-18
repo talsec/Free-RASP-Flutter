@@ -1,11 +1,9 @@
 # freeRASP 3.0.2
 We are constantly listening to our community to make freeRASP better. This update contain fixes to [reported issues](https://github.com/talsec/Free-RASP-Flutter/issues).
 
+## What's new in 3.0.2?
 - 📄 Updated [troubleshoot](README.md#Troubleshoot) section related to ProGuard [issue](https://github.com/talsec/Free-RASP-Flutter/issues/21) 
 - ✔️ Fixed `Duplicate class` [issue](https://github.com/talsec/Free-RASP-Flutter/issues/23)
-
-## What's new in 3.0.2?
-- 🛠️ Fixed Plans Comparison table in README.md
 
 # freeRASP 3.0.1
 This update contains small fix of documentation.
