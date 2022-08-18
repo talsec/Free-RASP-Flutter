@@ -16,53 +16,53 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  /// Strings to hold current state (Android)
-  final String _rootState = 'Secured';
-  final String _emulatorState = 'Secured';
-  final String _tamperState = 'Secured';
-  final String _hookState = 'Secured';
-  final String _untrustedInstallationSourceState = 'Secured';
-  final String _deviceBindingState = 'Secured';
+  /// ThreatTypes to hold current state (Android)
+  final ThreatType _root = ThreatType("Root");
+  final ThreatType _emulator = ThreatType("Emulator");
+  final ThreatType _tamper = ThreatType("Tamper");
+  final ThreatType _hook = ThreatType("Hook");
+  final ThreatType _deviceBinding = ThreatType("Device binding");
+  final ThreatType _untrustedSource =
+      ThreatType("Untrusted source of installation");
 
-  /// Strings to hold current state (iOS)
-  final String _signatureState = 'Secured';
-  final String _jailbreakState = 'Secured';
-  final String _runtimeManipulationState = 'Secured';
-  final String _passcodeState = 'Secured';
-  final String _simulatorState = 'Secured';
-  final String _missingSecureEnclaveState = 'Secured';
-  final String _deviceChangeState = 'Secured';
-  final String _deviceIdState = 'Secured';
-  final String _unofficialStoreState = 'Secured';
+  /// ThreatTypes to hold current state (iOS)
+  final ThreatType _signature = ThreatType("Signature");
+  final ThreatType _jailbreak = ThreatType("Jailbreak");
+  final ThreatType _runtimeManipulation = ThreatType("Runtime Manipulation");
+  final ThreatType _simulator = ThreatType("Simulator");
+  final ThreatType _deviceChange = ThreatType("Device change");
+  final ThreatType _deviceId = ThreatType("Device ID");
+  final ThreatType _unofficialStore = ThreatType("Unofficial Store");
+  final ThreatType _passcode = ThreatType("Passcode");
+  final ThreatType _missingSecureEnclave = ThreatType("Missing secure enclave");
 
-  /// String to hold current state (common)
-  final String _debuggerState = 'Secured';
+  /// ThreatTypes to hold current state (common)
+  final ThreatType _debugger = ThreatType("Debugger");
 
   /// Getter to determine which states we care about
   List<Widget> get overview {
     if (Platform.isAndroid) {
       return [
-        Text('Root: $_rootState\n'),
-        Text('Debugger: $_debuggerState\n'),
-        Text('Emulator: $_emulatorState\n'),
-        Text('Tamper: $_tamperState\n'),
-        Text('Hook: $_hookState\n'),
-        Text('Device binding: $_deviceBindingState\n'),
-        Text(
-            'Untrusted source of installation: $_untrustedInstallationSourceState\n'),
+        Text(_root.state),
+        Text(_debugger.state),
+        Text(_emulator.state),
+        Text(_tamper.state),
+        Text(_hook.state),
+        Text(_deviceBinding.state),
+        Text(_untrustedSource.state),
       ];
     }
     return [
-      Text('Signature: $_signatureState\n'),
-      Text('Jailbreak: $_jailbreakState\n'),
-      Text('Debugger: $_debuggerState\n'),
-      Text('Runtime Manipulation: $_runtimeManipulationState\n'),
-      Text('Passcode: $_passcodeState\n'),
-      Text('Simulator: $_simulatorState\n'),
-      Text('Missing secure enclave: $_missingSecureEnclaveState\n'),
-      Text('Device change: $_deviceChangeState\n'),
-      Text('Device ID: $_deviceIdState\n'),
-      Text('Unofficial Store: $_unofficialStoreState\n')
+      Text(_signature.state),
+      Text(_jailbreak.state),
+      Text(_debugger.state),
+      Text(_runtimeManipulation.state),
+      Text(_passcode.state),
+      Text(_simulator.state),
+      Text(_missingSecureEnclave.state),
+      Text(_deviceChange.state),
+      Text(_deviceId.state),
+      Text(_unofficialStore.state)
     ];
   }
 
@@ -97,32 +97,30 @@ class _MyAppState extends State<MyApp> {
     final TalsecCallback callback = TalsecCallback(
       /// For Android
       androidCallback: AndroidCallback(
-        onRootDetected: () => _updateState(_rootState),
-        onEmulatorDetected: () => _updateState(_emulatorState),
-        onHookDetected: () => _updateState(_hookState),
-        onTamperDetected: () => _updateState(_tamperState),
-        onDeviceBindingDetected: () => _updateState(_deviceBindingState),
-        onUntrustedInstallationDetected: () =>
-            _updateState(_untrustedInstallationSourceState),
+        onRootDetected: () => _updateState(_root),
+        onEmulatorDetected: () => _updateState(_emulator),
+        onHookDetected: () => _updateState(_hook),
+        onTamperDetected: () => _updateState(_tamper),
+        onDeviceBindingDetected: () => _updateState(_deviceBinding),
+        onUntrustedInstallationDetected: () => _updateState(_untrustedSource),
       ),
 
       /// For iOS
       iosCallback: IOSCallback(
-        onSignatureDetected: () => _updateState(_signatureState),
-        onRuntimeManipulationDetected: () =>
-            _updateState(_runtimeManipulationState),
-        onJailbreakDetected: () => _updateState(_jailbreakState),
-        onPasscodeDetected: () => _updateState(_passcodeState),
-        onSimulatorDetected: () => _updateState(_simulatorState),
+        onSignatureDetected: () => _updateState(_signature),
+        onRuntimeManipulationDetected: () => _updateState(_runtimeManipulation),
+        onJailbreakDetected: () => _updateState(_jailbreak),
+        onPasscodeDetected: () => _updateState(_passcode),
+        onSimulatorDetected: () => _updateState(_simulator),
         onMissingSecureEnclaveDetected: () =>
-            _updateState(_missingSecureEnclaveState),
-        onDeviceChangeDetected: () => _updateState(_deviceChangeState),
-        onDeviceIdDetected: () => _updateState(_deviceIdState),
-        onUnofficialStoreDetected: () => _updateState(_unofficialStoreState),
+            _updateState(_missingSecureEnclave),
+        onDeviceChangeDetected: () => _updateState(_deviceChange),
+        onDeviceIdDetected: () => _updateState(_deviceId),
+        onUnofficialStoreDetected: () => _updateState(_unofficialStore),
       ),
 
       /// Debugger is common for both platforms
-      onDebuggerDetected: () => _updateState(_debuggerState),
+      onDebuggerDetected: () => _updateState(_debugger),
     );
 
     final TalsecApp app = TalsecApp(
@@ -136,10 +134,10 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
   }
 
-  void _updateState(String state) {
+  void _updateState(final ThreatType type) {
     setState(() {
       // ignore: parameter_assignments
-      state = 'Detected';
+      type.threatFound();
     });
   }
 
@@ -159,4 +157,15 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+class ThreatType {
+  final String _text;
+  bool _isSecure = true;
+
+  ThreatType(this._text);
+
+  void threatFound() => _isSecure = false;
+
+  String get state => '$_text: ${_isSecure ? "Secured" : "Detected"}\n';
 }

@@ -66,7 +66,7 @@ Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-freerasp: 3.0.1
+  freerasp: 3.0.2
 ```
 
 and run `pub get`
@@ -337,6 +337,17 @@ dependencies {
 
 **Solution:** Technical limitation of Flutter - more about it [here](https://stackoverflow.com/questions/50459272/missingpluginexception-while-using-plugin-for-flutter). Use command `flutter run` to launch app (i.e. run app from scratch).
 
+## \[Android] Code throws `java.lang.UnsatisfiedLinkError: No implementation found for...` exception when building APK
+
+**Solution:** Android version of freeRASP is already obfuscated.
+
+Add this rule to your `proguard-rules.pro` file:
+
+```
+-keepclasseswithmembernames,includedescriptorclasses class * {
+native ;
+}
+```
 
 If you encounter any other issues, you can see the list of solved issues [here](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aissue+is%3Aclosed), or open up a [new one](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aopen+is%3Aissue).
 
@@ -433,9 +444,9 @@ We provide extended services (AppiCrypt, Hardening, Secure Storage, and Certific
             <td>no</td>
             <td>yes</td>
         </tr>
-        <tr>
+	    <tr>
 	        <td colspan=5><strong>AppiCrypt® - App Integrity Cryptogram</strong></td>
-	     </tr>
+	    </tr>
 	        <tr>
 	            <td>API protection by mobile client integrity check, online risk scoring, online fraud prevention, client App integrity check. The cryptographic proof of app & device integrity.</td>
 	            <td>no</td>
