@@ -143,11 +143,12 @@ defaultConfig {
 ```
 
 ### Dev vs Release version
-The Dev version is used during the development of the application. It separates development and production data and disables some checks which won't be triggered during the development process:
+The Dev version is used to not complicate the development process of the application, e.g. if you would implement killing of the application on the debugger callback. It disables some checks which won't be triggered during the development process:
 
 * Emulator-usage (onEmulatorDetected, onSimulatorDetected)
 * Debugging (onDebuggerDetected)
 * Signing (onTamperDetected, onSignatureDetected)
+* Unofficial store (onUntrustedInstallationDetected, onUnofficialStoreDetected)
 
 Which version of freeRASP is used is tied to the application's development stage - more precisely, how the application is compiled.
 
@@ -240,7 +241,10 @@ Future<void> initSecurityState() async {
 
 ## Step 3: Handle detected threats
 
-Create `AndroidCallback` and/or `IOSCallback` objects and provide `VoidCallback` function pointers to handle detected threats:
+Create `AndroidCallback` and/or `IOSCallback` objects and provide `VoidCallback` function pointers to handle detected threats. If you are developing only for one of the platforms, you can leave the callback definition for the other one, i.e., delete the other callback definition.
+
+You can provide a function (or an anonymous function like in this example) to tell Talsec what to do. If you decide to kill the application from the  callback, make sure that you use an appropriate way of killing it (see the [link](https://stackoverflow.com/questions/45109557/flutter-how-to-programmatically-exit-the-app)).
+
 ```dart
 @override
 void initState() {
@@ -274,7 +278,6 @@ void initState() {
   );
 }
 ```
-If you are developing only for one of the platforms, you can leave the callback definition for the other one, i.e., delete the other callback definition.
 
 Visit our [wiki](https://github.com/talsec/Free-RASP-Community/wiki/Threat-detection) to learn more details about the performed checks and their importance for app security.
 
@@ -296,6 +299,11 @@ void initState() {
 
   app.start();
 }
+```
+
+If you are initializing Talsec from the main() function before runApp(), make sure that you place the following before initialization of the Talsec:
+```dart
+WidgetsFlutterBinding.ensureInitialized();
 ```
 
 ## Step 5: User Data Policies
