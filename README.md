@@ -353,7 +353,7 @@ Add this rule to your `proguard-rules.pro` file:
 
 ```
 -keepclasseswithmembernames,includedescriptorclasses class * {
-native ;
+native *;
 }
 ```
 
