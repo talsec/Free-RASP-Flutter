@@ -1,3 +1,9 @@
+# freeRASP 3.1.0
+We are improving the API of Talsec.
+
+## What's new in 3.1.0?
+- 🛠️ Added multi-signature support for certificate hashes of Android apps.
+
 # freeRASP 3.0.2
 We are constantly listening to our community to make freeRASP better. This update contain fixes to [reported issues](https://github.com/talsec/Free-RASP-Flutter/issues).
 

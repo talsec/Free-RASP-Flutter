@@ -46,8 +46,8 @@ class TalsecApp {
     if (Platform.isAndroid && androidConfig != null) {
       _configChannel.invokeListMethod<void>('setConfig', <String, dynamic>{
         'expectedPackageName': androidConfig.expectedPackageName,
-        'expectedSigningCertificateHash':
-            androidConfig.expectedSigningCertificateHash,
+        'expectedSigningCertificateHashes':
+            androidConfig.expectedSigningCertificateHashes,
         'watcherMail': _config.watcherMail,
         'supportedAlternativeStores': androidConfig.supportedAlternativeStores
       });

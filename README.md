@@ -66,7 +66,7 @@ Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 3.0.2
+  freerasp: 3.1.0
 ```
 
 and run `pub get`
@@ -188,7 +188,7 @@ class _MyAppState extends State<MyApp> {
 
 and then create a Talsec config and insert `AndroidConfig` and/or `IOSConfig` with highlighted identifiers: `expectedPackageName` and `expectedSigningCertificateHash` are needed for Android version.
 * `expectedPackageName` - package name of your app you chose when you created it
-* `expectedSigningCertificateHash` - hash of the certificate of the key which was used to sign the application. **Hash which is passed here must be encoded in Base64 form**
+* `expectedSigningCertificateHashes` - list of hashes of the certificates of the keys which were used to sign the application. At least one hash value must be provided. **Hashes which are passed here must be encoded in Base64 form**
 
 We provide a handy util tool to help you convert your SHA-256 hash to Base64:
 
@@ -198,9 +198,9 @@ We provide a handy util tool to help you convert your SHA-256 hash to Base64:
 String base64Hash = hashConverter.fromSha256toBase64(sha256HashHex);
 ```
 
-We strongly recommend providing **result value** of this tool as expectedSigningCertificateHash.
+We strongly recommend using **result value** of this tool in expectedSigningCertificateHashes.
 
-**Do not use this tool directly** in `expectedSigningCertificateHash` to get value.
+**Do not use this tool directly** in `expectedSigningCertificateHashes` to get value.
 
 If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
 
@@ -223,7 +223,7 @@ Future<void> initSecurityState() async {
     // For Android
     androidConfig: AndroidConfig(
       expectedPackageName: 'YOUR_PACKAGE_NAME',
-      expectedSigningCertificateHash: 'HASH_OF_YOUR_APP',
+      expectedSigningCertificateHashes: ['HASH_OF_YOUR_APP'],
       supportedAlternativeStores: ["com.sec.android.app.samsungapps"],
     ),
 

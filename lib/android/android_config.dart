@@ -9,7 +9,7 @@ class AndroidConfig {
   // TODO: Rewrite when Flutter version >= 2.0
   // see issue https://github.com/talsec/Free-RASP-Flutter/issues/6
   final String? expectedPackageName;
-  final String? expectedSigningCertificateHash;
+  final List<String>? expectedSigningCertificateHashes;
   final List<String>? supportedAlternativeStores;
 
   /// Constructor checks whether [expectedPackageName] and
@@ -17,30 +17,37 @@ class AndroidConfig {
   /// Both arguments are MANDATORY.
   AndroidConfig(
       {required final this.expectedPackageName,
-      required final this.expectedSigningCertificateHash,
+      required final this.expectedSigningCertificateHashes,
       final this.supportedAlternativeStores = const <String>[]})
       : assert(
             expectedPackageName != null, 'expectedPackageName cannot be null.'),
-        assert(expectedSigningCertificateHash != null,
+        assert(expectedSigningCertificateHashes != null,
             'expectedSigningCertificateHash cannot be null.'),
         assert(supportedAlternativeStores != null,
             'supportedAlternativeStores cannot be null.'),
-        assert(_isSigningHashBase64(expectedSigningCertificateHash!),
+        assert(_areSigningHashesBase64(expectedSigningCertificateHashes!),
             'expectedSigningCertificateHash is not in base64 form.'),
-        assert(_isSigningHashValid(expectedSigningCertificateHash!),
+        assert(_areSigningHashesValid(expectedSigningCertificateHashes!),
             'expectedSigningCertificateHash does NOT contain SHA-256 value.');
 
-  static bool _isSigningHashBase64(final String hashEncoded) {
-    try {
-      base64.decode(hashEncoded);
-      return true;
-    } on FormatException {
-      return false;
+  static bool _areSigningHashesBase64(final List<String> hashesEncoded) {
+    for(var item in hashesEncoded ) {
+      try {
+        base64.decode(item);
+      } on FormatException {
+        return false;
+      }
     }
+    return true;
   }
 
-  static bool _isSigningHashValid(final String hashEncoded) {
-    final bytes = base64.decode(hashEncoded);
-    return bytes.length == 32;
+  static bool _areSigningHashesValid(final List<String> hashesEncoded) {
+    for(var item in hashesEncoded ) {
+      final bytes = base64.decode(item);
+      if (bytes.length != 32) {
+        return false;
+      }
+    }
+    return true;
   }
 }

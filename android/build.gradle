@@ -57,11 +57,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Talsec Release
-    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-release'
+    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-alpha1-release'
 
     // Talsec Debug
-    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-dev'
+    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-alpha1-dev'
 
     // Talsec Profile
-    profileImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-dev'
+    profileImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-alpha1-dev'
 }

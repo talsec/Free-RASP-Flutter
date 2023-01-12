@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
       /// For Android
       androidConfig: AndroidConfig(
         expectedPackageName: 'com.aheaditec.freeraspExample',
-        expectedSigningCertificateHash: 'ek124Mj...',
+        expectedSigningCertificateHashes: ['ek124Mj...'],
         supportedAlternativeStores: ["com.sec.android.app.samsungapps"],
       ),
 
