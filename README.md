@@ -356,8 +356,7 @@ Add this rule to your `proguard-rules.pro` file:
 native *;
 }
 ```
-
-### \[iOS] Buidling using Codemagic fails: `No such module 'TalsecRuntime'`
+### \[iOS] Building using Codemagic fails: `No such module 'TalsecRuntime'`
 
 **Solution:** You have to adjust Codemagic building pipeline. Instructions how to do it are [here](https://github.com/talsec/Free-RASP-Flutter/issues/22#issuecomment-1383964470).
 
