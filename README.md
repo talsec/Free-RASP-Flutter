@@ -357,6 +357,11 @@ native *;
 }
 ```
 
+### \[iOS] Buidling using Codemagic fails: `No such module 'TalsecRuntime'`
+
+**Solution:** You have to adjust Codemagic building pipeline. Instructions how to do it are [here](https://github.com/talsec/Free-RASP-Flutter/issues/22#issuecomment-1383964470).
+
+
 If you encounter any other issues, you can see the list of solved issues [here](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aissue+is%3Aclosed), or open up a [new one](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aopen+is%3Aissue).
 
 # Security Report
