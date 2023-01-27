@@ -19,9 +19,9 @@ dependencies:
     path: ../
 
 dev_dependencies:
-  extra_pedantic: ^2.0.0
   flutter_test:
     sdk: flutter
+  very_good_analysis: ^3.1.0
 
 
 flutter:
