@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <string.h>
 
-struct RAUqKRKBVreA {
+struct gKSEtJMglUSg {
     char *memory;
     size_t size;
     CURLcode ret;
