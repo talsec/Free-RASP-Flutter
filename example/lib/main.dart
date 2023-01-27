@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'dart:async';
 import 'dart:io';
 
@@ -8,36 +10,38 @@ void main() {
   runApp(const MyApp());
 }
 
+/// Main app widget.
 class MyApp extends StatefulWidget {
-  const MyApp({final Key? key}) : super(key: key);
+  /// Constructor for main app widget.
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   /// ThreatTypes to hold current state (Android)
-  final ThreatType _root = ThreatType("Root");
-  final ThreatType _emulator = ThreatType("Emulator");
-  final ThreatType _tamper = ThreatType("Tamper");
-  final ThreatType _hook = ThreatType("Hook");
-  final ThreatType _deviceBinding = ThreatType("Device binding");
+  final ThreatType _root = ThreatType('Root');
+  final ThreatType _emulator = ThreatType('Emulator');
+  final ThreatType _tamper = ThreatType('Tamper');
+  final ThreatType _hook = ThreatType('Hook');
+  final ThreatType _deviceBinding = ThreatType('Device binding');
   final ThreatType _untrustedSource =
-      ThreatType("Untrusted source of installation");
+      ThreatType('Untrusted source of installation');
 
   /// ThreatTypes to hold current state (iOS)
-  final ThreatType _signature = ThreatType("Signature");
-  final ThreatType _jailbreak = ThreatType("Jailbreak");
-  final ThreatType _runtimeManipulation = ThreatType("Runtime Manipulation");
-  final ThreatType _simulator = ThreatType("Simulator");
-  final ThreatType _deviceChange = ThreatType("Device change");
-  final ThreatType _deviceId = ThreatType("Device ID");
-  final ThreatType _unofficialStore = ThreatType("Unofficial Store");
-  final ThreatType _passcode = ThreatType("Passcode");
-  final ThreatType _missingSecureEnclave = ThreatType("Missing secure enclave");
+  final ThreatType _signature = ThreatType('Signature');
+  final ThreatType _jailbreak = ThreatType('Jailbreak');
+  final ThreatType _runtimeManipulation = ThreatType('Runtime Manipulation');
+  final ThreatType _simulator = ThreatType('Simulator');
+  final ThreatType _deviceChange = ThreatType('Device change');
+  final ThreatType _deviceId = ThreatType('Device ID');
+  final ThreatType _unofficialStore = ThreatType('Unofficial Store');
+  final ThreatType _passcode = ThreatType('Passcode');
+  final ThreatType _missingSecureEnclave = ThreatType('Missing secure enclave');
 
   /// ThreatTypes to hold current state (common)
-  final ThreatType _debugger = ThreatType("Debugger");
+  final ThreatType _debugger = ThreatType('Debugger');
 
   /// Getter to determine which states we care about
   List<Widget> get overview {
@@ -76,12 +80,14 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initSecurityState() async {
     /// Provide TalsecConfig your expected data and then use them in TalsecApp
-    final TalsecConfig config = TalsecConfig(
+    final config = TalsecConfig(
       /// For Android
       androidConfig: AndroidConfig(
         expectedPackageName: 'com.aheaditec.freeraspExample',
-        expectedSigningCertificateHash: 'ek124Mj...',
-        supportedAlternativeStores: ["com.sec.android.app.samsungapps"],
+        expectedSigningCertificateHashes: [
+          'AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='
+        ],
+        supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
       ),
 
       /// For iOS
@@ -94,7 +100,7 @@ class _MyAppState extends State<MyApp> {
     );
 
     /// Callbacks thrown by library
-    final TalsecCallback callback = TalsecCallback(
+    final callback = TalsecCallback(
       /// For Android
       androidCallback: AndroidCallback(
         onRootDetected: () => _updateState(_root),
@@ -123,7 +129,7 @@ class _MyAppState extends State<MyApp> {
       onDebuggerDetected: () => _updateState(_debugger),
     );
 
-    final TalsecApp app = TalsecApp(
+    final app = TalsecApp(
       config: config,
       callback: callback,
     );
@@ -134,15 +140,12 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
   }
 
-  void _updateState(final ThreatType type) {
-    setState(() {
-      // ignore: parameter_assignments
-      type.threatFound();
-    });
+  void _updateState(ThreatType type) {
+    setState(type.threatFound);
   }
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -159,13 +162,17 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+/// A class which holds state about threat.
 class ThreatType {
+  /// Threat constructor.
+  ThreatType(this._text);
+
   final String _text;
   bool _isSecure = true;
 
-  ThreatType(this._text);
-
+  /// Update state.
   void threatFound() => _isSecure = false;
 
+  /// Return current state.
   String get state => '$_text: ${_isSecure ? "Secured" : "Detected"}\n';
 }
