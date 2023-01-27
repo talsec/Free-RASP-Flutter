@@ -13,13 +13,13 @@ class TalsecApp(private val context: Context) : ThreatListener.ThreatDetected {
 
     fun init(
         packageName: String,
-        signingHash: String,
+        signingHashes: Array<String>,
         watcherMail: String,
         alternativeStores: Array<String>
     ) {
         val config = TalsecConfig(
             packageName,
-            signingHash,
+            signingHashes,
             watcherMail,
             alternativeStores
         )
