@@ -4,6 +4,21 @@ import 'package:flutter/foundation.dart';
 ///
 /// Callbacks (pointers) are called in talsec_config.
 class IOSCallback {
+  /// Constructor for iOS callbacks.
+  ///
+  /// If callback is not implemented, implicit null is applied.
+  const IOSCallback({
+    this.onSignatureDetected,
+    this.onJailbreakDetected,
+    this.onRuntimeManipulationDetected,
+    this.onPasscodeDetected,
+    this.onSimulatorDetected,
+    this.onMissingSecureEnclaveDetected,
+    this.onDeviceChangeDetected,
+    this.onDeviceIdDetected,
+    this.onUnofficialStoreDetected,
+  });
+
   /// Callback called when app signature does not match expected one
   final VoidCallback? onSignatureDetected;
 
@@ -30,16 +45,4 @@ class IOSCallback {
 
   /// Callback called when application is not installed from official store
   final VoidCallback? onUnofficialStoreDetected;
-
-  const IOSCallback({
-    final this.onSignatureDetected,
-    final this.onJailbreakDetected,
-    final this.onRuntimeManipulationDetected,
-    final this.onPasscodeDetected,
-    final this.onSimulatorDetected,
-    final this.onMissingSecureEnclaveDetected,
-    final this.onDeviceChangeDetected,
-    final this.onDeviceIdDetected,
-    final this.onUnofficialStoreDetected,
-  });
 }

@@ -1,19 +1,23 @@
-/// Model class for iOS config
+/// A class which holds iOS config.
 ///
-/// Contains crucial data that are passed to native side in order to secure Android device.
+/// Contains crucial data that are passed to native side in order to secure
+/// iOS device.
 class IOSconfig {
-  // Nullable because of older Dart SDK versions
-  // see issue https://github.com/talsec/Free-RASP-Flutter/issues/6
-  final String? appBundleId;
-  final String? appTeamId;
-
   /// Constructor checks whether [appTeamId] and [appBundleId] are provided.
   /// Both arguments are MANDATORY.
   const IOSconfig({
-    required final this.appBundleId,
-    required final this.appTeamId,
+    required this.appBundleId,
+    required this.appTeamId,
   }) : assert(
           appBundleId != null && appTeamId != null,
           'appBundleId and appTeamId cannot be null.',
         );
+
+  // Nullable because of older Dart SDK versions
+  // see issue https://github.com/talsec/Free-RASP-Flutter/issues/6
+  /// Bundle ID of the app.
+  final String? appBundleId;
+
+  /// Team ID of the app.
+  final String? appTeamId;
 }

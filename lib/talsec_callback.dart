@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import 'android/android_callback.dart';
-import 'ios/ios_callback.dart';
+import 'package:freerasp/android/android_callback.dart';
+import 'package:freerasp/ios/ios_callback.dart';
 
 export 'android/android_callback.dart';
 export 'ios/ios_callback.dart';
@@ -12,13 +12,19 @@ export 'ios/ios_callback.dart';
 /// general [TalsecCallback].
 /// Also takes [onDebuggerDetected] which is common for both platforms.
 class TalsecCallback {
-  final VoidCallback? onDebuggerDetected;
-  final AndroidCallback? androidCallback;
-  final IOSCallback? iosCallback;
-
+  /// Callbacks for Talsec.
   const TalsecCallback({
-    final this.onDebuggerDetected,
-    final this.androidCallback,
-    final this.iosCallback,
+    this.onDebuggerDetected,
+    this.androidCallback,
+    this.iosCallback,
   });
+
+  /// Callback called when debugger is detected.
+  final VoidCallback? onDebuggerDetected;
+
+  /// Callbacks for Android.
+  final AndroidCallback? androidCallback;
+
+  /// Callbacks for iOS.
+  final IOSCallback? iosCallback;
 }
