@@ -1,3 +1,17 @@
+# freeRASP 4.0.0
+A new round of fixes and improvements! Here's the list of all the new things we included in the latest release.
+
+## What's new in 4.0.0?
+- ❗ BREAKING API CHANGE: Added multi-signature support for certificate hashes of Android apps
+- ✔️ Fixed `NullPointerException` in RootDetector when there are no running processes ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/40)) on Android
+- ✔️ Removed deprecated SafetyNet dependency ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/28)) on Android
+- ✔️ Fixed the ANR issue ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/32)) on Android
+- ✔️ Updated HMS and GMS dependencies on Android
+- 🔎 Improved detection of BlueStacks and Nox emulators ([issue](https://github.com/talsec/Free-RASP-Android/issues/6)) on Android
+- ❗ Improved device binding detection to not trigger for moving the app to a new device on iOS
+- ⚡ Improved hook detection and logging on iOS
+- 🔎 Improved logging of non-existing hardware for biometrics on iOS
+
 # freeRASP 3.0.2
 We are constantly listening to our community to make freeRASP better. This update contain fixes to [reported issues](https://github.com/talsec/Free-RASP-Flutter/issues).
 

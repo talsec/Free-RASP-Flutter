@@ -1,46 +1,76 @@
 import 'dart:convert';
 // ignore_for_file: tighten_type_of_initializing_formals
 
-/// Model class for Android config.
+/// A class which holds Android config.
 ///
-/// Contains crucial data that are passed to native side in order to secure Android device.
+/// These data are used to check if device is trusted.
+///
+/// On initialization, these data are passed to native code which then
+/// initializes Talsec.
 class AndroidConfig {
+  /// Constructor checks whether [expectedPackageName] and
+  /// [expectedSigningCertificateHashes] are provided.
+  /// Both arguments are MANDATORY.
+  AndroidConfig({
+    required this.expectedPackageName,
+    required this.expectedSigningCertificateHashes,
+    this.supportedAlternativeStores = const <String>[],
+  })  : assert(
+          expectedPackageName != null,
+          'expectedPackageName cannot be null.',
+        ),
+        assert(
+          expectedSigningCertificateHashes != null,
+          'expectedSigningCertificateHashes cannot be null.',
+        ),
+        assert(
+          expectedSigningCertificateHashes!.isNotEmpty,
+          'expectedSigningCertificateHashes cannot be empty.',
+        ),
+        assert(
+          supportedAlternativeStores != null,
+          'supportedAlternativeStores cannot be null.',
+        ),
+        assert(
+          _areSigningHashesBase64(expectedSigningCertificateHashes!),
+          'some of expectedSigningCertificateHashes are not in base64 form.',
+        ),
+        assert(
+            _areSigningHashesValid(expectedSigningCertificateHashes!),
+            'some of expectedSigningCertificateHashes do NOT contain '
+            'SHA-256 value.');
+
   // Nullable because of older Flutter SDK versions
+  // ignore: flutter_style_todos
   // TODO: Rewrite when Flutter version >= 2.0
   // see issue https://github.com/talsec/Free-RASP-Flutter/issues/6
+  /// Package name of the application.
   final String? expectedPackageName;
-  final String? expectedSigningCertificateHash;
+
+  /// List of expected signing hashes.
+  final List<String>? expectedSigningCertificateHashes;
+
+  /// List of supported sources where application can be installed from.
   final List<String>? supportedAlternativeStores;
 
-  /// Constructor checks whether [expectedPackageName] and
-  /// [expectedSigningCertificateHash] are provided.
-  /// Both arguments are MANDATORY.
-  AndroidConfig(
-      {required final this.expectedPackageName,
-      required final this.expectedSigningCertificateHash,
-      final this.supportedAlternativeStores = const <String>[]})
-      : assert(
-            expectedPackageName != null, 'expectedPackageName cannot be null.'),
-        assert(expectedSigningCertificateHash != null,
-            'expectedSigningCertificateHash cannot be null.'),
-        assert(supportedAlternativeStores != null,
-            'supportedAlternativeStores cannot be null.'),
-        assert(_isSigningHashBase64(expectedSigningCertificateHash!),
-            'expectedSigningCertificateHash is not in base64 form.'),
-        assert(_isSigningHashValid(expectedSigningCertificateHash!),
-            'expectedSigningCertificateHash does NOT contain SHA-256 value.');
-
-  static bool _isSigningHashBase64(final String hashEncoded) {
-    try {
-      base64.decode(hashEncoded);
-      return true;
-    } on FormatException {
-      return false;
+  static bool _areSigningHashesBase64(List<String> hashesEncoded) {
+    for (final item in hashesEncoded) {
+      try {
+        base64.decode(item);
+      } on FormatException {
+        return false;
+      }
     }
+    return true;
   }
 
-  static bool _isSigningHashValid(final String hashEncoded) {
-    final bytes = base64.decode(hashEncoded);
-    return bytes.length == 32;
+  static bool _areSigningHashesValid(List<String> hashesEncoded) {
+    for (final item in hashesEncoded) {
+      final bytes = base64.decode(item);
+      if (bytes.length != 32) {
+        return false;
+      }
+    }
+    return true;
   }
 }

@@ -3,12 +3,14 @@ import 'package:freerasp/ios/ios_config.dart';
 
 void main() {
   IOSconfig createConfiguration(
-      final String? appBundleId, final String? appTeamId) {
+    String? appBundleId,
+    String? appTeamId,
+  ) {
     return IOSconfig(appBundleId: appBundleId, appTeamId: appTeamId);
   }
 
-  const String appBundleId = 'appBundleId';
-  const String appTeamId = 'appTeamId';
+  const appBundleId = 'appBundleId';
+  const appTeamId = 'appTeamId';
 
   test('Object should be created', () {
     expect(() => createConfiguration(appBundleId, appTeamId), isNotNull);

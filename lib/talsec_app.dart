@@ -2,30 +2,33 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-import './talsec_callback.dart';
-import './talsec_config.dart';
+import 'package:freerasp/talsec_callback.dart';
+import 'package:freerasp/talsec_config.dart';
 
 export './talsec_callback.dart';
 export './talsec_config.dart';
 
 /// Wrapper of general config and general callbacks.
 ///
-/// Sends and receive data from native side, decides which callbacks should be called.
+/// Sends and receive data from native side, decides which callbacks should be
+/// called.
 class TalsecApp {
-  late TalsecConfig _config;
-  late TalsecCallback _callback;
-
   /// Constructor checks whether [config] and [callback] are provided.
   /// Both arguments are MANDATORY. Callback can be provided just as empty
   /// [TalsecCallback] object.
   TalsecApp({
-    required final TalsecConfig? config,
-    required final TalsecCallback? callback,
-  }) : assert(config != null && callback != null,
-            'config and callback cannot be null') {
+    required TalsecConfig? config,
+    required TalsecCallback? callback,
+  }) : assert(
+          config != null && callback != null,
+          'config and callback cannot be null',
+        ) {
     _config = config!;
     _callback = callback!;
   }
+
+  late TalsecConfig _config;
+  late TalsecCallback _callback;
 
   /// [EventChannel] used to receive Threats from the native platform.
   static const EventChannel _channel =
@@ -40,14 +43,14 @@ class TalsecApp {
   /// device for threats.
   void start() {
     /// Android device
-    final AndroidConfig? androidConfig = _config.androidConfig;
-    final IOSconfig? iosConfig = _config.iosConfig;
+    final androidConfig = _config.androidConfig;
+    final iosConfig = _config.iosConfig;
 
     if (Platform.isAndroid && androidConfig != null) {
       _configChannel.invokeListMethod<void>('setConfig', <String, dynamic>{
         'expectedPackageName': androidConfig.expectedPackageName,
-        'expectedSigningCertificateHash':
-            androidConfig.expectedSigningCertificateHash,
+        'expectedSigningCertificateHashes':
+            androidConfig.expectedSigningCertificateHashes,
         'watcherMail': _config.watcherMail,
         'supportedAlternativeStores': androidConfig.supportedAlternativeStores
       });
@@ -62,7 +65,8 @@ class TalsecApp {
       });
     } else {
       throw MissingPluginException(
-          '${Platform.isAndroid ? "androidConfig" : "IOSconfig"} is not provided.');
+          '${Platform.isAndroid ? "androidConfig" : "IOSconfig"} is not '
+          'provided.');
     }
 
     /// Listen to changes from native side
@@ -70,32 +74,31 @@ class TalsecApp {
   }
 
   /// Receive different events from native side
-  void _setListener(final EventChannel channel) {
-    channel.receiveBroadcastStream().listen((final dynamic event) {
+  void _setListener(EventChannel channel) {
+    channel.receiveBroadcastStream().listen((dynamic event) {
       switch (event) {
-
         /// Android: Event received when device is rooted
-        case "onRootDetected":
+        case 'onRootDetected':
           _callback.androidCallback?.onRootDetected?.call();
           break;
 
         /// Android & iOS: Event received when app is running in debug mode
-        case "onDebuggerDetected":
+        case 'onDebuggerDetected':
           _callback.onDebuggerDetected?.call();
           break;
 
         /// Android: Event received when app is running on emulator
-        case "onEmulatorDetected":
+        case 'onEmulatorDetected':
           _callback.androidCallback?.onEmulatorDetected?.call();
           break;
 
         /// Android: Event received when app code integrity is disturbed
-        case "onTamperDetected":
+        case 'onTamperDetected':
           _callback.androidCallback?.onTamperDetected?.call();
           break;
 
         /// Android: Event received when hooking framework is present or used
-        case "onHookDetected":
+        case 'onHookDetected':
           _callback.androidCallback?.onHookDetected?.call();
           break;
 
@@ -108,51 +111,51 @@ class TalsecApp {
           break;
 
         /// iOS: Event received when app signature does not match expected one
-        case "onSignatureDetected":
+        case 'onSignatureDetected':
           _callback.iosCallback?.onSignatureDetected?.call();
           break;
 
         /// iOS: Event received when jailbreak on device is detected
-        case "onJailbreakDetected":
+        case 'onJailbreakDetected':
           _callback.iosCallback?.onJailbreakDetected?.call();
           break;
 
         /// iOS: Event received when app is manipulated on runtime
-        case "onRuntimeManipulationDetected":
+        case 'onRuntimeManipulationDetected':
           _callback.iosCallback?.onRuntimeManipulationDetected?.call();
           break;
 
         /// iOS: Event received when device is not protected by passcode
-        case "onPasscodeDetected":
+        case 'onPasscodeDetected':
           _callback.iosCallback?.onPasscodeDetected?.call();
           break;
 
-        case "onPasscodeChangeDetected":
+        case 'onPasscodeChangeDetected':
           break;
 
         /// iOS: Event received when app is running on simulator
-        case "onSimulatorDetected":
+        case 'onSimulatorDetected':
           _callback.iosCallback?.onSimulatorDetected?.call();
           break;
 
         /// iOS: Event received when secure enclave layer is missing
-        case "onMissingSecureEnclaveDetected":
+        case 'onMissingSecureEnclaveDetected':
           _callback.iosCallback?.onMissingSecureEnclaveDetected?.call();
           break;
 
         /// iOS: Event received when device was changed since last check
-        case "onDeviceChangeDetected":
+        case 'onDeviceChangeDetected':
           _callback.iosCallback?.onDeviceChangeDetected?.call();
           break;
 
         /// iOS: Event received when device id was detected
-        case "onDeviceIdDetected":
+        case 'onDeviceIdDetected':
           _callback.iosCallback?.onDeviceIdDetected?.call();
           break;
 
         /// iOS: Event received when installation from unofficial store was
         /// detected
-        case "onUnofficialStoreDetected":
+        case 'onUnofficialStoreDetected':
           _callback.iosCallback?.onUnofficialStoreDetected?.call();
           break;
       }

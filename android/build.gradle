@@ -2,7 +2,7 @@ group 'com.aheaditec.freerasp'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.6.10'
+    ext.kotlin_version = '1.7.20'
     repositories {
         google()
         mavenCentral()
@@ -20,6 +20,7 @@ rootProject.allprojects {
         mavenCentral()
         maven { url "https://nexus3-public.monetplus.cz/repository/ahead-talsec-free-rasp" }
         maven { url "https://developer.huawei.com/repo/" }
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -57,11 +58,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Talsec Release
-    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-release'
+    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-release'
 
     // Talsec Debug
-    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-dev'
+    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-dev'
 
     // Talsec Profile
-    profileImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:4.2.3-dev'
+    profileImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-dev'
 }

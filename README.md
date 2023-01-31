@@ -1,6 +1,6 @@
 ![FreeRasp](https://raw.githubusercontent.com/talsec/Free-RASP-Community/master/visuals/freeRASP.png)
 
-![GitHub Repo stars](https://img.shields.io/github/stars/talsec/Free-RASP-Community?color=green) ![Likes](https://img.shields.io/pub/likes/freerasp?color=green!) ![Likes](https://img.shields.io/pub/points/freerasp) ![GitHub](https://img.shields.io/github/license/talsec/Free-RASP-Community) ![GitHub](https://img.shields.io/github/last-commit/talsec/Free-RASP-Community) [![extra_pedantic on pub.dev](https://img.shields.io/badge/style-extra__pedantic-blue)](https://pub.dev/packages/extra_pedantic)
+![GitHub Repo stars](https://img.shields.io/github/stars/talsec/Free-RASP-Community?color=green) ![Likes](https://img.shields.io/pub/likes/freerasp?color=green!) ![Likes](https://img.shields.io/pub/points/freerasp) ![GitHub](https://img.shields.io/github/license/talsec/Free-RASP-Community) ![GitHub](https://img.shields.io/github/last-commit/talsec/Free-RASP-Community) [![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 ![Publisher](https://img.shields.io/pub/publisher/freerasp)
 # freeRASP for Flutter
 
@@ -18,12 +18,12 @@ freeRASP for Flutter is a mobile in-app protection and security monitoring SDK. 
     * [Handle detected threats](#step-3-handle-detected-threats)
 - [Troubleshooting](#troubleshooting)
 - [Security Report](#security-report)
-- [Enterprise Services](#enterprise-services)
+- [Enterprise Services](#bar_chart-enterprise-services)
     * [Plans comparison](#plans-comparison)
 
 # Overview
 
-The freeRASP is available for Flutter, Cordova, Android, and iOS developers. We encourage community contributions, investigations of attack cases, joint data research, and other activities aiming to make better app security and app safety for end-users.
+The freeRASP is available for Flutter, Android, and iOS developers. We encourage community contributions, investigations of attack cases, joint data research, and other activities aiming to make better app security and app safety for end-users.
 
 freeRASP SDK is designed to combat
 
@@ -66,7 +66,7 @@ Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 3.0.2
+  freerasp: 4.0.0
 ```
 
 and run `pub get`
@@ -143,12 +143,11 @@ defaultConfig {
 ```
 
 ### Dev vs Release version
-The Dev version is used to not complicate the development process of the application, e.g. if you would implement killing of the application on the debugger callback. It disables some checks which won't be triggered during the development process:
+The Dev version is used during the development of the application. It separates development and production data and disables some checks which won't be triggered during the development process:
 
 * Emulator-usage (onEmulatorDetected, onSimulatorDetected)
 * Debugging (onDebuggerDetected)
 * Signing (onTamperDetected, onSignatureDetected)
-* Unofficial store (onUntrustedInstallationDetected, onUnofficialStoreDetected)
 
 Which version of freeRASP is used is tied to the application's development stage - more precisely, how the application is compiled.
 
@@ -188,7 +187,7 @@ class _MyAppState extends State<MyApp> {
 
 and then create a Talsec config and insert `AndroidConfig` and/or `IOSConfig` with highlighted identifiers: `expectedPackageName` and `expectedSigningCertificateHash` are needed for Android version.
 * `expectedPackageName` - package name of your app you chose when you created it
-* `expectedSigningCertificateHash` - hash of the certificate of the key which was used to sign the application. **Hash which is passed here must be encoded in Base64 form**
+* `expectedSigningCertificateHashes` - list of hashes of the certificates of the keys which were used to sign the application. At least one hash value must be provided. **Hashes which are passed here must be encoded in Base64 form**
 
 We provide a handy util tool to help you convert your SHA-256 hash to Base64:
 
@@ -198,9 +197,9 @@ We provide a handy util tool to help you convert your SHA-256 hash to Base64:
 String base64Hash = hashConverter.fromSha256toBase64(sha256HashHex);
 ```
 
-We strongly recommend providing **result value** of this tool as expectedSigningCertificateHash.
+We strongly recommend using **result value** of this tool in expectedSigningCertificateHashes.
 
-**Do not use this tool directly** in `expectedSigningCertificateHash` to get value.
+**Do not use this tool directly** in `expectedSigningCertificateHashes` to get value.
 
 If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
 
@@ -223,7 +222,7 @@ Future<void> initSecurityState() async {
     // For Android
     androidConfig: AndroidConfig(
       expectedPackageName: 'YOUR_PACKAGE_NAME',
-      expectedSigningCertificateHash: 'HASH_OF_YOUR_APP',
+      expectedSigningCertificateHashes: ['HASH_OF_YOUR_APP'],
       supportedAlternativeStores: ["com.sec.android.app.samsungapps"],
     ),
 
@@ -241,10 +240,7 @@ Future<void> initSecurityState() async {
 
 ## Step 3: Handle detected threats
 
-Create `AndroidCallback` and/or `IOSCallback` objects and provide `VoidCallback` function pointers to handle detected threats. If you are developing only for one of the platforms, you can leave the callback definition for the other one, i.e., delete the other callback definition.
-
-You can provide a function (or an anonymous function like in this example) to tell Talsec what to do. If you decide to kill the application from the  callback, make sure that you use an appropriate way of killing it (see the [link](https://stackoverflow.com/questions/45109557/flutter-how-to-programmatically-exit-the-app)).
-
+Create `AndroidCallback` and/or `IOSCallback` objects and provide `VoidCallback` function pointers to handle detected threats:
 ```dart
 @override
 void initState() {
@@ -278,6 +274,7 @@ void initState() {
   );
 }
 ```
+If you are developing only for one of the platforms, you can leave the callback definition for the other one, i.e., delete the other callback definition.
 
 Visit our [wiki](https://github.com/talsec/Free-RASP-Community/wiki/Threat-detection) to learn more details about the performed checks and their importance for app security.
 
@@ -299,11 +296,6 @@ void initState() {
 
   app.start();
 }
-```
-
-If you are initializing Talsec from the main() function before runApp(), make sure that you place the following before initialization of the Talsec:
-```dart
-WidgetsFlutterBinding.ensureInitialized();
 ```
 
 ## Step 5: User Data Policies
@@ -353,13 +345,12 @@ Add this rule to your `proguard-rules.pro` file:
 
 ```
 -keepclasseswithmembernames,includedescriptorclasses class * {
-native *;
+native ;
 }
 ```
 ### \[iOS] Building using Codemagic fails: `No such module 'TalsecRuntime'`
 
-**Solution:** You have to adjust Codemagic building pipeline. Instructions how to do it are [here](https://github.com/talsec/Free-RASP-Flutter/issues/22#issuecomment-1383964470).
-
+ **Solution:** You have to adjust Codemagic building pipeline. Instructions how to do it are [here](https://github.com/talsec/Free-RASP-Flutter/issues/22#issuecomment-1383964470).
 
 If you encounter any other issues, you can see the list of solved issues [here](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aissue+is%3Aclosed), or open up a [new one](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aopen+is%3Aissue).
 
@@ -373,11 +364,25 @@ To receive Security Reports, fill out the _watcherMail_ field in [Talsec config]
 
 ![enter image description here](https://raw.githubusercontent.com/talsec/Free-RASP-Community/master/visuals/dashboard.png)
 
-# Enterprise Services
+# :bar_chart: Enterprise Services
+We provide app security hardening SDK: i.e. AppiCrypt®, Customer Data Encryption (local storage), End-to-end encryption, Strings protection (e.g. API keys) and Dynamic Certificate Pinning to our commercial customers as well. To get the most advanced protection compliant with PSD2 RT and eIDAS and support from our experts, contact us at [talsec.app](https://talsec.app).
 
-We provide extended services (AppiCrypt, Hardening, Secure Storage, and Certificate Pinning) to our commercial customers as well. To get the most advanced protection compliant with PSD2 RT and eIDAS and support from our experts, contact us at [talsec.app](https://talsec.app).
+## Commercial version
+The commercial version provides a top-notch protection level, extra features, support, and maintenance. One of the most valued commercial features is [AppiCrypt®](https://www.talsec.app/appicrypt) - App Integrity Cryptogram.
+
+It allows easy to implement API protection and App Integrity verification on the backend to prevent API abuse:
+
+-   Bruteforce attacks
+-   Botnets
+-   Session-hijacking
+-   DDoS
+
+It is a unified solution that works across all mobile platforms without dependency on external web services (i.e., without extra latency, an additional point of failure, and maintenance costs).
+
+Learn more about commercial features at  [https://talsec.app](https://talsec.app/).
 
 **TIP:** You can try freeRASP and then upgrade easily to an enterprise service.
+
 
 ## Plans Comparison
 
@@ -386,7 +391,7 @@ We provide extended services (AppiCrypt, Hardening, Secure Storage, and Certific
         <tr>
             <th></th>
             <th>freeRASP</th>
-            <th>Business</th>
+            <th>Business RASP+</th>
         </tr>
     </thead>
     <tbody>
@@ -403,7 +408,7 @@ We provide extended services (AppiCrypt, Hardening, Secure Storage, and Certific
                 <ul>
                     <li>Debug</li>
                     <li>Emulator</li>
-                    <li>Hooking protections</li>
+                    <li>Hooking protections (e.g. Frida)</li>
                 </ul>
             </td>
             <td>basic</td>
@@ -415,6 +420,7 @@ We provide extended services (AppiCrypt, Hardening, Secure Storage, and Certific
                     <li>Tamper protection</li>
                     <li>Repackaging / Cloning protection</li>
                     <li>Device binding protection</li>
+                    <li>Unofficial store detection</li>
                 </ul>
             </td>
             <td>basic</td>
@@ -424,8 +430,7 @@ We provide extended services (AppiCrypt, Hardening, Secure Storage, and Certific
             <td>Device OS security status check 
                 <ul>
                     <li>HW security module control</li>
-                    <li>Device lock control</li>
-                    <li>Device lock change control</li>
+                    <li>Screen lock control</li>
                 </ul>
             </td>
             <td>yes</td>
@@ -447,23 +452,23 @@ We provide extended services (AppiCrypt, Hardening, Secure Storage, and Certific
         <tr>
             <td>Security hardening suite 
                 <ul>
+                    <li>Customer Data Encryption (local storage)</li>
+                    <li>End-to-end encryption</li>
+                    <li>Strings protection (e.g. API keys)</li>
                     <li>Dynamic certificate pinning</li>
-                    <li>Obfuscation</li>
-                    <li>Secure storage hardening</li>
-                    <li>Secure pinpad</li>
                 </ul>
             </td>
             <td>no</td>
             <td>yes</td>
         </tr>
-	    <tr>
-	        <td colspan=5><strong>AppiCrypt® - App Integrity Cryptogram</strong></td>
-	    </tr>
-	        <tr>
-	            <td>API protection by mobile client integrity check, online risk scoring, online fraud prevention, client App integrity check. The cryptographic proof of app & device integrity.</td>
-	            <td>no</td>
-	            <td>yes</td>
-	        </tr>
+        <tr>
+            <td colspan=5><strong>AppiCrypt® - App Integrity Cryptogram</strong></td>
+        </tr>
+        <tr>
+            <td>API protection by mobile client integrity check, online risk scoring, online fraud prevention, client App integrity check. The cryptographic proof of app & device integrity.</td>
+            <td>no</td>
+            <td>yes</td>
+        </tr>
         <tr>
             <td colspan=5><strong>Monitoring</strong></td>
         </tr>
@@ -487,5 +492,19 @@ We provide extended services (AppiCrypt, Hardening, Secure Storage, and Certific
             <td>no</td>
             <td>yes</td>
         </tr>
+         <td colspan=5><strong>Fair usage policy</strong></td>
+        </tr>
+        <tr>
+            <td>Mentioning of the app name in Talsec marketing communication (e.g. "Trusted by Talsec section" on social media)</td>
+            <td>over 100k downloads</td>
+            <td>no</td>
+        </tr>
+        <tr>
+            <td>Threat signals data collection to Talsec database for processing and product improvement</td>
+            <td>yes</td>
+            <td>no</td>
+        </tr>
     </tbody>
 </table>
+
+For further comparison details (and planned features), follow our [discussion](https://github.com/talsec/Free-RASP-Community/discussions/5).
