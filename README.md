@@ -19,6 +19,7 @@ freeRASP for Flutter is a mobile in-app protection and security monitoring SDK. 
 - [Troubleshooting](#troubleshooting)
 - [Security Report](#security-report)
 - [Enterprise Services](#bar_chart-enterprise-services)
+    * [Commercial version](#commercial-version)
     * [Plans comparison](#plans-comparison)
 
 # Overview
