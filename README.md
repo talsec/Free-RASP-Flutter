@@ -16,6 +16,9 @@ freeRASP for Flutter is a mobile in-app protection and security monitoring SDK. 
         + [Dev vs Release version](#dev-vs-release-version)
     * [Setup the configuration](#step-2-setup-the-configuration-for-your-app)
     * [Handle detected threats](#step-3-handle-detected-threats)
+    * [Start the Talsec](#step-4-start-the-talsec)
+    * [Additional note about obfuscation](#step-5-additional-note-about-obfuscation)
+    * [User Data Policies](#step-6-user-data-policies)
 - [Troubleshooting](#troubleshooting)
 - [Security Report](#security-report)
 - [Enterprise Services](#bar_chart-enterprise-services)
@@ -299,7 +302,30 @@ void initState() {
 }
 ```
 
-## Step 5: User Data Policies
+## Step 5: Additional note about obfuscation
+The freeRASP contains public API, so the integration process is as simple as possible. Unfortunately, this public API also creates opportunities for the attacker to use publicly available information to interrupt freeRASP operations or modify your custom reaction implementation in threat callbacks. In order for freeRASP to be as effective as possible, it is highly recommended to apply obfuscation to the final package/application, making the public API more difficult to find and also partially randomized for each application so it cannot be automatically abused by generic hooking scripts.
+
+### Android
+The majority of Android projects support code shrinking and obfuscation without any additional need for setup. The owner of the project can define the set of rules that are usually automatically used when the application is built in the release mode. For more information, please visit the official documentation
+* https://developer.android.com/studio/build/shrink-code 
+* https://www.guardsquare.com/manual/configuration/usage
+
+You can make sure, that the obfuscation is enabled by checking the value of **minifyEnabled** property in your **module's build.gradle** file.
+```gradle
+android {
+    ...
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+```
+
+## Step 6: User Data Policies
 
 Google Play [requires](https://support.google.com/googleplay/android-developer/answer/10787469?hl=en) all app publishers to declare how they collect and handle user data for the apps they publish on Google Play. They should inform users properly of the data collected by the apps and how the data is shared and processed. Therefore, Google will reject the apps which do not comply with the policy.
 
