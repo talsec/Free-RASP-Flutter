@@ -11,20 +11,22 @@ freeRASP for Flutter is a mobile in-app protection and security monitoring SDK. 
 
 - [Overview](#overview)
 - [Usage](#usage)
-    * [Prepare Talsec library](#step-1-prepare-talsec-library)
+    * [Step 1: Prepare Talsec library](#step-1-prepare-talsec-library)
         + [iOS setup](#ios-setup)
         + [Android setup](#android-setup)
         + [Dev vs Release version](#dev-vs-release-version)
-    * [Setup the configuration](#step-2-setup-the-configuration-for-your-app)
-    * [Handle detected threats](#step-3-handle-detected-threats)
-    * [Start the Talsec](#step-4-start-the-talsec)
-    * [Additional note about obfuscation](#step-5-additional-note-about-obfuscation)
-    * [User Data Policies](#step-6-user-data-policies)
+    * [Step 2: Setup the Configuration for your App](#step-2-setup-the-configuration-for-your-app)
+    * [Step 3: Handle detected threats](#step-3-handle-detected-threats)
+    * [Step 4: Start the Talsec](#step-4-start-the-talsec)
+    * [Step 5: Additional note about obfuscation](#step-5-additional-note-about-obfuscation)
+    * [Step 6: User Data Policies](#step-6-user-data-policies)
 - [Troubleshooting](#troubleshooting)
 - [Security Report](#security-report)
 - [Enterprise Services](#bar_chart-enterprise-services)
     * [Commercial version](#commercial-version)
     * [Plans comparison](#plans-comparison)
+- [About Us](#about-us)
+- [License](#license)
 
 # Overview
 
@@ -202,11 +204,7 @@ We provide a handy util tool to help you convert your SHA-256 hash to Base64:
 String base64Hash = hashConverter.fromSha256toBase64(sha256HashHex);
 ```
 
-We strongly recommend using **result value** of this tool in expectedSigningCertificateHashes.
-
-**Do not use this tool directly** in `expectedSigningCertificateHashes` to get value.
-
-If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
+We strongly recommend using **result value** of this tool in expectedSigningCertificateHashes. **Do not use this tool directly** in `expectedSigningCertificateHashes` to get value. If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
 
 Similarly, `appBundleId` and `appTeamId` are needed for iOS version of app. If you publish on the Google Play Store and/or Huawei AppGallery, you **don't have to assign anything** to `supportedAlternativeStores` as those are supported out of the box.
 
@@ -327,13 +325,13 @@ android {
 ```
 
 ## Step 6: User Data Policies
-See the generic info about freeRASP data collection [here](https://github.com/talsec/Free-RASP-Community/tree/master#data-collection-processing-and-gdpr-compliance)
+See the generic info about freeRASP data collection [here](https://github.com/talsec/Free-RASP-Community/tree/master#data-collection-processing-and-gdpr-compliance).
 
 Google Play [requires](https://support.google.com/googleplay/android-developer/answer/10787469?hl=en) all app publishers to declare how they collect and handle user data for the apps they publish on Google Play. They should inform users properly of the data collected by the apps and how the data is shared and processed. Therefore, Google will reject the apps which do not comply with the policy.
 
 Apple has a [similar approach](https://developer.apple.com/app-store/app-privacy-details/) and specifies the types of collected data.
 
-You should also visit our [Android](https://github.com/talsec/Free-RASP-Android/tree/4dd5a41b33244c979de79bb3e16f9ccf167a948d) and [iOS](https://github.com/talsec/Free-RASP-iOS/tree/78dc848ef66c09438e338780ff46dda40efae331) submodules to learn more about their respective data policies.
+You should also visit our [Android](https://github.com/talsec/Free-RASP-Android/) and [iOS](https://github.com/talsec/Free-RASP-iOS/) submodules to learn more about their respective data policies.
 
 And you're done 🎉!
 
