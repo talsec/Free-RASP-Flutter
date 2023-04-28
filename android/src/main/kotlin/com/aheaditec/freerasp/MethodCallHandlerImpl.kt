@@ -49,13 +49,15 @@ class MethodCallHandlerImpl : MethodCallHandler {
             val signingHashes = call.argument<List<String>>("expectedSigningCertificateHashes")
             val watcherMail = call.argument<String>("watcherMail")
             val supportedStores = call.argument<List<String>>("supportedAlternativeStores")
+            val isProd = call.argument<Boolean>("isProd")
 
-            if (packageName != null && signingHashes != null && watcherMail != null && supportedStores != null) {
+            if (packageName != null && signingHashes != null && watcherMail != null && supportedStores != null && isProd != null) {
                 talsecApp?.init(
                     packageName,
                     signingHashes.toTypedArray(),
                     watcherMail,
-                    supportedStores.toTypedArray()
+                    supportedStores.toTypedArray(),
+                    isProd
                 ) ?: Log.w("SET_CONFIG", "Tried to initialize null Talsec object")
             }
         } catch (ex: Exception) {

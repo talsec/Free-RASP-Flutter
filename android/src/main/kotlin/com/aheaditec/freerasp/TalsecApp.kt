@@ -4,7 +4,6 @@ import android.content.Context
 import com.aheaditec.talsec_security.security.api.Talsec
 import com.aheaditec.talsec_security.security.api.TalsecConfig
 import com.aheaditec.talsec_security.security.api.ThreatListener
-import io.flutter.Log
 import io.flutter.plugin.common.EventChannel
 
 class TalsecApp(private val context: Context) : ThreatListener.ThreatDetected {
@@ -15,14 +14,17 @@ class TalsecApp(private val context: Context) : ThreatListener.ThreatDetected {
         packageName: String,
         signingHashes: Array<String>,
         watcherMail: String,
-        alternativeStores: Array<String>
+        alternativeStores: Array<String>,
+        isProd: Boolean
     ) {
         val config = TalsecConfig(
             packageName,
             signingHashes,
             watcherMail,
-            alternativeStores
+            alternativeStores,
+            isProd
         )
+
         ThreatListener(this).registerListener(context)
         Talsec.start(context, config)
     }
@@ -32,7 +34,6 @@ class TalsecApp(private val context: Context) : ThreatListener.ThreatDetected {
     }
 
     override fun onRootDetected() {
-        Log.e("Threat","ROOT")
         submitEvent("onRootDetected")
     }
 
