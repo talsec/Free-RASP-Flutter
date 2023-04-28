@@ -17,7 +17,7 @@ void main() {
     expectedSigningCertificateHashes: signingHashes,
   );
 
-  const iosConfig = IOSconfig(
+  final iosConfig = IOSconfig(
     appBundleId: appBundleId,
     appTeamId: appTeamId,
   );
@@ -32,7 +32,7 @@ void main() {
     );
 
     expect(
-      () => const TalsecConfig(
+      () =>  TalsecConfig(
         iosConfig: iosConfig,
         watcherMail: watcherMail,
       ),

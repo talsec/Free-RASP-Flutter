@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'package:freerasp/talsec_callback.dart';
@@ -46,27 +45,33 @@ class TalsecApp {
     final androidConfig = _config.androidConfig;
     final iosConfig = _config.iosConfig;
 
-    if (Platform.isAndroid && androidConfig != null) {
+    if (defaultTargetPlatform == TargetPlatform.android &&
+        androidConfig != null) {
       _configChannel.invokeListMethod<void>('setConfig', <String, dynamic>{
         'expectedPackageName': androidConfig.expectedPackageName,
         'expectedSigningCertificateHashes':
             androidConfig.expectedSigningCertificateHashes,
         'watcherMail': _config.watcherMail,
-        'supportedAlternativeStores': androidConfig.supportedAlternativeStores
+        'supportedAlternativeStores': androidConfig.supportedAlternativeStores,
+        'isProd': _config.isProd,
       });
     }
 
     /// iOS device
-    else if (Platform.isIOS && iosConfig != null) {
-      _configChannel.invokeListMethod<void>('setConfig', <String, String?>{
+    else if (defaultTargetPlatform == TargetPlatform.iOS && iosConfig != null) {
+      _configChannel.invokeListMethod<void>('setConfig', <String, dynamic>{
         'appBundleId': iosConfig.appBundleId,
         'appTeamId': iosConfig.appTeamId,
         'watcherMail': _config.watcherMail,
+        'isProd': _config.isProd,
       });
     } else {
+      final config = defaultTargetPlatform == TargetPlatform.android
+          ? 'androidConfig'
+          : 'IOSconfig';
       throw MissingPluginException(
-          '${Platform.isAndroid ? "androidConfig" : "IOSconfig"} is not '
-          'provided.');
+        '$config is not provided.',
+      );
     }
 
     /// Listen to changes from native side
@@ -77,6 +82,7 @@ class TalsecApp {
   void _setListener(EventChannel channel) {
     channel.receiveBroadcastStream().listen((dynamic event) {
       switch (event) {
+
         /// Android: Event received when device is rooted
         case 'onRootDetected':
           _callback.androidCallback?.onRootDetected?.call();

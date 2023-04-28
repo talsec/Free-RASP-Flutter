@@ -1,4 +1,4 @@
-// ignore_for_file: cascade_invocations
+// ignore_for_file: cascade_invocations, avoid_redundant_argument_values
 
 import 'dart:async';
 import 'dart:io';
@@ -91,12 +91,13 @@ class _MyAppState extends State<MyApp> {
       ),
 
       /// For iOS
-      iosConfig: const IOSconfig(
+      iosConfig: IOSconfig(
         appBundleId: 'com.aheaditec.freeraspExample',
         appTeamId: 'M8AK35...',
       ),
 
       watcherMail: 'your_mail@example.com',
+      isProd: true,
     );
 
     /// Callbacks thrown by library

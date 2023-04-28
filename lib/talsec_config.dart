@@ -13,6 +13,7 @@ class TalsecConfig {
   /// Configuration for [TalsecConfig].
   const TalsecConfig({
     required this.watcherMail,
+    this.isProd = true,
     this.androidConfig,
     this.iosConfig,
   }) : assert(
@@ -29,4 +30,7 @@ class TalsecConfig {
 
   /// Mail for security reports.
   final String? watcherMail;
+
+  /// Whether the SDK should be running in release mode.
+  final bool isProd;
 }

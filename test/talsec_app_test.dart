@@ -9,7 +9,7 @@ void main() {
         'AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='
       ],
     ),
-    iosConfig: const IOSconfig(
+    iosConfig: IOSconfig(
       appBundleId: 'BUNDLE_ID',
       appTeamId: 'TEAM_ID',
     ),
