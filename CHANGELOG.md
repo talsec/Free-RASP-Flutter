@@ -1,3 +1,24 @@
+# freeRASP 5.0.0-dev.1
+New changes incoming! This major update, contains new API to for handling dev and release deployments
+of freeRASP. Now, you can integrate freeRASP more easily without pesky iOS installation steps. We
+also no longer rely on HMS.
+
+## What's new in 5.0.0-dev.1?
+- ❗ Only one version of the SDK is used from now on, instead of two separate for dev and release
+### Android
+- ❗ Removed the HMS dependencies
+- ⚡ Improved root detection accuracy by moving the 'ro.debuggable' property state to an ignored group
+- ⚡ Enhanced root detection capabilities by moving the selinux properties check to device state
+- ⚡ Fine-tuning root evaluation strategy
+
+### iOS
+- ❗ Removed the dependency on the symlinks choosing the proper version (release/dev)
+- ❗️ Removed pre-built script for changing the Debug and Release versions
+
+### Other improvements
+- 📄 Documentation updates and improvements
+- ⚡ Updated demo app for new implementation
+
 # freeRASP 4.0.0
 A new round of fixes and improvements! Here's the list of all the new things we included in the latest release.
 
