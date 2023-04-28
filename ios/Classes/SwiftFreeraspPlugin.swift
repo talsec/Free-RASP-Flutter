@@ -65,14 +65,16 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
             print("Unimplemeted state")
             return
         }
-        guard let args = call.arguments as? Dictionary<String, String>,
-              let abi = args["appBundleId"],
-              let ati = args["appTeamId"],
-              let wm = args["watcherMail"] else {
+        guard let args = call.arguments as? Dictionary<String, Any>,
+              let abi = args["appBundleId"] as? String,
+              let ati = args["appTeamId"] as? String,
+              let wm = args["watcherMail"] as? String,
+              let ip = args["isProd"] as? Bool
+        else {
             return //TODO: handle - if needed?
         }
         
-        let config = TalsecConfig(appBundleIds: [abi], appTeamId: ati, watcherMailAddress: wm)
+        let config = TalsecConfig(appBundleIds: [abi], appTeamId: ati, watcherMailAddress: wm, isProd: ip)
         Talsec.start(config: config)
     }
     

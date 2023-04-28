@@ -57,12 +57,6 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // Talsec Release
-    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-release'
-
-    // Talsec Debug
-    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-dev'
-
-    // Talsec Profile
-    profileImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-dev'
+    // Talsec SDK
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:7.0.0'
 }
