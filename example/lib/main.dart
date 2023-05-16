@@ -1,160 +1,67 @@
-// ignore_for_file: cascade_invocations
-
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:freerasp/talsec_app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freerasp/freerasp.dart';
+import 'package:freerasp_example/safety_icon.dart';
+import 'package:freerasp_example/threat_notifier.dart';
+
+/// Represents current state of the threats detectable by freeRASP
+final threatProvider = StateNotifierProvider<ThreatNotifier, Map<Threat, bool>>(
+  (ref) => ThreatNotifier(),
+);
 
 void main() {
-  runApp(const MyApp());
+  /// Make sure that bindings are initialized before using Talsec.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final config = TalsecConfig(
+    /// For Android
+    androidConfig: AndroidConfig(
+      packageName: 'com.aheaditec.freeraspExample',
+      signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+      supportedStores: ['com.sec.android.app.samsungapps'],
+    ),
+
+    /// For iOS
+    iosConfig: IOSConfig(
+      bundleIds: ['com.aheaditec.freeraspExample'],
+      teamId: 'M8AK35...',
+    ),
+    watcherMail: 'your_mail@example.com',
+    // ignore: avoid_redundant_argument_values
+    isProd: true, // use kReleaseMode for automatic switch
+  );
+
+  /// freeRASP should be always initialized in the top-level widget
+  Talsec.instance.start(config);
+
+  /// Another way to handle [Threat] is to use Stream.
+  /// ```dart
+  /// final subscription = Talsec.instance.onThreatDetected.listen((threat) {
+  ///   log('Threat detected: $threat');
+  /// });
+  /// ```
+  runApp(const ProviderScope(child: App()));
 }
 
-/// Main app widget.
-class MyApp extends StatefulWidget {
-  /// Constructor for main app widget.
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  /// ThreatTypes to hold current state (Android)
-  final ThreatType _root = ThreatType('Root');
-  final ThreatType _emulator = ThreatType('Emulator');
-  final ThreatType _tamper = ThreatType('Tamper');
-  final ThreatType _hook = ThreatType('Hook');
-  final ThreatType _deviceBinding = ThreatType('Device binding');
-  final ThreatType _untrustedSource =
-      ThreatType('Untrusted source of installation');
-
-  /// ThreatTypes to hold current state (iOS)
-  final ThreatType _signature = ThreatType('Signature');
-  final ThreatType _jailbreak = ThreatType('Jailbreak');
-  final ThreatType _runtimeManipulation = ThreatType('Runtime Manipulation');
-  final ThreatType _simulator = ThreatType('Simulator');
-  final ThreatType _deviceChange = ThreatType('Device change');
-  final ThreatType _deviceId = ThreatType('Device ID');
-  final ThreatType _unofficialStore = ThreatType('Unofficial Store');
-  final ThreatType _passcode = ThreatType('Passcode');
-  final ThreatType _missingSecureEnclave = ThreatType('Missing secure enclave');
-
-  /// ThreatTypes to hold current state (common)
-  final ThreatType _debugger = ThreatType('Debugger');
-
-  /// Getter to determine which states we care about
-  List<Widget> get overview {
-    if (Platform.isAndroid) {
-      return [
-        Text(_root.state),
-        Text(_debugger.state),
-        Text(_emulator.state),
-        Text(_tamper.state),
-        Text(_hook.state),
-        Text(_deviceBinding.state),
-        Text(_untrustedSource.state),
-      ];
-    }
-    return [
-      Text(_signature.state),
-      Text(_jailbreak.state),
-      Text(_debugger.state),
-      Text(_runtimeManipulation.state),
-      Text(_passcode.state),
-      Text(_simulator.state),
-      Text(_missingSecureEnclave.state),
-      Text(_deviceChange.state),
-      Text(_deviceId.state),
-      Text(_unofficialStore.state)
-    ];
-  }
-
-  /// Override initState of the "highest" widget in order to start freeRASP
-  /// as soon as possible.
-  @override
-  void initState() {
-    super.initState();
-    initSecurityState();
-  }
-
-  Future<void> initSecurityState() async {
-    /// Provide TalsecConfig your expected data and then use them in TalsecApp
-    final config = TalsecConfig(
-      /// For Android
-      androidConfig: AndroidConfig(
-        expectedPackageName: 'com.aheaditec.freeraspExample',
-        expectedSigningCertificateHashes: [
-          'AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='
-        ],
-        supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
-      ),
-
-      /// For iOS
-      iosConfig: const IOSconfig(
-        appBundleId: 'com.aheaditec.freeraspExample',
-        appTeamId: 'M8AK35...',
-      ),
-
-      watcherMail: 'your_mail@example.com',
-    );
-
-    /// Callbacks thrown by library
-    final callback = TalsecCallback(
-      /// For Android
-      androidCallback: AndroidCallback(
-        onRootDetected: () => _updateState(_root),
-        onEmulatorDetected: () => _updateState(_emulator),
-        onHookDetected: () => _updateState(_hook),
-        onTamperDetected: () => _updateState(_tamper),
-        onDeviceBindingDetected: () => _updateState(_deviceBinding),
-        onUntrustedInstallationDetected: () => _updateState(_untrustedSource),
-      ),
-
-      /// For iOS
-      iosCallback: IOSCallback(
-        onSignatureDetected: () => _updateState(_signature),
-        onRuntimeManipulationDetected: () => _updateState(_runtimeManipulation),
-        onJailbreakDetected: () => _updateState(_jailbreak),
-        onPasscodeDetected: () => _updateState(_passcode),
-        onSimulatorDetected: () => _updateState(_simulator),
-        onMissingSecureEnclaveDetected: () =>
-            _updateState(_missingSecureEnclave),
-        onDeviceChangeDetected: () => _updateState(_deviceChange),
-        onDeviceIdDetected: () => _updateState(_deviceId),
-        onUnofficialStoreDetected: () => _updateState(_unofficialStore),
-      ),
-
-      /// Debugger is common for both platforms
-      onDebuggerDetected: () => _updateState(_debugger),
-    );
-
-    final app = TalsecApp(
-      config: config,
-      callback: callback,
-    );
-
-    /// Turn on freeRASP
-    app.start();
-
-    if (!mounted) return;
-  }
-
-  void _updateState(ThreatType type) {
-    setState(type.threatFound);
-  }
+/// The example app demonstrating usage of freeRASP
+class App extends StatelessWidget {
+  /// The root widget of the application.
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('freeRASP Demo'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: overview,
+        body: const SafeArea(
+          child: Center(
+            child: HomePage(),
           ),
         ),
       ),
@@ -162,17 +69,43 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-/// A class which holds state about threat.
-class ThreatType {
-  /// Threat constructor.
-  ThreatType(this._text);
+/// Displays the main content of the application.
+class HomePage extends ConsumerWidget {
+  /// The constructor for the [HomePage] widget.
+  const HomePage({Key? key}) : super(key: key);
 
-  final String _text;
-  bool _isSecure = true;
-
-  /// Update state.
-  void threatFound() => _isSecure = false;
-
-  /// Return current state.
-  String get state => '$_text: ${_isSecure ? "Secured" : "Detected"}\n';
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final threatMap = ref.watch(threatProvider);
+    return Column(
+      children: [
+        const SizedBox(height: 8),
+        Text(
+          'Test results',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemCount: threatMap.length,
+            itemBuilder: (context, index) {
+              /// Using Provider to get app state.
+              final currentThreat = threatMap.keys.elementAt(index);
+              final isDetected = threatMap[currentThreat]!;
+              return ListTile(
+                title: Text(currentThreat.name),
+                subtitle: Text(isDetected ? 'Danger' : 'Safe'),
+                trailing: SafetyIcon(isDetected: isDetected),
+              );
+            },
+            separatorBuilder: (_, __) {
+              return const Divider(
+                height: 0,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }

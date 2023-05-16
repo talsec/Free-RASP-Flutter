@@ -19,7 +19,6 @@ rootProject.allprojects {
         google()
         mavenCentral()
         maven { url "https://nexus3-public.monetplus.cz/repository/ahead-talsec-free-rasp" }
-        maven { url "https://developer.huawei.com/repo/" }
         maven { url 'https://jitpack.io' }
     }
 }
@@ -28,7 +27,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -46,23 +45,11 @@ android {
     defaultConfig {
         minSdkVersion 21
     }
-
-    buildTypes {
-        profile{
-            // Empty but necessary for `profileImplementation`
-        }
-    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // Talsec Release
-    releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-release'
-
-    // Talsec Debug
-    debugImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-dev'
-
-    // Talsec Profile
-    profileImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:6.0.0-dev'
+    // Talsec SDK
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:7.0.0'
 }

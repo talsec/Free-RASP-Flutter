@@ -1,8 +1,8 @@
-
 ![FreeRasp](https://raw.githubusercontent.com/talsec/Free-RASP-Community/master/visuals/freeRASP.png)
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/talsec/Free-RASP-Community?color=green) ![Likes](https://img.shields.io/pub/likes/freerasp?color=green!) ![Likes](https://img.shields.io/pub/points/freerasp) ![GitHub](https://img.shields.io/github/license/talsec/Free-RASP-Community) ![GitHub](https://img.shields.io/github/last-commit/talsec/Free-RASP-Community) [![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 ![Publisher](https://img.shields.io/pub/publisher/freerasp)
+
 # freeRASP for Flutter
 
 freeRASP for Flutter is a mobile in-app protection and security monitoring SDK. It aims to cover the main aspects of RASP (Runtime App Self Protection) and application shielding.
@@ -11,13 +11,13 @@ freeRASP for Flutter is a mobile in-app protection and security monitoring SDK. 
 
 - [Overview](#overview)
 - [Usage](#usage)
-    * [Step 1: Prepare Talsec library](#step-1-prepare-talsec-library)
+    * [Step 1: Prepare freeRASP library](#step-1-prepare-freerasp-library)
         + [iOS setup](#ios-setup)
         + [Android setup](#android-setup)
-        + [Dev vs Release version](#dev-vs-release-version)
     * [Step 2: Setup the Configuration for your App](#step-2-setup-the-configuration-for-your-app)
+        + [Dev vs Release version](#dev-vs-release-version)
     * [Step 3: Handle detected threats](#step-3-handle-detected-threats)
-    * [Step 4: Start the Talsec](#step-4-start-the-talsec)
+    * [Step 4: Start the freeRASP](#step-4-start-the-freerasp)
     * [Step 5: Additional note about obfuscation](#step-5-additional-note-about-obfuscation)
     * [Step 6: User Data Policies](#step-6-user-data-policies)
 - [Troubleshooting](#troubleshooting)
@@ -67,73 +67,27 @@ Learn more about freemium freeRASP features at [GitHub main repository](https://
 
 We will guide you step-by-step, but you can always check the expected result in the example.
 
-## Step 1: Prepare Talsec library
+## Step 1: Prepare freeRASP library
 
 Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 4.0.0
+  freerasp: 5.0.0
 ```
 
 and run `pub get`
 
 ### iOS setup
 
-After depending on plugin, follow with these steps:
-
-1. Open terminal
-2. Navigate to your Flutter project
-3. Switch to `ios` folder
-
-```shell
-$ cd ios
-```
-
-4. Run: `pod install`
-
-```shell
-$ pod install
-```
-
-Note: `.symlinks` folder should now be visible under your `ios` folder.
-
-5. Open `.xcworkspace/.xcodeproject` folder of Flutter project in xcode
-6. Go to **Product > Scheme > Edit Scheme... > Build (dropdown arrow) > Pre-actions**
-7. Hit **+** and then **New Run Script Action**
-8. Set **Provide build setting from** to **Runner**
-9. Use the following code to automatically use an appropriate Talsec version for a release or debug (dev) build (see an explanation [here](#dev-vs-release-version)):
-
-```shell
-cd "${SRCROOT}/.symlinks/plugins/freerasp/ios"
-if [ "${CONFIGURATION}" = "Release" ]; then
-    rm -rf ./TalsecRuntime.xcframework
-    ln -s ./Release/TalsecRuntime.xcframework/ TalsecRuntime.xcframework
-else
-    rm -rf ./TalsecRuntime.xcframework
-    ln -s ./Debug/TalsecRuntime.xcframework/ TalsecRuntime.xcframework
-fi
-```
-10. Close the terminal window and then resolve warnings in the xcode project:
-
-    1. Go to **Show the Issue navigator**
-    2. Click twice on **Update to recommended settings** under **Runner project** issue > **Perform changes**
-    3. Click twice on **Update to recommended settings** under **Pods project** issue > **Perform changes**
-
-    Issues should be clear now.
-
-11.  Check if the `ios/.symlinks/plugins/freerasp/ios` contains `TalsecRuntime.xcframework` symlink. If not, create it manually in that folder using the following command.
-```shell
-ln -s ./Debug/TalsecRuntime.xcframework/ TalsecRuntime.xcframework
-```
-
-If there is no .symlinks folder, create the symlink in the `freerasp/ios` folder.
-
-12.  Run **pod install** in the application ios folder.
+If you are upgrading from a previous version of freeRASP, please remove the old `TalsecRuntime.xcframework`
+and integration script from your project.
+Otherwise, no further setup is required.
 
 **Note: You need Xcode 13 to be able to build the application.**
 
 ### Android setup
+
 * From root of your project, go to **android > app > build.gradle**
 * In `defaultConfig` update `minSdkVersion` to at least **21** (Android 5.0) or higher
 
@@ -149,155 +103,135 @@ defaultConfig {
 }
 ```
 
-### Dev vs Release version
-The Dev version is used during the development of the application. It separates development and production data and disables some checks which won't be triggered during the development process:
-
-* Emulator-usage (onEmulatorDetected, onSimulatorDetected)
-* Debugging (onDebuggerDetected)
-* Signing (onTamperDetected, onSignatureDetected)
-
-Which version of freeRASP is used is tied to the application's development stage - more precisely, how the application is compiled.
-
-* debug (assembleDebug) = dev version
-* release (assembleRelease) = release version
-
 ## Step 2: Setup the Configuration for your App
 
-Adding imports to the top of file, where you want to use Talsec:
+Add imports to the top of the file where you want to use Talsec:
+
 ```dart
-import 'package:freerasp/talsec_app.dart';
+import 'package:freerasp/freerasp.dart';
 ```
 
-Make (convert or create a new one) your root widget (typically one in `runApp(MyWidget())`) and override its `initState` in `State`
+To properly configure freeRASP for your app, you need to initialize it with a configuration that contains relevant details about your app.  In addition for freeRASP to work correctly, it is necessary that Flutter Bindings are initialized. This can be satisfied by calling `WidgetsFlutterBinding.ensureInitialized()`, as shown in the code snippet below.
 
 ```dart
 void main() {
-  runApp(const MyApp());
-}
+  ...
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  // This line is important!
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+  // create configuration for freeRASP
+  final config = TalsecConfig(
+    /// For Android
+    androidConfig: AndroidConfig(
+      packageName: 'your.package.name',
+      signingCertHashes: [
+        'AKoRu...'
+      ],
+      supportedStores: ['some.other.store'],
+    ),
 
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-
-    //TODO: freeRASP implementation
-  }
+    /// For iOS
+    iosConfig: IOSConfig(
+      bundleIds: ['YOUR_APP_BUNDLE_ID'],
+      teamId: 'M8AK35...',
+    ),
+    watcherMail: 'your_mail@example.com',
+    isProd: true,
+  );
 }
 ```
 
-and then create a Talsec config and insert `AndroidConfig` and/or `IOSConfig` with highlighted identifiers: `expectedPackageName` and `expectedSigningCertificateHash` are needed for Android version.
-* `expectedPackageName` - package name of your app you chose when you created it
-* `expectedSigningCertificateHashes` - list of hashes of the certificates of the keys which were used to sign the application. At least one hash value must be provided. **Hashes which are passed here must be encoded in Base64 form**
+Here, a `TalsecConfig` is created with both `AndroidConfig` and `IOSConfig`. Identifiers `packageName` and `signingCertHashes` are required for Android
+version.
+
+* `packageName` - package name of your app you chose when you created it
+* `signingCertHashes` - list of hashes of the certificates of the keys which were
+  used to sign the application. At least one hash value must be provided. **Hashes which are passed
+  here must be encoded in Base64 form**
 
 We provide a handy util tool to help you convert your SHA-256 hash to Base64:
-
 
 ```dart
 // Signing hash of your app
 String base64Hash = hashConverter.fromSha256toBase64(sha256HashHex);
 ```
 
-We strongly recommend using **result value** of this tool in expectedSigningCertificateHashes. **Do not use this tool directly** in `expectedSigningCertificateHashes` to get value. If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
+We strongly recommend using **result value** of this tool in signingCertHashes. **Do not use this tool directly** in `signingCertHashes` to get value. If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
+.
 
-Similarly, `appBundleId` and `appTeamId` are needed for iOS version of app. If you publish on the Google Play Store and/or Huawei AppGallery, you **don't have to assign anything** to `supportedAlternativeStores` as those are supported out of the box.
+Similarly, `bundleIds` and `teamId` are needed for iOS version of app. If you publish on the
+Google Play Store and/or Huawei AppGallery, you **don't have to assign anything**
+to `supportedStores` as those are supported out of the box.
 
-Lastly, pass a mail address to `watcherMail` to be able to get reports. Mail has a strict form `name@domain.com` which is passed as String.
+Next, pass a mail address to `watcherMail` to be able to get reports. Mail has a strict
+form `name@domain.com` which is passed as String.
 
-If you are developing only for one of the platforms, you can leave the configuration part for the other one, i.e., delete the other congifuration.
+If you are developing only for one of the platforms, you can leave the configuration part for the
+other one, i.e., delete the other configuration.
+
+### Dev vs Release version
+
+The Dev version is used during the development of the application. It separates development and
+production data and disables some checks which won't be triggered during the development process:
+
+* Emulator-usage (onEmulatorDetected, onSimulatorDetected)
+* Debugging (onDebuggerDetected)
+* Signing (onTamperDetected, onSignatureDetected)
+* Unofficial store (onUntrustedInstallationSource, onUnofficialStoreDetected)
+
+Dev vs Release is currently managed using `isProd` flag in `TalsecConfig` class:
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initSecurityState();
-}
-
-Future<void> initSecurityState() async {
-  TalsecConfig config = TalsecConfig(
-
-    // For Android
-    androidConfig: AndroidConfig(
-      expectedPackageName: 'YOUR_PACKAGE_NAME',
-      expectedSigningCertificateHashes: ['HASH_OF_YOUR_APP'],
-      supportedAlternativeStores: ["com.sec.android.app.samsungapps"],
-    ),
-
-    // For iOS
-    iosConfig: IOSconfig(
-      appBundleId: 'YOUR_APP_BUNDLE_ID',
-      appTeamId: 'YOUR_APP_TEAM_ID',
-    ),
-
-    // Common email for Alerts and Reports
-    watcherMail: 'your_mail@example.com',
-  );
-}
+TalsecConfig(
+   isProd: true,
+   ...
+)
 ```
+
+`isProd`  defaults to  `true`  when undefined. If you want to use the Dev version to disable checks described above, set the parameter to  `false`. Make sure that you have the Release version in the production (i.e. isProd set to `true`)!
 
 ## Step 3: Handle detected threats
 
-Create `AndroidCallback` and/or `IOSCallback` objects and provide `VoidCallback` function pointers to handle detected threats:
-```dart
-@override
-void initState() {
-  // Talsec config
-  // ...
+freeRASP reacts to threats using _ThreatCallback_. Internally, each threat has its own callback (of `VoidCallback` type), which is called when a threat is detected. 
 
-  // Talsec callback handler
-  TalsecCallback callback = TalsecCallback(
-  // For Android
-  androidCallback: AndroidCallback(
-    onRootDetected: () => print('root'),
-    onEmulatorDetected: () => print('emulator'),
-    onHookDetected: () => print('hook'),
-    onTamperDetected: () => print('tamper'),
-    onDeviceBindingDetected: () => print('device binding'),
-    onUntrustedInstallationDetected: () => print('untrusted install'),
-  ),
-  // For iOS
-  iosCallback: IOSCallback(
-      onSignatureDetected: () => print('signature'),
-      onRuntimeManipulationDetected: () => print('runtime manipulation'),
-      onJailbreakDetected: () => print('jailbreak'),
-      onPasscodeDetected: () => print('passcode'),
-      onSimulatorDetected: () => print('simulator'),
-      onMissingSecureEnclaveDetected: () => print('secure enclave'),
-      onDeviceChangeDetected: () => print('device change'),
-      onDeviceIdDetected: () => print('device ID'),
-      onUnofficialStoreDetected: () => print('unofficial store')),
-  // Common for both platforms
-  onDebuggerDetected: () => print('debugger'),
+```dart
+void main() {
+  ...
+
+  // Setting up callbacks
+  final callback = ThreatCallback(
+      onAppIntegrity: () => print("App integrity"),
+      onDebug: () => print("Debugging"),
+      onDeviceBinding: () => print("Device binding"),
+      onDeviceID: () => print("Device ID"),
+      onHooks: () => print("Hooks"),
+      onPasscode: () => print("Passcode not set"),
+      onPrivilegedAccess: () => print("Privileged access"),
+      onSecureHardwareNotAvailable: () => print("Secure hardware not available"),
+      onSimulator: () => print("Simulator"),
+      onUnofficialStore: () => print("Unofficial store")
   );
+
+  // Attaching listener
+  Talsec.instance.attachListener(callback);
 }
 ```
-If you are developing only for one of the platforms, you can leave the callback definition for the other one, i.e., delete the other callback definition.
 
-Visit our [wiki](https://github.com/talsec/Free-RASP-Community/wiki/Threat-detection) to learn more details about the performed checks and their importance for app security.
+Visit our [wiki](https://github.com/talsec/Free-RASP-Community/wiki/Threat-detection) to learn more
+details about the performed checks and their importance for app security.
 
-## Step 4: Start the Talsec
+## Step 4: Start the freeRASP
 
-Start Talsec to detect threats just by adding these two lines below the created config and the callback handler:
+Start freeRASP to detect threats just by adding this line below the created config and the
+callback handler:
 
 ```dart
-void initState() {
-  // Talsec config
-  // ...
-  // Talsec callback handler
-  // ...
+void main() {
+  ...
 
-  TalsecApp app = TalsecApp(
-    config: config,
-    callback: callback,
-  );
-
-  app.start();
+  // start freeRASP
+  Talsec.instance.start(config);
 }
 ```
 
@@ -339,7 +273,8 @@ And you're done 🎉!
 
 ### \[Android] `Could not find ... ` dependency issue
 
-**Solution:** Add dependency manually (see [issue](https://github.com/talsec/Free-RASP-Flutter/issues/1)).
+**Solution:** Add dependency manually (
+see [issue](https://github.com/talsec/Free-RASP-Flutter/issues/1)).
 
 In android -> app -> build.gradle add these dependencies
 
@@ -348,21 +283,22 @@ dependencies {
 
  ... some other dependecies ...
 
-   // Talsec Release
-   releaseImplementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:*-release'
-
-   // Talsec Debug
-   implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:*-dev'
+   // Talsec dependency
+   implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:<version>'
 }
 ```
 
 ### \[iOS] Unable to build release for simulator in Xcode (errors)
 
-**Solution:** Simulator does **not** support release build of Flutter - more about it [here](https://flutter.dev/docs/testing/build-modes#release). Use a real device in order to build the app in release mode.
+**Solution:** Simulator does **not** support release build of Flutter - more about
+it [here](https://flutter.dev/docs/testing/build-modes#release). Use a real device in order to build
+the app in release mode.
 
 ### \[iOS] MissingPluginException occurs on hot restart
 
-**Solution:** Technical limitation of Flutter - more about it [here](https://stackoverflow.com/questions/50459272/missingpluginexception-while-using-plugin-for-flutter). Use command `flutter run` to launch app (i.e. run app from scratch).
+**Solution:** Technical limitation of Flutter - more about
+it [here](https://stackoverflow.com/questions/50459272/missingpluginexception-while-using-plugin-for-flutter)
+. Use command `flutter run` to launch app (i.e. run app from scratch).
 
 ### \[Android] Code throws `java.lang.UnsatisfiedLinkError: No implementation found for...` exception when building APK
 
@@ -375,11 +311,15 @@ Add this rule to your `proguard-rules.pro` file:
 native ;
 }
 ```
+
 ### \[iOS] Building using Codemagic fails: `No such module 'TalsecRuntime'`
 
- **Solution:** You have to adjust Codemagic building pipeline. Instructions how to do it are [here](https://github.com/talsec/Free-RASP-Flutter/issues/22#issuecomment-1383964470).
+**Solution:** You have to adjust Codemagic building pipeline. Instructions how to do it
+are [here](https://github.com/talsec/Free-RASP-Flutter/issues/22#issuecomment-1383964470).
 
-If you encounter any other issues, you can see the list of solved issues [here](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aissue+is%3Aclosed), or open up a [new one](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aopen+is%3Aissue).
+If you encounter any other issues, you can see the list of solved
+issues [here](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aissue+is%3Aclosed), or open
+up a [new one](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aopen+is%3Aissue).
 
 # Security Report
 
@@ -524,7 +464,6 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
             <td>yes</td>
         </tr>
          <td colspan=5><strong>Fair usage policy</strong></td>
-        </tr>
         <tr>
             <td>Mentioning of the App name and logo in the marketing communications of Talsec (e.g. "Trusted by" section of the Talsec web or in the social media).</td>
             <td>over 100k downloads</td>
