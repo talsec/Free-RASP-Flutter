@@ -2,139 +2,95 @@ import Flutter
 import UIKit
 import TalsecRuntime
 
-protocol EventProcessor {
-    var unprocessedEvents: [String] {get}
-    func processEvent(_ event: String)
-}
-
-class ArrayEventProcessor: EventProcessor {
-    private var array = [String]()
-    
-    var unprocessedEvents: [String] {
-        array
-    }
-    
-    func processEvent(_ event: String) {
-        array.append(event)
-    }
-}
-
-class SinkEventProcessor: EventProcessor {
-    private let sink: FlutterEventSink
-    
-    init(sink: @escaping FlutterEventSink) {
-        self.sink = sink
-    }
-    
-    var unprocessedEvents: [String] {
-        []
-    }
-    
-    func processEvent(_ event: String) {
-        sink(event)
-    }
-}
-
+/// A Flutter plugin that interacts with the Talsec runtime library, handles method calls and provides event streams.
 public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
+    /// The event processor used to handle and dispatch events.
+    private let eventProcessor = EventProcessor()
     
-    private var eventProcessor: EventProcessor = ArrayEventProcessor() {
-        didSet {
-            oldValue.unprocessedEvents.forEach { eventProcessor.processEvent($0)}
-        }
-    }
-    
+    /// The singleton instance of `SwiftTalsecPlugin`.
     static let instance = SwiftFreeraspPlugin()
-    static var eventChannel : FlutterEventChannel? = nil
-    static var configChannel : FlutterMethodChannel? = nil
+    
     private override init() {}
     
+    /// Registers this plugin with the given `FlutterPluginRegistrar`.
     public static func register(with registrar: FlutterPluginRegistrar) {
         let messenger = registrar.messenger()
         
+        let eventChannel = FlutterEventChannel(name: "talsec.app/freerasp/events", binaryMessenger: messenger)
+        eventChannel.setStreamHandler(instance)
+        
         //Channels init
-        let configChannel : FlutterMethodChannel = FlutterMethodChannel(name: "plugins.aheaditec.com/config", binaryMessenger: messenger)
-        
-        eventChannel = FlutterEventChannel(name: "plugins.aheaditec.com/events", binaryMessenger: messenger)
-        
-        eventChannel?.setStreamHandler(instance)
-        registrar.addMethodCallDelegate(instance, channel: configChannel)
+        let methodChannel : FlutterMethodChannel = FlutterMethodChannel(name: "talsec.app/freerasp/methods", binaryMessenger: messenger)
+        registrar.addMethodCallDelegate(instance, channel: methodChannel)
     }
     
+    /// Handles a method call from Flutter.
+    ///
+    /// - Parameters:
+    ///   - call: The `FlutterMethodCall` object representing the method call.
+    ///   - result: The `FlutterResult` object to be returned to the caller.
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        guard call.method ==  "setConfig" else {
-            print("Unimplemeted state")
+        guard let args = call.arguments as? Dictionary<String, String>
+        else {
+            result(FlutterError(code: "talsec-failure", message: "Unexpected arguments", details: nil))
             return
         }
-        guard let args = call.arguments as? Dictionary<String, Any>,
-              let abi = args["appBundleId"] as? String,
-              let ati = args["appTeamId"] as? String,
-              let wm = args["watcherMail"] as? String,
-              let ip = args["isProd"] as? Bool
+        
+        switch call.method {
+        case "start":
+            start(args: args, result: result)
+            return
+        default:
+            result(FlutterMethodNotImplemented)
+        }
+    }
+    
+    /// Runs Talsec with given configuration
+    ///
+    /// - Parameters:
+    ///   - args: The arguments received from Flutter which contains configuration
+    ///   - result: The `FlutterResult` object to be returned to the caller.
+    private func start(args: Dictionary<String, String>, result: @escaping FlutterResult) {
+        guard let json = args["config"],
+              let data = json.data(using: .utf8),
+              let flutterConfig = try? JSONDecoder().decode(FlutterTalsecConfig.self, from: data)
         else {
-            return //TODO: handle - if needed?
+            result(FlutterError(code: "configuration-exception", message: "Unable to decode configuration", details: nil))
+            return
         }
         
-        let config = TalsecConfig(appBundleIds: [abi], appTeamId: ati, watcherMailAddress: wm, isProd: ip)
-        Talsec.start(config: config)
+        Talsec.start(config: flutterConfig.toNativeConfig())
     }
     
+    /// Attaches a FlutterEventSink to the EventProcessor and processes any detectedThreats in the queue.
+    ///
+    /// - Parameters:
+    /// - arguments: Unused
+    /// - events: The FlutterEventSink to be attached to the EventProcessor.
+    /// - Returns: Always returns nil.
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        eventProcessor = SinkEventProcessor(sink: events)
+        eventProcessor.attachSink(sink: events)
         return nil
     }
     
+    // Detaches the current FlutterEventSink from the EventProcessor.
+    ///
+    /// - Parameters:
+    /// - arguments: Unused
+    /// - Returns: Always returns nil.
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        eventProcessor = ArrayEventProcessor()
-        SwiftFreeraspPlugin.eventChannel?.setStreamHandler(nil)
+        eventProcessor.detachSink()
         return nil
     }
     
-    public func submitEvent(_ submittedEvent: String) {
+    /// Processes a submitted SecurityThreat event.
+    ///
+    /// - Parameters:
+    /// - submittedEvent: The SecurityThreat event to be processed.
+    public func submitEvent(_ submittedEvent: SecurityThreat) {
+        if (submittedEvent == SecurityThreat.passcodeChange){
+            return
+        }
         eventProcessor.processEvent(submittedEvent)
     }
 }
-
-extension SecurityThreatCenter: SecurityThreatHandler {
-    
-    func invokeCallback(_ callback: String){
-        guard !callback.isEmpty else { return }
-        SwiftFreeraspPlugin.instance.submitEvent(callback)
-    }
-    
-    public func threatDetected(_ securityThreat: TalsecRuntime.SecurityThreat) {
-        invokeCallback(securityThreat.callbackIdentifier)
-    }
-}
-
-extension SecurityThreat {
-    var callbackIdentifier: String {
-        switch self {
-        case .signature:
-            return "onSignatureDetected"
-        case .jailbreak:
-            return "onJailbreakDetected"
-        case .debugger:
-            return "onDebuggerDetected"
-        case .runtimeManipulation:
-            return "onRuntimeManipulationDetected"
-        case .passcode:
-            return "onPasscodeDetected"
-        case .passcodeChange:
-            return "onPasscodeChangeDetected"
-        case .simulator:
-            return "onSimulatorDetected"
-        case .missingSecureEnclave:
-            return "onMissingSecureEnclaveDetected"
-        case .deviceChange:
-            return "onDeviceChangeDetected"
-        case .deviceID:
-            return "onDeviceIdDetected"
-        case .unofficialStore:
-            return "onUnofficialStoreDetected"
-        @unknown default:
-            print("Undefined threat callback")
-            return ""
-        }
-    }
-}
-

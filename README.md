@@ -11,13 +11,13 @@ freeRASP for Flutter is a mobile in-app protection and security monitoring SDK. 
 
 - [Overview](#overview)
 - [Usage](#usage)
-    * [Step 1: Prepare Talsec library](#step-1-prepare-talsec-library)
+    * [Step 1: Prepare freeRASP library](#step-1-prepare-freerasp-library)
         + [iOS setup](#ios-setup)
         + [Android setup](#android-setup)
     * [Step 2: Setup the Configuration for your App](#step-2-setup-the-configuration-for-your-app)
         + [Dev vs Release version](#dev-vs-release-version)
     * [Step 3: Handle detected threats](#step-3-handle-detected-threats)
-    * [Step 4: Start the Talsec](#step-4-start-the-talsec)
+    * [Step 4: Start the freeRASP](#step-4-start-the-freerasp)
     * [Step 5: Additional note about obfuscation](#step-5-additional-note-about-obfuscation)
     * [Step 6: User Data Policies](#step-6-user-data-policies)
 - [Troubleshooting](#troubleshooting)
@@ -67,13 +67,13 @@ Learn more about freemium freeRASP features at [GitHub main repository](https://
 
 We will guide you step-by-step, but you can always check the expected result in the example.
 
-## Step 1: Prepare Talsec library
+## Step 1: Prepare freeRASP library
 
 Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 5.0.0-dev.1
+  freerasp: 5.0.0
 ```
 
 and run `pub get`
@@ -82,6 +82,7 @@ and run `pub get`
 
 If you are upgrading from a previous version of freeRASP, please remove the old `TalsecRuntime.xcframework`
 and integration script from your project.
+Otherwise, no further setup is required.
 
 **Note: You need Xcode 13 to be able to build the application.**
 
@@ -104,43 +105,48 @@ defaultConfig {
 
 ## Step 2: Setup the Configuration for your App
 
-Adding imports to the top of file, where you want to use Talsec:
+Add imports to the top of the file where you want to use Talsec:
 
 ```dart
-import 'package:freerasp/talsec_app.dart';
+import 'package:freerasp/freerasp.dart';
 ```
 
-Make (convert or create a new one) your root widget (typically one in `runApp(MyWidget())`) and
-override its `initState` in `State`
+To properly configure freeRASP for your app, you need to initialize it with a configuration that contains relevant details about your app.  In addition for freeRASP to work correctly, it is necessary that Flutter Bindings are initialized. This can be satisfied by calling `WidgetsFlutterBinding.ensureInitialized()`, as shown in the code snippet below.
 
 ```dart
 void main() {
-  runApp(const MyApp());
-}
+  ...
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  // This line is important!
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+  // create configuration for freeRASP
+  final config = TalsecConfig(
+    /// For Android
+    androidConfig: AndroidConfig(
+      packageName: 'your.package.name',
+      signingCertHashes: [
+        'AKoRu...'
+      ],
+      supportedStores: ['some.other.store'],
+    ),
 
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-
-    //TODO: freeRASP implementation
-  }
+    /// For iOS
+    iosConfig: IOSConfig(
+      bundleIds: ['YOUR_APP_BUNDLE_ID'],
+      teamId: 'M8AK35...',
+    ),
+    watcherMail: 'your_mail@example.com',
+    isProd: true,
+  );
 }
 ```
 
-and then create a Talsec config and insert `AndroidConfig` and/or `IOSConfig` with highlighted
-identifiers: `expectedPackageName` and `expectedSigningCertificateHash` are needed for Android
+Here, a `TalsecConfig` is created with both `AndroidConfig` and `IOSConfig`. Identifiers `packageName` and `signingCertHashes` are required for Android
 version.
 
-* `expectedPackageName` - package name of your app you chose when you created it
-* `expectedSigningCertificateHashes` - list of hashes of the certificates of the keys which were
+* `packageName` - package name of your app you chose when you created it
+* `signingCertHashes` - list of hashes of the certificates of the keys which were
   used to sign the application. At least one hash value must be provided. **Hashes which are passed
   here must be encoded in Base64 form**
 
@@ -151,48 +157,18 @@ We provide a handy util tool to help you convert your SHA-256 hash to Base64:
 String base64Hash = hashConverter.fromSha256toBase64(sha256HashHex);
 ```
 
-We strongly recommend using **result value** of this tool in expectedSigningCertificateHashes. **Do not use this tool directly** in `expectedSigningCertificateHashes` to get value. If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
+We strongly recommend using **result value** of this tool in signingCertHashes. **Do not use this tool directly** in `signingCertHashes` to get value. If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
 .
 
-Similarly, `appBundleId` and `appTeamId` are needed for iOS version of app. If you publish on the
+Similarly, `bundleIds` and `teamId` are needed for iOS version of app. If you publish on the
 Google Play Store and/or Huawei AppGallery, you **don't have to assign anything**
-to `supportedAlternativeStores` as those are supported out of the box.
+to `supportedStores` as those are supported out of the box.
 
 Next, pass a mail address to `watcherMail` to be able to get reports. Mail has a strict
 form `name@domain.com` which is passed as String.
 
 If you are developing only for one of the platforms, you can leave the configuration part for the
 other one, i.e., delete the other configuration.
-
-```dart
-@override
-void initState() {
-  super.initState();
-  initSecurityState();
-}
-
-Future<void> initSecurityState() async {
-  TalsecConfig config = TalsecConfig(
-
-    // For Android
-    androidConfig: AndroidConfig(
-      expectedPackageName: 'YOUR_PACKAGE_NAME',
-      expectedSigningCertificateHashes: ['HASH_OF_YOUR_APP'],
-      supportedAlternativeStores: ["com.sec.android.app.samsungapps"],
-    ),
-
-    // For iOS
-    iosConfig: IOSconfig(
-      appBundleId: 'YOUR_APP_BUNDLE_ID',
-      appTeamId: 'YOUR_APP_TEAM_ID',
-    ),
-
-    // Common email for Alerts and Reports
-    watcherMail: 'your_mail@example.com',
-    isProd: true,
-  );
-}
-```
 
 ### Dev vs Release version
 
@@ -217,67 +193,45 @@ TalsecConfig(
 
 ## Step 3: Handle detected threats
 
-Create `AndroidCallback` and/or `IOSCallback` objects and provide `VoidCallback` function pointers
-to handle detected threats:
+freeRASP reacts to threats using _ThreatCallback_. Internally, each threat has its own callback (of `VoidCallback` type), which is called when a threat is detected. 
 
 ```dart
-@override
-void initState() {
-  // Talsec config
-  // ...
+void main() {
+  ...
 
-  // Talsec callback handler
-  TalsecCallback callback = TalsecCallback(
-    // For Android
-    androidCallback: AndroidCallback(
-      onRootDetected: () => print('root'),
-      onEmulatorDetected: () => print('emulator'),
-      onHookDetected: () => print('hook'),
-      onTamperDetected: () => print('tamper'),
-      onDeviceBindingDetected: () => print('device binding'),
-      onUntrustedInstallationDetected: () => print('untrusted install'),
-    ),
-    // For iOS
-    iosCallback: IOSCallback(
-        onSignatureDetected: () => print('signature'),
-        onRuntimeManipulationDetected: () => print('runtime manipulation'),
-        onJailbreakDetected: () => print('jailbreak'),
-        onPasscodeDetected: () => print('passcode'),
-        onSimulatorDetected: () => print('simulator'),
-        onMissingSecureEnclaveDetected: () => print('secure enclave'),
-        onDeviceChangeDetected: () => print('device change'),
-        onDeviceIdDetected: () => print('device ID'),
-        onUnofficialStoreDetected: () => print('unofficial store')),
-    // Common for both platforms
-    onDebuggerDetected: () => print('debugger'),
+  // Setting up callbacks
+  final callback = ThreatCallback(
+      onAppIntegrity: () => print("App integrity"),
+      onDebug: () => print("Debugging"),
+      onDeviceBinding: () => print("Device binding"),
+      onDeviceID: () => print("Device ID"),
+      onHooks: () => print("Hooks"),
+      onPasscode: () => print("Passcode not set"),
+      onPrivilegedAccess: () => print("Privileged access"),
+      onSecureHardwareNotAvailable: () => print("Secure hardware not available"),
+      onSimulator: () => print("Simulator"),
+      onUnofficialStore: () => print("Unofficial store")
   );
+
+  // Attaching listener
+  Talsec.instance.attachListener(callback);
 }
 ```
-
-If you are developing only for one of the platforms, you can leave the callback definition for the
-other one, i.e., delete the other callback definition.
 
 Visit our [wiki](https://github.com/talsec/Free-RASP-Community/wiki/Threat-detection) to learn more
 details about the performed checks and their importance for app security.
 
-## Step 4: Start the Talsec
+## Step 4: Start the freeRASP
 
-Start Talsec to detect threats just by adding these two lines below the created config and the
+Start freeRASP to detect threats just by adding this line below the created config and the
 callback handler:
 
 ```dart
-void initState() {
-  // Talsec config
-  // ...
-  // Talsec callback handler
-  // ...
+void main() {
+  ...
 
-  TalsecApp app = TalsecApp(
-    config: config,
-    callback: callback,
-  );
-
-  app.start();
+  // start freeRASP
+  Talsec.instance.start(config);
 }
 ```
 
@@ -510,7 +464,6 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
             <td>yes</td>
         </tr>
          <td colspan=5><strong>Fair usage policy</strong></td>
-        </tr>
         <tr>
             <td>Mentioning of the App name and logo in the marketing communications of Talsec (e.g. "Trusted by" section of the Talsec web or in the social media).</td>
             <td>over 100k downloads</td>
