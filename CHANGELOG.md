@@ -1,3 +1,9 @@
+# freeRASP 5.0.1
+Minor changes in documentation
+
+## What's new in 5.0.1?
+- 📄 Updated documentation for migration from freeRASP 4.x to 5.x
+
 # freeRASP 5.0.0
 Get ready for some exciting updates! In this latest release, we have revamped the freeRASP's 
 codebase, which has helped to resolve several known issues. As a result, the integration of 
