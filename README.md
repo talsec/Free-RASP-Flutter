@@ -73,16 +73,28 @@ Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 5.0.0
+  freerasp: 5.0.1
 ```
 
 and run `pub get`
 
 ### iOS setup
 
-If you are upgrading from a previous version of freeRASP, please remove the old `TalsecRuntime.xcframework`
-and integration script from your project.
-Otherwise, no further setup is required.
+**If you are upgrading from a previous version of freeRASP**, please remove the old `TalsecRuntime.xcframework`
+and integration script from your project: 
+1. Go to your project's `ios` folder
+2. Open `Runner.xcworkspace` in Xcode
+3. On top bar select `Runner` -> `Edit Scheme...`
+4. On the left side select `Build` -> `Pre-actions`
+5. Find integration script and click trash icon on the right side to remove it
+6. Open the `.flutter-plugins` (in the root folder of the app), and get the address, where the freerasp is installed.
+7. Go to the given folder, and remove the freerasp folder file.
+8. Delete .symlinks folder from project.
+9. Run `pub get`
+10. Run `pod install` to test it
+
+
+**Otherwise, no further setup is required.**
 
 **Note: You need Xcode 13 to be able to build the application.**
 
