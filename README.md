@@ -72,7 +72,7 @@ Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 5.0.1
+  freerasp: 5.0.2
 ```
 
 and run `pub get`
@@ -238,11 +238,11 @@ Start freeRASP to detect threats just by adding this line below the created conf
 callback handler:
 
 ```dart
-void main() {
+void main() async {
   ...
 
   // start freeRASP
-  Talsec.instance.start(config);
+  await Talsec.instance.start(config);
 }
 ```
 
