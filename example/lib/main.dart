@@ -9,7 +9,7 @@ final threatProvider = StateNotifierProvider<ThreatNotifier, Map<Threat, bool>>(
   (ref) => ThreatNotifier(),
 );
 
-void main() {
+void main() async {
   /// Make sure that bindings are initialized before using Talsec.
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -32,7 +32,7 @@ void main() {
   );
 
   /// freeRASP should be always initialized in the top-level widget
-  Talsec.instance.start(config);
+  await Talsec.instance.start(config);
 
   /// Another way to handle [Threat] is to use Stream.
   /// ```dart
