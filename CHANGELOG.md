@@ -1,3 +1,10 @@
+# freeRASP 5.0.2
+Fixed issue causing app to freeze on iOS
+
+## What's new in 5.0.2?
+- ✔️ Fixed issue with [app freezing after `start` called on iOS](https://github.com/talsec/Free-RASP-Flutter/issues/67)
+- 📄 Updated example application
+
 # freeRASP 5.0.1
 Minor changes in documentation
 

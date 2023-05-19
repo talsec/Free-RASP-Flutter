@@ -4,14 +4,14 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'freerasp'
-  s.version          = '0.0.1'
-  s.summary          = 'A new Flutter project.'
+  s.version          = '1.0.0'
+  s.summary          = 'RASP SDK for iOS mobile devices.'
   s.description      = <<-DESC
-A new Flutter project.
+FreeRASP for iOS is a lightweight and easy-to-use mobile app protection and security monitoring SDK. It is designed to combat reverse engineering, tampering, or similar attack attempts. FreeRASP covers several attack vectors and enables you to set a response to each threat.
                        DESC
   s.homepage         = 'talsec.app'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'AHEAD iTec' => 'talsec.app' }
+  s.author           = { 'Talsec' => 'talsec.app' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*', 'TalsecRuntime.xcframework'
   s.dependency 'Flutter'

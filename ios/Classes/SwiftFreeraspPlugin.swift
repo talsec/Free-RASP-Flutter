@@ -60,6 +60,9 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
         }
         
         Talsec.start(config: flutterConfig.toNativeConfig())
+
+        // Flutter expects *some* result to be returned even if it's void
+        result(nil)
     }
     
     /// Attaches a FlutterEventSink to the EventProcessor and processes any detectedThreats in the queue.
