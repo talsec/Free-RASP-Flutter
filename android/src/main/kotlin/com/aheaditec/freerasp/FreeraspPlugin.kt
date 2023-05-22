@@ -57,7 +57,6 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
         when (event) {
             Lifecycle.Event.ON_RESUME -> context?.let { TalsecThreatHandler.attachListener(it) }
             Lifecycle.Event.ON_PAUSE -> context?.let { TalsecThreatHandler.detachListener(it) }
-            Lifecycle.Event.ON_DESTROY -> context?.let { TalsecThreatHandler.stop(it) }
             else -> {
                 // Nothing to do
             }
