@@ -83,7 +83,7 @@ and run `pub get`
 and integration script from your project: 
 1. Go to your project's `ios` folder
 2. Open `Runner.xcworkspace` in Xcode
-3. On top bar select `Runner` -> `Edit Scheme...`
+3. On top bar select `Product` -> `Scheme` -> `Edit Scheme...`
 4. On the left side select `Build` -> `Pre-actions`
 5. Find integration script and click trash icon on the right side to remove it
 6. Open the `.flutter-plugins` (in the root folder of the app), and get the address, where the freerasp is installed.
