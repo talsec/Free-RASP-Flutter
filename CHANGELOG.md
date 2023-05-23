@@ -1,3 +1,9 @@
+# freeRASP 5.0.3
+Fixed issue that caused freeRASP to be killed prematurely on Android
+
+## What's new in 5.0.3?
+- ✔️ Fixed issue when freeRASP throws [IllegalStateException: Talsec is not running](https://github.com/talsec/Free-RASP-Flutter/issues/70) on Android
+
 # freeRASP 5.0.2
 Fixed issue causing app to freeze on iOS
 
