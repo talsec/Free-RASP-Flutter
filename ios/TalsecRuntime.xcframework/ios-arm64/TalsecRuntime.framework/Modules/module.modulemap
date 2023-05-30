@@ -12,6 +12,6 @@ framework module TalsecRuntime {
 }
 
 module TalsecRuntime.Swift {
-    header "TalsecRuntime-Swift.h"
-    requires objc
+  header "TalsecRuntime-Swift.h"
+  requires objc
 }
