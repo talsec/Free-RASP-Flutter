@@ -1,0 +1,54 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)
+// swift-module-flags: -target x86_64-apple-ios11.2-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name TalsecRuntime
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import Foundation
+import LocalAuthentication
+import TalsecRuntime.Private
+import Security
+import Swift
+@_exported import TalsecRuntime
+import UIKit
+import _Concurrency
+import _StringProcessing
+public protocol SecurityThreatHandler {
+  func threatDetected(_ securityThreat: TalsecRuntime.SecurityThreat)
+}
+@_hasMissingDesignatedInitializers public class SecurityThreatCenter {
+  @objc deinit
+}
+public struct TalsecConfig {
+  public let appBundleIds: [Swift.String]
+  public let appTeamId: Swift.String
+  public let watcherMailAddress: Swift.String?
+  public let isProd: Swift.Bool?
+  public init(appBundleIds: [Swift.String], appTeamId: Swift.String, watcherMailAddress: Swift.String?, isProd: Swift.Bool? = true)
+}
+@_hasMissingDesignatedInitializers public class Talsec {
+  public static func start(config: TalsecRuntime.TalsecConfig)
+  @objc deinit
+}
+public enum SecurityThreat : Swift.String, Swift.Codable, Swift.CaseIterable, Swift.Equatable {
+  case signature
+  case jailbreak
+  case debugger
+  case runtimeManipulation
+  case passcode
+  case passcodeChange
+  case simulator
+  case missingSecureEnclave
+  case deviceChange
+  case deviceID
+  case unofficialStore
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [TalsecRuntime.SecurityThreat]
+  public typealias RawValue = Swift.String
+  public static var allCases: [TalsecRuntime.SecurityThreat] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension TalsecRuntime.SecurityThreat : Swift.Hashable {}
+extension TalsecRuntime.SecurityThreat : Swift.RawRepresentable {}
