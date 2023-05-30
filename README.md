@@ -72,7 +72,7 @@ Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 5.0.3
+  freerasp: 5.0.4
 ```
 
 and run `pub get`
@@ -490,7 +490,7 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
 For further comparison details (and planned features), follow our [discussion](https://github.com/talsec/Free-RASP-Community/discussions/5).
 
 # About Us
-Talsec is an academic-based and community-driven mobile security company. We deliver in-App Protection and a User Safety suite for Fintechs. We aim to bridge the gaps between the user's perception of app safety and the strong security requirements of the financial industry. 
+Talsec is an academic-based and community-driven mobile security company. We deliver in-App Protection and a User Safety suite for Fintechs. We aim to bridge the gaps between the user's perception of app safety and the strong security requirements of the financial industry.
 
 Talsec offers a wide range of security solutions, such as App and API protection SDK, Penetration testing, monitoring services, and the User Safety suite. You can check out offered products at [our web](https://www.talsec.app).
 
