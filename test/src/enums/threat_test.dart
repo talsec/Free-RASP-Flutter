@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:freerasp/freerasp.dart';
 
 void main() {
-  test('Threat enum should contain 10 values', () {
+  test('Threat enum should contain 11 values', () {
     final threatValuesLength = Threat.values.length;
 
-    expect(threatValuesLength, 10);
+    expect(threatValuesLength, 11);
   });
 
   test('Threat enum should match its values index', () {
@@ -17,10 +17,11 @@ void main() {
     expect(threatValues[3], Threat.deviceId);
     expect(threatValues[4], Threat.simulator);
     expect(threatValues[5], Threat.appIntegrity);
-    expect(threatValues[6], Threat.deviceBinding);
-    expect(threatValues[7], Threat.unofficialStore);
-    expect(threatValues[8], Threat.privilegedAccess);
-    expect(threatValues[9], Threat.secureHardwareNotAvailable);
+    expect(threatValues[6], Threat.obfuscationIssues);
+    expect(threatValues[7], Threat.deviceBinding);
+    expect(threatValues[8], Threat.unofficialStore);
+    expect(threatValues[9], Threat.privilegedAccess);
+    expect(threatValues[10], Threat.secureHardwareNotAvailable);
   });
 
   test(

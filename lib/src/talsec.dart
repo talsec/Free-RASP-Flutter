@@ -147,6 +147,9 @@ class Talsec {
         case Threat.appIntegrity:
           callback.onAppIntegrity?.call();
           break;
+        case Threat.obfuscationIssues:
+          callback.onObfuscationIssues?.call();
+          break;
         case Threat.deviceBinding:
           callback.onDeviceBinding?.call();
           break;

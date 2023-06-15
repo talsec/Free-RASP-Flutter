@@ -27,6 +27,7 @@ class ThreatCallback {
     this.onDeviceID,
     this.onSimulator,
     this.onAppIntegrity,
+    this.onObfuscationIssues,
     this.onDeviceBinding,
     this.onUnofficialStore,
     this.onPrivilegedAccess,
@@ -59,6 +60,9 @@ class ThreatCallback {
   /// This method is called when application's integrity is compromised (e.g.
   /// invalid signature, package name, signing hash,...).
   final VoidCallback? onAppIntegrity;
+
+  /// This method is called when application is not obfuscated.
+  final VoidCallback? onObfuscationIssues;
 
   /// This method is called when device binding is compromised.
   final VoidCallback? onDeviceBinding;

@@ -29,6 +29,9 @@ class SpyThreatListener {
       case Threat.appIntegrity:
         callback.onAppIntegrity?.call();
         break;
+      case Threat.obfuscationIssues:
+        callback.onObfuscationIssues?.call();
+        break;
       case Threat.debug:
         callback.onDebug?.call();
         break;

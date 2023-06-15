@@ -32,6 +32,7 @@ void main() {
       expect(SpyThreatListener.log[Threat.debug], 0);
       expect(SpyThreatListener.log[Threat.deviceBinding], 0);
       expect(SpyThreatListener.log[Threat.unofficialStore], 0);
+      expect(SpyThreatListener.log[Threat.obfuscationIssues], 0);
     });
   });
 }
