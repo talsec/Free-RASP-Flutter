@@ -72,7 +72,7 @@ Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 5.0.4
+  freerasp: 6.0.0
 ```
 
 and run `pub get`
@@ -100,14 +100,14 @@ and integration script from your project:
 ### Android setup
 
 * From root of your project, go to **android > app > build.gradle**
-* In `defaultConfig` update `minSdkVersion` to at least **21** (Android 5.0) or higher
+* In `defaultConfig` update `minSdkVersion` to at least **23** (Android 6.0) or higher
 
 ```gradle
 android {
 ...
 defaultConfig {
     ...
-    minSdkVersion 21
+    minSdkVersion 23
     ...
     }
 ...
@@ -213,6 +213,7 @@ void main() {
   // Setting up callbacks
   final callback = ThreatCallback(
       onAppIntegrity: () => print("App integrity"),
+      onObfuscationIssues: () => print("Obfuscation issues"),
       onDebug: () => print("Debugging"),
       onDeviceBinding: () => print("Device binding"),
       onDeviceID: () => print("Device ID"),
@@ -247,27 +248,24 @@ void main() async {
 ```
 
 ## Step 5: Additional note about obfuscation
-The freeRASP contains public API, so the integration process is as simple as possible. Unfortunately, this public API also creates opportunities for the attacker to use publicly available information to interrupt freeRASP operations or modify your custom reaction implementation in threat callbacks. In order for freeRASP to be as effective as possible, it is highly recommended to apply obfuscation to the final package/application, making the public API more difficult to find and also partially randomized for each application so it cannot be automatically abused by generic hooking scripts.
+The freeRASP contains public API, so the integration process is as simple as possible. Unfortunately, this public API also creates opportunities for the attacker to use publicly available information to interrupt freeRASP operations or modify your custom reaction implementation in threat callbacks. 
 
-### Android
-The majority of Android projects support code shrinking and obfuscation without any additional need for setup. The owner of the project can define the set of rules that are usually automatically used when the application is built in the release mode. For more information, please visit the official documentation
-* https://developer.android.com/studio/build/shrink-code 
-* https://www.guardsquare.com/manual/configuration/usage
+In order to provide as much protection as possible, freeRASP enhances security measures by implementing ProGuard consumer rules, which obfuscate specific sections of the SDK. **However, these rules are applied to your Android app code as well due to inheritance.**
 
-You can make sure, that the obfuscation is enabled by checking the value of **minifyEnabled** property in your **module's build.gradle** file.
-```gradle
-android {
-    ...
+Finally, if there is a problem with the obfuscation freeRASP will notify you about it via **obfuscationIssues** callback.
 
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
+In certain cases, you may prefer to exclude this rule. 
+
+To remove the rule, you need to find `freerasp` in your cache folder. More about where to find the cache folder [here](https://dart.dev/tools/pub/environment-variables). Then navigate to the freerasp-X.Y.Z/android/build.gradle file and delete the line:
+
+```groovy
+consumerProguardFiles 'consumer-rules.pro'
 ```
+
+You can read more about Android obfuscation in the official documentation:
+-   https://developer.android.com/studio/build/shrink-code
+-   https://www.guardsquare.com/manual/configuration/usage
+
 
 ## Step 6: User Data Policies
 See the generic info about freeRASP data collection [here](https://github.com/talsec/Free-RASP-Community/tree/master#data-collection-processing-and-gdpr-compliance).
@@ -380,16 +378,16 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
             <td colspan=5><strong>Runtime App Self Protection (RASP, app shielding)</strong></td>
         </tr>
         <tr>
-            <td>Advanced root/jailbreak protections</td>
+            <td>Advanced root/jailbreak protections (including Magisk)</td>
             <td>basic</td>
             <td>advanced</td>
         </tr>
         <tr>
             <td>Runtime reverse engineering controls 
                 <ul>
-                    <li>Debug</li>
-                    <li>Emulator</li>
-                    <li>Hooking protections (e.g. Frida)</li>
+                    <li>Debugger</li>
+                    <li>Emulator / Simulator</li>
+                    <li>Hooking and reversing frameworks (e.g. Frida, Magisk, XPosed, Cydia Substrate and more)</li>
                 </ul>
             </td>
             <td>basic</td>
@@ -398,7 +396,7 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
         <tr>
             <td>Runtime integrity controls 
                 <ul>
-                    <li>Tamper protection</li>
+                    <li>Tampering protection</li>
                     <li>Repackaging / Cloning protection</li>
                     <li>Device binding protection</li>
                     <li>Unofficial store detection</li>
@@ -412,6 +410,8 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
                 <ul>
                     <li>HW security module control</li>
                     <li>Screen lock control</li>
+                    <li>Google Play Services enabled/disabled</li>
+                    <li>Last security patch update</li>
                 </ul>
             </td>
             <td>yes</td>
@@ -421,7 +421,7 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
             <td>UI protection 
                 <ul>
                     <li>Overlay protection</li>
-                    <li>Accessibility services protection</li>
+                    <li>Accessibility services misuse protection</li>
                 </ul>
             </td>
             <td>no</td>
@@ -432,11 +432,10 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
         </tr>
         <tr>
             <td>Security hardening suite 
-                <ul>
-                    <li>Customer Data Encryption (local storage)</li>
+                <ul>                
                     <li>End-to-end encryption</li>
                     <li>Strings protection (e.g. API keys)</li>
-                    <li>Dynamic certificate pinning</li>
+                    <li>Dynamic TLS certificate pinning</li>
                 </ul>
             </td>
             <td>no</td>
@@ -451,31 +450,41 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
             <td>yes</td>
         </tr>
         <tr>
-            <td colspan=5><strong>Monitoring</strong></td>
+            <td colspan=5><strong>Security events data collection, Auditing and Monitoring tools</strong></td>
         </tr>
         <tr>
-            <td>AppSec regular email reporting</td>
+            <td>Threat events data collection from SDK</td>
+            <td>yes</td>
+            <td>configurable</td>
+        </tr>
+        <tr>
+            <td>AppSec regular email reporting service</td>
             <td>yes (up to 100k devices)</td>
             <td>yes</td>
         </tr>
         <tr>
-            <td>Data insights and auditing portal</td>
+            <td>UI portal for Logging, Data analytics and auditing</td>
             <td>no</td>
             <td>yes</td>
         </tr>
+        <tr>     
+          <td colspan=5><strong>Support and Maintenance</strong></td>
+        </tr>
         <tr>
-            <td>Embed code to integrate with portal</td>
-            <td>no</td>
+            <td>SLA</td>
+            <td>Not committed</td>
             <td>yes</td>
         </tr>
         <tr>
-            <td>API data access</td>
-            <td>no</td>
+            <td>Maintenance updates</td>
+            <td>Not committed</td>
             <td>yes</td>
         </tr>
-         <td colspan=5><strong>Fair usage policy</strong></td>
         <tr>
-            <td>Mentioning of the App name and logo in the marketing communications of Talsec (e.g. "Trusted by" section of the Talsec web or in the social media).</td>
+            <td colspan=5><strong>Fair usage policy</strong></td>
+        </tr>
+        <tr>
+            <td>Mentioning of the App name and logo in the marketing communications of Talsec (e.g. "Trusted by" section on the web).</td>
             <td>over 100k downloads</td>
             <td>no</td>
         </tr>
@@ -490,7 +499,7 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
 For further comparison details (and planned features), follow our [discussion](https://github.com/talsec/Free-RASP-Community/discussions/5).
 
 # About Us
-Talsec is an academic-based and community-driven mobile security company. We deliver in-App Protection and a User Safety suite for Fintechs. We aim to bridge the gaps between the user's perception of app safety and the strong security requirements of the financial industry.
+Talsec is an academic-based and community-driven mobile security company. We deliver in-App Protection and a User Safety suite for Fintechs. We aim to bridge the gaps between the user's perception of app safety and the strong security requirements of the financial industry. 
 
 Talsec offers a wide range of security solutions, such as App and API protection SDK, Penetration testing, monitoring services, and the User Safety suite. You can check out offered products at [our web](https://www.talsec.app).
 

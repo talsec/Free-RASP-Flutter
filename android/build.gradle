@@ -43,7 +43,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
+        consumerProguardFiles 'consumer-rules.pro'
     }
 }
 
@@ -51,5 +52,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Talsec SDK
-    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:7.0.0'
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:8.0.1'
 }

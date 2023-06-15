@@ -1,3 +1,13 @@
+# freeRASP 6.0.0
+We are constantly working on improving your freeRASP experience. This update contains a new check - obfuscation detection. Minimal supported Android SDK level was raised to 23.
+
+## What's new in 6.0.0?
+- ❗ BREAKING: Raised minSdkVersion on Android to 23
+- ❗ Removed BouncyCastle dependency on Android
+- 🔎 New threat type `obfuscationIssues`
+- 🔎 New threat callback `onObfuscationIssues`
+- ✔️ Fixed `NullPointerException` which could occur during specific subcheck execution on Android
+
 # freeRASP 5.0.4
 - ✔️ Fixed issue with metadata in iOS framework
 

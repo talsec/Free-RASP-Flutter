@@ -53,6 +53,10 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
         notify(Threat.DEVICE_BINDING)
     }
 
+    override fun onObfuscationIssuesDetected() {
+        notify(Threat.OBFUSCATION_ISSUES)
+    }
+
     override fun onUnlockedDeviceDetected() {
         notify(Threat.PASSCODE)
     }

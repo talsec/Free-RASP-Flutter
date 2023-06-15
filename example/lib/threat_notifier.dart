@@ -9,6 +9,7 @@ class ThreatNotifier extends StateNotifier<Map<Threat, bool>> {
   ThreatNotifier() : super(_emptyState()) {
     final callback = ThreatCallback(
       onAppIntegrity: () => _updateThreat(Threat.appIntegrity),
+      onObfuscationIssues: () => _updateThreat(Threat.obfuscationIssues),
       onDebug: () => _updateThreat(Threat.debug),
       onDeviceBinding: () => _updateThreat(Threat.deviceBinding),
       onDeviceID: () => _updateThreat(Threat.deviceId),

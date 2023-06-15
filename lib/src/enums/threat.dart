@@ -27,6 +27,10 @@ enum Threat {
   /// indicating that it has been tampered with.
   appIntegrity,
 
+  /// The application is not obfuscated, indicating that it is vulnerable to
+  /// reverse engineering.
+  obfuscationIssues,
+
   /// The device running the application may be bound to another device,
   /// indicating an attempt to clone the application.
   deviceBinding,
@@ -70,6 +74,8 @@ extension ThreatX on Threat {
         return Threat.simulator;
       case 'appIntegrity':
         return Threat.appIntegrity;
+      case 'obfuscationIssues':
+        return Threat.obfuscationIssues;
       case 'deviceBinding':
         return Threat.deviceBinding;
       case 'unofficialStore':
