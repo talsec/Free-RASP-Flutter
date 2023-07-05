@@ -72,7 +72,7 @@ Add dependency to your `pubspec.yaml` file
 
 ```yaml
 dependencies:
-  freerasp: 6.0.0
+  freerasp: 6.1.0
 ```
 
 and run `pub get`

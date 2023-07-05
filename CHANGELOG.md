@@ -1,3 +1,11 @@
+# freeRASP 6.1.0
+### Android
+- ⚡ Fixed issue with incorrect Keystore type detection on Android 11 and above (https://github.com/talsec/Free-RASP-Flutter/issues/77)
+
+### iOS
+- ⚡ Reduced timeout period for logging from 20 sec to 5 sec
+- ⚡ Logging is now async in all calls
+
 # freeRASP 6.0.0
 We are constantly working on improving your freeRASP experience. This update contains a new check - obfuscation detection. Minimal supported Android SDK level was raised to 23.
 
