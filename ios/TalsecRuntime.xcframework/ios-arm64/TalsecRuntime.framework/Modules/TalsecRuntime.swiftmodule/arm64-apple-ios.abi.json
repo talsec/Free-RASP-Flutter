@@ -2610,7 +2610,7 @@
       "kind": "StringLiteral",
       "offset": 7218,
       "length": 7,
-      "value": "\"5.0.1\""
+      "value": "\"5.1.0\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/DynamicConfiguration\/DefaultConfig.swift",
@@ -5156,91 +5156,98 @@
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 7037,
+      "offset": 6707,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "Dictionary",
-      "offset": 7052,
+      "offset": 6722,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 7396,
+      "offset": 7066,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "Dictionary",
-      "offset": 7411,
+      "offset": 7081,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 8292,
+      "offset": 7962,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "Dictionary",
-      "offset": 8307,
+      "offset": 7977,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 9294,
+      "offset": 8964,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 9892,
+      "offset": 9562,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 9932,
+      "offset": 9602,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 10007,
+      "offset": 9677,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 10098,
+      "offset": 9768,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 10139,
+      "offset": 9809,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
+      "kind": "StringLiteral",
+      "offset": 11416,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/ahe_security_lib\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 11086,
+      "offset": 11530,
       "length": 4,
       "value": "true"
     }
