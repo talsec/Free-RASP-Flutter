@@ -1,10 +1,18 @@
-# freeRASP 6.1.0
-### Android
-- ⚡ Fixed issue with incorrect Keystore type detection on Android 11 and above (https://github.com/talsec/Free-RASP-Flutter/issues/77)
+# freeRASP 6.2.0
+Minor fixes and added support for AGP 8.0
 
-### iOS
-- ⚡ Reduced timeout period for logging from 20 sec to 5 sec
-- ⚡ Logging is now async in all calls
+## What's new in 6.2.0?
+- ⚡ Added support for AGP 8.0
+- ❗ Removed PolarSSL dependency on Android
+- ❗ Removed forgotten `onOverlay` callback
+- ✔️ Fixed issue with [denied USE_BIOMETRICS permission](https://github.com/talsec/Free-RASP-Android/issues/20)
+
+# freeRASP 6.1.0
+
+## What's new in 6.1.0?
+- ⚡ Fixed issue with incorrect Keystore type detection on Android 11 and above (https://github.com/talsec/Free-RASP-Flutter/issues/77)
+- ⚡ Reduced timeout period for logging from 20 sec to 5 sec on iOS
+- ⚡ Logging is now async in all calls on iOS
 
 # freeRASP 6.0.0
 We are constantly working on improving your freeRASP experience. This update contains a new check - obfuscation detection. Minimal supported Android SDK level was raised to 23.
