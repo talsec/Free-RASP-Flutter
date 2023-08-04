@@ -22,7 +22,6 @@ class ThreatCallback {
   ThreatCallback({
     this.onHooks,
     this.onDebug,
-    this.onOverlay,
     this.onPasscode,
     this.onDeviceID,
     this.onSimulator,
@@ -40,11 +39,6 @@ class ThreatCallback {
 
   /// This method is called when an unsafe environment (debugger) is detected.
   final VoidCallback? onDebug;
-
-  /// This method is called when overlay of application view is detected.
-  ///
-  /// Android only.
-  final VoidCallback? onOverlay;
 
   /// This method is called when the device has not set any passcode.
   final VoidCallback? onPasscode;

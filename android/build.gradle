@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -27,6 +27,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    if (project.android.hasProperty("namespace")) {
+        namespace("com.aheaditec.talsec")
+    }
     compileSdkVersion 33
 
     compileOptions {
@@ -52,5 +55,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Talsec SDK
-    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:8.0.2'
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:8.0.4'
 }
