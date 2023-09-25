@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - freerasp (0.0.1):
+  - freerasp (1.0.0):
     - Flutter
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  freerasp: 3516f6bd34a4d386ab4a20aa7a5ca8310d5c3a09
+  freerasp: bb827d80b926abcfb8f4ca4ff4557c2fe4a5ae21
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 

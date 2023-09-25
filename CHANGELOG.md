@@ -1,3 +1,14 @@
+# freeRASP 6.3.0
+Improved logging of the Android SDK and minor bug fixes
+
+## What's new in 6.2.0?
+- 📄 Documentation updates and improvements
+- ✔️ updated CA bundle for logging pinning
+- ✔️ added error logging of network issues within the logging process
+- ✔️ added retry politics for logging
+- ⚡ fixed issue with DeadObjectException on Android 5 and 6 caused by excessive PackageManager.queryIntentActivities() usage
+- ⚡ improved root detection capabilities
+
 # freeRASP 6.2.0
 Minor fixes and added support for AGP 8.0
 
