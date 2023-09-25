@@ -1,7 +1,7 @@
 # freeRASP 6.3.0
 Improved logging of the Android SDK and minor bug fixes
 
-## What's new in 6.2.0?
+## What's new in 6.3.0?
 - 📄 Documentation updates and improvements
 - ✔️ updated CA bundle for logging pinning
 - ✔️ added error logging of network issues within the logging process
