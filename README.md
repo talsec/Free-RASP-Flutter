@@ -139,7 +139,7 @@ void main() {
       signingCertHashes: [
         'AKoRu...'
       ],
-      supportedStores: ['some.other.store'],
+      supportedStores: ['com.sec.android.app.samsungapps'],
     ),
 
     /// For iOS
@@ -171,9 +171,10 @@ String base64Hash = hashConverter.fromSha256toBase64(sha256HashHex);
 We strongly recommend using **result value** of this tool in signingCertHashes. **Do not use this tool directly** in `signingCertHashes` to get value. If you are not sure how to get your hash certificate, you can check out the guide on our [Github wiki](https://github.com/talsec/Free-RASP-Community/wiki/Getting-your-signing-certificate-hash-of-app).
 .
 
-Similarly, `bundleIds` and `teamId` are needed for iOS version of app. If you publish on the
-Google Play Store and/or Huawei AppGallery, you **don't have to assign anything**
-to `supportedStores` as those are supported out of the box.
+Similarly, `bundleIds` and `teamId` are needed for iOS version of app. 
+
+Google Play Store and Huawei AppGallery are supported out of the box, you **don't have to assign anything**. You can add other stores like the Samsung Galaxy Store in the example code (```com.sec.android.app.samsungapps```). For more information, visit the  [Detecting Unofficial Installation](https://github.com/talsec/Free-RASP-Community/wiki/Threat-detection#detecting-unofficial-installation) wiki page.
+
 
 Next, pass a mail address to `watcherMail` to be able to get reports. Mail has a strict
 form `name@domain.com` which is passed as String.
