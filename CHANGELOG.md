@@ -1,3 +1,13 @@
+# freeRASP 6.3.1
+Minor fixes and improvements
+
+## What's new in 6.3.1?
+- ⚡ Improved reaction obfuscation
+- ⚡ Fixed ProviderException on Android
+- ⚡ Fixed typo in namespace which caused incompatibility with AGP 8.0
+- 📄 Fixed information about Xcode version
+- ❗ Raised supported Xcode version to 14.3.1
+
 # freeRASP 6.3.0
 Improved logging of the Android SDK and minor bug fixes
 
