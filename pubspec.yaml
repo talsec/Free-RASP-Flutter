@@ -19,7 +19,7 @@ dependencies:
   convert: ^3.0.1
   flutter:
     sdk: flutter
-  flutter_plugin_android_lifecycle: ^2.0.9
+  flutter_plugin_android_lifecycle: ^2.0.11
   json_annotation: ^4.0.1
   meta: ^1.7.0
 
