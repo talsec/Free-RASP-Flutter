@@ -26,43 +26,43 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
     }
 
     override fun onRootDetected() {
-        notify(Threat.PRIVILEGED_ACCESS)
+        notify(Threat.PrivilegedAccess)
     }
 
     override fun onDebuggerDetected() {
-        notify(Threat.DEBUG)
+        notify(Threat.Debug)
     }
 
     override fun onEmulatorDetected() {
-        notify(Threat.SIMULATOR)
+        notify(Threat.Simulator)
     }
 
     override fun onTamperDetected() {
-        notify(Threat.APP_INTEGRITY)
+        notify(Threat.AppIntegrity)
     }
 
     override fun onUntrustedInstallationSourceDetected() {
-        notify(Threat.UNOFFICIAL_STORE)
+        notify(Threat.UnofficialStore)
     }
 
     override fun onHookDetected() {
-        notify(Threat.HOOKS)
+        notify(Threat.Hooks)
     }
 
     override fun onDeviceBindingDetected() {
-        notify(Threat.DEVICE_BINDING)
+        notify(Threat.DeviceBinding)
     }
 
     override fun onObfuscationIssuesDetected() {
-        notify(Threat.OBFUSCATION_ISSUES)
+        notify(Threat.ObfuscationIssues)
     }
 
     override fun onUnlockedDeviceDetected() {
-        notify(Threat.PASSCODE)
+        notify(Threat.Passcode)
     }
 
     override fun onHardwareBackedKeystoreNotAvailableDetected() {
-        notify(Threat.SECURE_HARDWARE_NOT_AVAILABLE)
+        notify(Threat.SecureHardwareNotAvailable)
     }
 
     private fun notify(threat: Threat) {

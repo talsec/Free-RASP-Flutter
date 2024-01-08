@@ -95,7 +95,7 @@ and integration script from your project:
 
 **Otherwise, no further setup is required.**
 
-**Note: You need Xcode 13 to be able to build the application.**
+**Note: You need Xcode 14.3.1 to be able to build the application.**
 
 ### Android setup
 
