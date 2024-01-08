@@ -1,8 +1,9 @@
-# freeRASP 6.3.1
+# freeRASP 6.4.0
 Minor fixes and improvements
 
-## What's new in 6.3.1?
+## What's new in 6.4.0?
 - ⚡ Improved reaction obfuscation
+- ⚡ Improved obfuscation of the iOS SDK
 - ⚡ Fixed ProviderException on Android
 - ⚡ Fixed typo in namespace which caused incompatibility with AGP 8.0
 - 📄 Fixed information about Xcode version
@@ -13,11 +14,11 @@ Improved logging of the Android SDK and minor bug fixes
 
 ## What's new in 6.3.0?
 - 📄 Documentation updates and improvements
-- ✔️ updated CA bundle for logging pinning
-- ✔️ added error logging of network issues within the logging process
-- ✔️ added retry politics for logging
-- ⚡ fixed issue with DeadObjectException on Android 5 and 6 caused by excessive PackageManager.queryIntentActivities() usage
-- ⚡ improved root detection capabilities
+- ✔️ Updated CA bundle for logging pinning
+- ✔️ Added error logging of network issues within the logging process
+- ✔️ Added retry politics for logging
+- ⚡ Fixed issue with DeadObjectException on Android 5 and 6 caused by excessive PackageManager.queryIntentActivities() usage
+- ⚡ Improved root detection capabilities
 
 # freeRASP 6.2.0
 Minor fixes and added support for AGP 8.0

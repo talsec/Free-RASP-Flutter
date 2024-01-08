@@ -1,5 +1,17 @@
 import TalsecRuntime
 
+private let unknownValue = -1
+private let signatureValue = 1115787534
+private let jailbreakValue = 44506749
+private let debuggerValue = 1268968002
+private let runtimeManipulationValue = 209533833
+private let passcodeValue = 1293399086
+private let simulatorValue = 477190884
+private let missingSecureEnclaveValue = 1564314755
+private let deviceChangeValue = 1806586319
+private let deviceIDValue =  1514211414
+private let unofficialStoreValue = 629780916
+
 /// Extension with submits events to plugin
 extension SecurityThreatCenter: SecurityThreatHandler {
     
@@ -10,32 +22,32 @@ extension SecurityThreatCenter: SecurityThreatHandler {
 
 /// An extension to unify callback names with Flutter ones.
 extension SecurityThreat {
-    var callbackIdentifier: String {
+    var callbackIdentifier: Int {
         switch self {
         case .signature:
-            return "appIntegrity"
+            return signatureValue
         case .jailbreak:
-            return "privilegedAccess"
+            return jailbreakValue
         case .debugger:
-            return "debug"
+            return debuggerValue
         case .runtimeManipulation:
-            return "hooks"
+            return runtimeManipulationValue
         case .passcode:
-            return "passcode"
+            return passcodeValue
         case .passcodeChange:
-            return "passcodeChange"
+            return unknownValue
         case .simulator:
-            return "simulator"
+            return simulatorValue
         case .missingSecureEnclave:
-            return "secureHardwareNotAvailable"
+            return missingSecureEnclaveValue
         case .deviceChange:
-            return "deviceBinding"
+            return deviceChangeValue
         case .deviceID:
-            return "deviceId"
+            return deviceIDValue
         case .unofficialStore:
-            return "unofficialStore"
+            return unofficialStoreValue
         @unknown default:
-            return "unknown"
+            return unknownValue
         }
     }
 }

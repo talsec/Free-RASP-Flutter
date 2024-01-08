@@ -10,11 +10,11 @@
 		</data>
 		<key>Headers/CurlWrapper.h</key>
 		<data>
-		snaPZzBENU53VIWQbz44OoXFNYI=
+		cw//CTS7Abx/Pz+RmfHEkJV6WJw=
 		</data>
 		<key>Headers/TalsecRuntime-Swift.h</key>
 		<data>
-		JdNzRQ+T1qQ4+WNO2bf5P7ZCE5U=
+		zVtgQn83EmSv4YvzovkWDZL5CWk=
 		</data>
 		<key>Headers/TalsecRuntime_iOS.h</key>
 		<data>
@@ -78,7 +78,7 @@
 		</data>
 		<key>Modules/TalsecRuntime.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		boXIwoShsgaRbBRGtadSq3i8neI=
+		wSGBBOqn1Sy/WLgmxLTYSSaAVOk=
 		</data>
 		<key>Modules/TalsecRuntime.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -98,7 +98,7 @@
 		</data>
 		<key>Modules/TalsecRuntime.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		Qmf4zGZyZ20/wM9Br7z1qyF2t1Q=
+		zdAEdskUSmvCioKjBoG3tcPdIbY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -126,14 +126,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			LvBfhxpHHS9VNK0Rd60QpNrZFo7QAYxY4idivHdZ+U8=
+			/ke/9Ak6OWhnGU/oQdwUNHyDMCt9rFp5FSTdYe8wMx0=
 			</data>
 		</dict>
 		<key>Headers/TalsecRuntime-Swift.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			4u23peo2XYF63Y770p6qM6wWf7BR6z1To3XJxVOftg4=
+			rsL4KXCnESWMgIZOqTMMZnFJjxm+8XL4sxJaj8B2sXc=
 			</data>
 		</dict>
 		<key>Headers/TalsecRuntime_iOS.h</key>
@@ -238,7 +238,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			iFEGQQU5RDP61uVbSjb3Vov2DRMydoQCAa+ovAn90FY=
+			rvRtxWOUHI0dn0+pWTdcSGISIL9jkemZ9I3u4eGLDfM=
 			</data>
 		</dict>
 		<key>Modules/TalsecRuntime.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -273,7 +273,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			bqL+IeelzAGZdj3mN8f2WxzeyVuwKiI9hn148BNdAG0=
+			Y1TgEZA3RTAB8z8Qw8lhp68AR1+telb+L+J9EaH8IcA=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

@@ -1,3 +1,5 @@
+package android
+
 group 'com.aheaditec.freerasp'
 version '1.0-SNAPSHOT'
 
@@ -30,6 +32,7 @@ android {
     if (project.android.hasProperty("namespace")) {
         namespace("com.aheaditec.freerasp")
     }
+
     compileSdkVersion 33
 
     compileOptions {
@@ -55,5 +58,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Talsec SDK
-    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:8.3.0'
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:9.0.0'
 }
