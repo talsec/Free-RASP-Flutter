@@ -1,5 +1,3 @@
-package android
-
 group 'com.aheaditec.freerasp'
 version '1.0-SNAPSHOT'
 
