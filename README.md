@@ -331,6 +331,24 @@ If you encounter any other issues, you can see the list of solved
 issues [here](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aissue+is%3Aclosed), or open
 up a [new one](https://github.com/talsec/Free-RASP-Flutter/issues?q=is%3Aopen+is%3Aissue).
 
+### \[Android] APK size increased a lot after implementation of freeRASP
+
+**Solution:** In **android/app/src/AndroidManifest.xml** add attribute into application tag:
+
+```xml
+android:extractNativeLibs="true"
+```
+
+Updated tag might look like this:
+
+```xml
+   <application
+        android:label="freerasp_example"
+        android:icon="@mipmap/ic_launcher"
+       android:extractNativeLibs="true">
+```
+[As pointed out in this issue comment](https://github.com/talsec/Free-RASP-Flutter/issues/100#issuecomment-1904193110), setting `extractNativeLibs` to `true` removes native libraries from the final APK, resulting in a smaller size. Conversely, setting it to `false` keeps the libraries uncompressed and stored within the APK, which increases the APK size but might allow the application to load faster because the libraries are loaded directly at runtime.
+
 # Security Report
 
 The Security Report is a weekly summary describing the application's security state and characteristics of the devices it runs on in a practical and easy-to-understand way.
