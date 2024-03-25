@@ -55,8 +55,8 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
-            Lifecycle.Event.ON_RESUME -> context?.let { TalsecThreatHandler.attachListener(it) }
-            Lifecycle.Event.ON_PAUSE -> context?.let { TalsecThreatHandler.detachListener(it) }
+            Lifecycle.Event.ON_RESUME -> context?.let { TalsecThreatHandler.resumeListener() }
+            Lifecycle.Event.ON_PAUSE -> context?.let { TalsecThreatHandler.suspendListener() }
             else -> {
                 // Nothing to do
             }

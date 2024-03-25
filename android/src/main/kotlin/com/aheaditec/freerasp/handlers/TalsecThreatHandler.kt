@@ -4,14 +4,14 @@ import android.content.Context
 import com.aheaditec.freerasp.Threat
 import com.aheaditec.talsec_security.security.api.Talsec
 import com.aheaditec.talsec_security.security.api.TalsecConfig
-import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.EventChannel.EventSink
 
 /**
  * Object responsible for managing the event channel that streams information about detected
  * security threats to Flutter.
  */
 internal object TalsecThreatHandler {
-    private var eventSink: EventChannel.EventSink? = null
+    private var eventSink: EventSink? = null
     private var isListening = false
 
     /**
@@ -19,7 +19,7 @@ internal object TalsecThreatHandler {
      *
      * @param context The Android application context.
      */
-    internal fun start(context : Context, config: TalsecConfig) {
+    internal fun start(context: Context, config: TalsecConfig) {
         attachListener(context)
         Talsec.start(context, config)
     }
@@ -73,18 +73,47 @@ internal object TalsecThreatHandler {
     }
 
     /**
+     * Suspends the threat listener.
+     *
+     * In contrast to [detachListener], this function does not unregister the listener. It only
+     * suspends the listener, meaning all detected threats are cached and sent later.
+     *
+     * In contrast to [detachSink], this function does not nullify the [eventSink]. It only suspends
+     * sending events to the event sink. This is useful when the application goes to background and
+     * [EventSink] is not destroyed but also is not able to send events.
+     */
+    internal fun suspendListener() {
+        PluginThreatHandler.listener = null
+    }
+
+    /**
+     * Resumes the threat listener.
+     *
+     * In contrast to [attachListener], this function does not register the listener. It only
+     * resumes the listener, meaning all cached threats are sent to the [EventSink].
+     *
+     * In contrast to [attachSink], this function does not assign new [EventSink] to [eventSink].
+     * It only resumes sending events to the current [eventSink].
+     * This is useful when the application comes to foreground and [EventSink] is not destroyed but
+     * also is not able to send events.
+     */
+    internal fun resumeListener() {
+        eventSink?.let {
+            PluginThreatHandler.listener = ThreatListener
+            flushThreatCache(it)
+        }
+    }
+
+    /**
      * Called when a new listener subscribes to the event channel. Sends any previously detected
      * threats to the new listener.
      *
      * @param eventSink The event sink of the new listener.
      */
-    internal fun attachSink(eventSink: EventChannel.EventSink) {
+    internal fun attachSink(eventSink: EventSink) {
         this.eventSink = eventSink
         PluginThreatHandler.listener = ThreatListener
-        PluginThreatHandler.detectedThreats.forEach {
-            eventSink.success(it.value)
-        }
-        PluginThreatHandler.detectedThreats.clear()
+        flushThreatCache(eventSink)
     }
 
     /**
@@ -93,6 +122,18 @@ internal object TalsecThreatHandler {
     internal fun detachSink() {
         eventSink = null
         PluginThreatHandler.listener = null
+    }
+
+    /**
+     * Sends any cached detected threats to the listener.
+     *
+     * @param eventSink The event sink of the new listener.
+     */
+    private fun flushThreatCache(eventSink: EventSink?) {
+        PluginThreatHandler.detectedThreats.forEach {
+            eventSink?.success(it.value)
+        }
+        PluginThreatHandler.detectedThreats.clear()
     }
 
     /**
