@@ -31,14 +31,14 @@ class Talsec {
 
   /// Named channel used to communicate with platform plugins.
   ///
-  /// When threat is detected on platform side, String is sent which is then
-  /// transformed into [Threat] using [onThreatDetected] getter.
+  /// When threat is detected on platform side, [int] is sent which is then
+  /// transformed into [Threat] using [ThreatX.fromInt].
   static const EventChannel _eventChannel =
       EventChannel('talsec.app/freerasp/events');
 
   /// Named channel used to communicate with platform plugins.
   ///
-  /// Transforms data and function calls such as [start]
+  /// Transforms data and function calls such as [start].
   static const MethodChannel _methodChannel =
       MethodChannel('talsec.app/freerasp/methods');
 
@@ -63,17 +63,26 @@ class Talsec {
   /// Returns a broadcast stream. When security is compromised
   /// [onThreatDetected] receives what type of Threat caused it.
   ///
-  /// Usage:
+  /// To receive updates about threats, listen to the stream:
+  ///
   /// ```dart
   /// final subscription = Talsec.instance.onThreatDetected.listen((threat) {
   ///   // Handle threat
   /// });
   /// ```
   ///
-  /// When you're finished listening for threats, don't forget to cancel stream.
+  /// When you're finished listening for threats, don't forget to cancel stream:
+  ///
   /// ```dart
   /// subscription.cancel();
   /// ```
+  ///
+  /// **Implementation note:**
+  ///
+  /// [onThreatDetected] is internally used by [attachListener] which turns
+  /// stream events into function callbacks. While [onThreatDetected] is a
+  /// broadcast stream (and hence can have a multiple receivers) it is not
+  /// recommended to use both approaches at the same time.
   Stream<Threat> get onThreatDetected {
     if (_onThreatDetected != null) {
       return _onThreatDetected!;
@@ -81,14 +90,14 @@ class Talsec {
 
     _onThreatDetected = eventChannel
         .receiveBroadcastStream()
-        .cast<String>()
-        .map(ThreatX.fromString)
+        .cast<int>()
+        .map(ThreatX.fromInt)
         .handleError(_handleStreamError);
 
     return _onThreatDetected!;
   }
 
-  /// Starts freeRASP with configuration provided in [config]
+  /// Starts freeRASP with configuration provided in [config].
   Future<void> start(TalsecConfig config) {
     _checkConfig(config);
     return methodChannel.invokeMethod(
@@ -117,14 +126,15 @@ class Talsec {
     }
   }
 
-  /// Attaches instance of [ThreatCallback] to Talsec.
+  /// Attaches instance of [ThreatCallback] to Talsec. If [ThreatCallback] is
+  /// already attached, current one will be detached and replaced with
+  /// [callback].
+  ///
+  /// When invoked, functions starts listening to [onThreatDetected] and turns
+  /// stream events into function callbacks of [ThreatCallback].
   ///
   /// When threat is detected, respective callback of [ThreatCallback] is
   /// invoked.
-  ///
-  /// If called multiple times latest callback will be used.
-  ///
-  /// Uses `Talsec.instance.onThreatDetected`.
   void attachListener(ThreatCallback callback) {
     detachListener();
     _streamSubscription ??= onThreatDetected.listen((event) {
@@ -166,7 +176,8 @@ class Talsec {
     });
   }
 
-  /// Removes instance of latest [ThreatCallback].
+  /// Removes instance of latest [ThreatCallback]. Also cancels
+  /// [StreamSubscription] for that [ThreatCallback].
   ///
   /// If no callback was attached earlier, it has no effect.
   void detachListener() {

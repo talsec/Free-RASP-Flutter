@@ -1,7 +1,30 @@
+# freeRASP 6.5.0
+
+## What's new in 6.5.0?
+
+- ⚡ Updated `CURL` to `8.5.0` and `OpenSSL` to `1.1.1w` (resolves [issue #93](https://github.com/talsec/Free-RASP-Flutter/issues/93))
+- 📄 Added information about APK size increase and ways to decrease it (resolves [issue #100](https://github.com/talsec/Free-RASP-Flutter/issues/100))
+
+## Android
+
+- ⚡ Fixed issue with disappearing threats when the app is quickly put into the background and then back to the foreground (resolves [issue #91](https://github.com/talsec/Free-RASP-Flutter/issues/91))
+- ⚡ Fixed a native crash bug during one of the native root checks (detected after NDK upgrade)
+- ⚡ Improved _appIntegrity_ check and its logging
+
+## iOS
+
+- ❗ Added Privacy Manifest
+- ❗ Added codesigning for the SDK, it is signed by:
+  - _Team ID_: `ASQC376HCN`
+  - _Team Name_: `AHEAD iTec, s.r.o.`
+- ⚡ Improved obfuscation of Swift and C strings
+
 # freeRASP 6.4.0
+
 Minor fixes and improvements
 
 ## What's new in 6.4.0?
+
 - ⚡ Improved reaction obfuscation
 - ⚡ Improved obfuscation of the iOS SDK
 - ⚡ Fixed ProviderException on Android
@@ -10,9 +33,11 @@ Minor fixes and improvements
 - ❗ Raised supported Xcode version to 14.3.1
 
 # freeRASP 6.3.0
+
 Improved logging of the Android SDK and minor bug fixes
 
 ## What's new in 6.3.0?
+
 - 📄 Documentation updates and improvements
 - ✔️ Updated CA bundle for logging pinning
 - ✔️ Added error logging of network issues within the logging process
@@ -21,9 +46,11 @@ Improved logging of the Android SDK and minor bug fixes
 - ⚡ Improved root detection capabilities
 
 # freeRASP 6.2.0
+
 Minor fixes and added support for AGP 8.0
 
 ## What's new in 6.2.0?
+
 - ⚡ Added support for AGP 8.0
 - ❗ Removed PolarSSL dependency on Android
 - ❗ Removed forgotten `onOverlay` callback
@@ -32,14 +59,17 @@ Minor fixes and added support for AGP 8.0
 # freeRASP 6.1.0
 
 ## What's new in 6.1.0?
+
 - ⚡ Fixed issue with incorrect Keystore type detection on Android 11 and above (https://github.com/talsec/Free-RASP-Flutter/issues/77)
 - ⚡ Reduced timeout period for logging from 20 sec to 5 sec on iOS
 - ⚡ Logging is now async in all calls on iOS
 
 # freeRASP 6.0.0
+
 We are constantly working on improving your freeRASP experience. This update contains a new check - obfuscation detection. Minimal supported Android SDK level was raised to 23.
 
 ## What's new in 6.0.0?
+
 - ❗ BREAKING: Raised minSdkVersion on Android to 23
 - ❗ Removed BouncyCastle dependency on Android
 - 🔎 New threat type `obfuscationIssues`
@@ -47,33 +77,42 @@ We are constantly working on improving your freeRASP experience. This update con
 - ✔️ Fixed `NullPointerException` which could occur during specific subcheck execution on Android
 
 # freeRASP 5.0.4
+
 - ✔️ Fixed issue with metadata in iOS framework
 
 # freeRASP 5.0.3
+
 Fixed issue that caused freeRASP to be killed prematurely
 
 ## What's new in 5.0.3?
+
 - ✔️ Fixed issue when freeRASP throws [IllegalStateException: Talsec is not running](https://github.com/talsec/Free-RASP-Flutter/issues/70)
 
 # freeRASP 5.0.2
+
 Fixed issue causing app to freeze on iOS
 
 ## What's new in 5.0.2?
+
 - ✔️ Fixed issue with [app freezing after `start` called on iOS](https://github.com/talsec/Free-RASP-Flutter/issues/67)
 - 📄 Updated example application
 
 # freeRASP 5.0.1
+
 Minor changes in documentation
 
 ## What's new in 5.0.1?
+
 - 📄 Updated documentation for migration from freeRASP 4.x to 5.x
 
 # freeRASP 5.0.0
+
 Get ready for some exciting updates! In this latest release, we have revamped the freeRASP's 
 codebase, which has helped to resolve several known issues. As a result, the integration of 
 freeRASP into your workflow is even easier than before.
 
 ## What's new in 5.0.0?
+
 - ⚡ New enum values for threat types
 - ⚡ New threat handler for handling threat types
 - ✔️ Fixed issue with [platform detection](https://github.com/talsec/Free-RASP-Flutter/issues/61)
@@ -81,35 +120,43 @@ freeRASP into your workflow is even easier than before.
 - ✔️ Fixed issue with [app crashing on hot restart](https://github.com/talsec/Free-RASP-Flutter/issues/57)
 
 ### Other improvements
+
 - 📄 Documentation updates and improvements
 - ⚡ Updated demo app for new implementation
 - ⬆️ Increased constraint with maximal Dart SDK version to support the latest release
 
 # freeRASP 5.0.0-dev.1
+
 New changes incoming! This major update, contains new API to for handling dev and release deployments
 of freeRASP. Now, you can integrate freeRASP more easily without pesky iOS installation steps. We
 also no longer rely on HMS.
 
 ## What's new in 5.0.0-dev.1?
+
 - ❗ Only one version of the SDK is used from now on, instead of two separate for dev and release
-### Android
+  
+  ### Android
 - ❗ Removed the HMS dependencies
 - ⚡ Improved root detection accuracy by moving the 'ro.debuggable' property state to an ignored group
 - ⚡ Enhanced root detection capabilities by moving the selinux properties check to device state
 - ⚡ Fine-tuning root evaluation strategy
 
 ### iOS
+
 - ❗ Removed the dependency on the symlinks choosing the proper version (release/dev)
 - ❗️ Removed pre-built script for changing the Debug and Release versions
 
 ### Other improvements
+
 - 📄 Documentation updates and improvements
 - ⚡ Updated demo app for new implementation
 
 # freeRASP 4.0.0
+
 A new round of fixes and improvements! Here's the list of all the new things we included in the latest release.
 
 ## What's new in 4.0.0?
+
 - ❗ BREAKING API CHANGE: Added multi-signature support for certificate hashes of Android apps
 - ✔️ Fixed `NullPointerException` in RootDetector when there are no running processes ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/40)) on Android
 - ✔️ Removed deprecated SafetyNet dependency ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/28)) on Android
@@ -121,19 +168,24 @@ A new round of fixes and improvements! Here's the list of all the new things we 
 - 🔎 Improved logging of non-existing hardware for biometrics on iOS
 
 # freeRASP 3.0.2
+
 We are constantly listening to our community to make freeRASP better. This update contain fixes to [reported issues](https://github.com/talsec/Free-RASP-Flutter/issues).
 
 ## What's new in 3.0.2?
+
 - 📄 Updated [troubleshoot](README.md#Troubleshoot) section related to ProGuard [issue](https://github.com/talsec/Free-RASP-Flutter/issues/21) 
 - ✔️ Fixed `Duplicate class` [issue](https://github.com/talsec/Free-RASP-Flutter/issues/23)
 
 # freeRASP 3.0.1
+
 This update contains small fix of documentation.
 
 ## What's new in 3.0.1?
+
 - 🛠️ Fixed Plans Comparison table in README.md
 
 # freeRASP 3.0.0
+
 We are constantly working on improving your freeRASP experience, and today we're happy to announce a major update packed with new features and improvements! Here's the list of all the new things we included in the latest release.
 
 ## What's new in 3.0.0?
@@ -172,17 +224,21 @@ For iOS devices, we prepared upgraded and polished incident detections and even 
 - ❗ BREAKING API CHANGE: Renamed parameter `IOSCallback` to `iosCallback`
 
 ## 2.0.0
+
 ### General/Flutter
+
 * Fixed bug causing Talsec to not run properly (initialization checks for non null-safe version of Flutter)
 * Added configuration tests
-### Android
+  
+  ### Android
 * Improved performance during library initialization
 * Improved method handling
 * Improved incident handling
 * Sensitive content logging modification,  package names of well-known dangerous applications (rooting apps, hooking frameworks, etc...) are no longer sent to Elastic, only a flag that device contains one of those applications is sent
 * Fixed usage of deprecated API calls (DexFile) for Android 8.0 and above
 * Fixed issue with root prompt ("app asking for root permission") on rooted devices
-### iOS
+  
+  ### iOS
 * Updated jailbreak checks to detect jailbreak hiders
 * Updated hook checks
 * Better debugger handling
@@ -190,30 +246,41 @@ For iOS devices, we prepared upgraded and polished incident detections and even 
 * Fixed issue with false positive during device binding check
 
 ## 1.1.0
-#### Android  
+
+#### Android
+
 * Changed minSDK to 21
 * Added DeviceBinding callback
 * Added UntrustedInstallation callback
 
-#### iOS  
+#### iOS
+
 * Added onDeviceChange callback
 * Added onDeviceIdDetected callback
 
 ## 1.0.0
+
 * Initial full release of freeRASP.
 
 ## 0.0.4
+
 * Update: documentation
 
 ## 0.0.3
+
 ### General/Flutter
+
 * Fix: documentation
 
 ## 0.0.2
+
 ### General/Flutter
+
 * Updated README.md
-### iOS
+  
+  ### iOS
 * Fixed build failure on Xcode
 
 ## 0.0.1
+
 * Initial testing release of freeRASP.

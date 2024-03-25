@@ -58,5 +58,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Talsec SDK
-    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:9.0.0'
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:9.0.2'
 }
