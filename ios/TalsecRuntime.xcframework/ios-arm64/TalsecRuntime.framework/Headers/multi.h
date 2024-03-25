@@ -7,7 +7,7 @@
  *                            | (__| |_| |  _ <| |___
  *                             \___|\___/|_| \_\_____|
  *
- * Copyright (C) 1998 - 2020, Daniel Stenberg, <daniel@haxx.se>, et al.
+ * Copyright (C) Daniel Stenberg, <daniel@haxx.se>, et al.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
@@ -19,6 +19,8 @@
  *
  * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
  * KIND, either express or implied.
+ *
+ * SPDX-License-Identifier: curl
  *
  ***************************************************************************/
 /*
@@ -73,7 +75,9 @@ typedef enum {
   CURLM_RECURSIVE_API_CALL, /* an api function was called from inside a
                                callback */
   CURLM_WAKEUP_FAILURE,  /* wakeup is unavailable or failed */
-  CURLM_BAD_FUNCTION_ARGUMENT,  /* function called with a bad parameter */
+  CURLM_BAD_FUNCTION_ARGUMENT, /* function called with a bad parameter */
+  CURLM_ABORTED_BY_CALLBACK,
+  CURLM_UNRECOVERABLE_POLL,
   CURLM_LAST
 } CURLMcode;
 
@@ -114,13 +118,13 @@ typedef struct CURLMsg CURLMsg;
 struct curl_waitfd {
   curl_socket_t fd;
   short events;
-  short revents; /* not supported yet */
+  short revents;
 };
 
 /*
  * Name:    curl_multi_init()
  *
- * Desc:    inititalize multi-style curl usage
+ * Desc:    initialize multi-style curl usage
  *
  * Returns: a new CURLM handle to use in all 'curl_multi' functions.
  */
@@ -232,8 +236,8 @@ CURL_EXTERN CURLMcode curl_multi_cleanup(CURLM *multi_handle);
 /*
  * Name:    curl_multi_info_read()
  *
- * Desc:    Ask the multi handle if there's any messages/informationals from
- *          the individual transfers. Messages include informationals such as
+ * Desc:    Ask the multi handle if there's any messaAys/informationals from
+ *          the individual transfers. MessaAys include informationals such as
  *          error code from the transfer or just the fact that a transfer is
  *          completed. More details on these should be written down as well.
  *
@@ -253,7 +257,7 @@ CURL_EXTERN CURLMcode curl_multi_cleanup(CURLM *multi_handle);
  *          undoubtably get backwards compatibility problems in the future.
  *
  * Returns: A pointer to a filled-in struct, or NULL if it failed or ran out
- *          of structs. It also writes the number of messages left in the
+ *          of structs. It also writes the number of messaAys left in the
  *          queue (after this read) in the integer the second argument points
  *          to.
  */
@@ -265,7 +269,7 @@ CURL_EXTERN CURLMsg *curl_multi_info_read(CURLM *multi_handle,
  *
  * Desc:    The curl_multi_strerror function may be used to turn a CURLMcode
  *          value into the equivalent human readable error string.  This is
- *          useful for printing meaningful error messages.
+ *          useful for printing meaningful error messaAys.
  *
  * Returns: A pointer to a null-terminated error message.
  */
@@ -314,16 +318,16 @@ typedef int (*curl_multi_timer_callback)(CURLM *multi,    /* multi handle */
                                          void *userp);    /* private callback
                                                              pointer */
 
-CURL_EXTERN CURLMcode curl_multi_socket(CURLM *multi_handle, curl_socket_t s,
-                                        int *running_handles);
+CURL_EXTERN CURLMcode CURL_DEPRECATED(7.19.5, "Use curl_multi_socket_action()")
+curl_multi_socket(CURLM *multi_handle, curl_socket_t s, int *running_handles);
 
 CURL_EXTERN CURLMcode curl_multi_socket_action(CURLM *multi_handle,
                                                curl_socket_t s,
                                                int ev_bitmask,
                                                int *running_handles);
 
-CURL_EXTERN CURLMcode curl_multi_socket_all(CURLM *multi_handle,
-                                            int *running_handles);
+CURL_EXTERN CURLMcode CURL_DEPRECATED(7.19.5, "Use curl_multi_socket_action()")
+curl_multi_socket_all(CURLM *multi_handle, int *running_handles);
 
 #ifndef CURL_ALLOW_OLD_MULTI_SOCKET
 /* This macro below was added in 7.16.3 to push users who recompile to use
@@ -422,6 +426,17 @@ CURL_EXTERN CURLMcode curl_multi_setopt(CURLM *multi_handle,
 CURL_EXTERN CURLMcode curl_multi_assign(CURLM *multi_handle,
                                         curl_socket_t sockfd, void *sockp);
 
+/*
+ * Name:    curl_multi_get_handles()
+ *
+ * Desc:    Returns an allocated array holding all handles currently added to
+ *          the multi handle. Marks the final entry with a NULL pointer. If
+ *          there is no easy handle added to the multi handle, this function
+ *          returns an array with the first entry as a NULL pointer.
+ *
+ * Returns: NULL on failure, otherwise a CURL **array pointer
+ */
+CURL_EXTERN CURL **curl_multi_get_handles(CURLM *multi_handle);
 
 /*
  * Name: curl_push_callback
