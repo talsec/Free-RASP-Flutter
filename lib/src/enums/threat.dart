@@ -1,4 +1,4 @@
-import 'package:freerasp/src/errors/errors.dart';
+import 'dart:io';
 
 /// Possible threats which can occur in Flutter app.
 enum Threat {
@@ -50,44 +50,57 @@ enum Threat {
 
 /// An extension on the [Threat] enum to provide additional functionality.
 extension ThreatX on Threat {
-  /// Converts a [String] to an instance of the [Threat] enum.
+  /// Converts a [int] code to an instance of the [Threat] enum.
   ///
-  /// Throws an [UnimplementedError] if the given string [name] does not match
-  /// any of the predefined values for the [Threat] enum.
+  /// Kills an app if the given int [code] does not match any of the predefined
+  /// values for the [Threat] enum.
   ///
   /// Example usage:
   ///
   /// ```dart
-  /// var threat = ThreatX.fromString('debug'); // Threat.debug
+  /// final threat = ThreatX.fromInt(1268968002); // Threat.debug
   /// ```
-  static Threat fromString(String name) {
-    switch (name) {
-      case 'debug':
+  ///
+  /// Shared error codes:
+  /// * 1268968002 - debug
+  /// * 209533833 - hooks
+  /// * 55943254 - overlay
+  /// * 1293399086 - passcode
+  /// * 1514211414 - deviceId
+  /// * 477190884 - simulator
+  /// * 1115787534 - appIntegrity
+  /// * 1001443554 - obfuscationIssues
+  /// * 1806586319 - deviceBinding
+  /// * 629780916 - unofficialStore
+  /// * 44506749 - privilegedAccess
+  /// * 1564314755 - secureHardwareNotAvailable
+  static Threat fromInt(int code) {
+    switch (code) {
+      case 1268968002:
         return Threat.debug;
-      case 'hooks':
+      case 209533833:
         return Threat.hooks;
-      case 'passcode':
+      case 1293399086:
         return Threat.passcode;
-      case 'deviceId':
+      case 1514211414:
         return Threat.deviceId;
-      case 'simulator':
+      case 477190884:
         return Threat.simulator;
-      case 'appIntegrity':
+      case 1115787534:
         return Threat.appIntegrity;
-      case 'obfuscationIssues':
+      case 1001443554:
         return Threat.obfuscationIssues;
-      case 'deviceBinding':
+      case 1806586319:
         return Threat.deviceBinding;
-      case 'unofficialStore':
+      case 629780916:
         return Threat.unofficialStore;
-      case 'privilegedAccess':
+      case 44506749:
         return Threat.privilegedAccess;
-      case 'secureHardwareNotAvailable':
+      case 1564314755:
         return Threat.secureHardwareNotAvailable;
       default:
-        throw TalsecException(
-          message: 'Cannot resolve this data as threat: $name',
-        );
+        // Unknown data came from native code. This shouldn't normally happen.
+        exit(127);
     }
   }
 }
