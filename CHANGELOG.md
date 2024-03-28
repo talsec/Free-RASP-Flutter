@@ -1,3 +1,13 @@
+# freeRASP 6.5.1
+
+## What's new in 6.5.1?
+
+- 📄 Fixed typo in README
+
+## Android
+
+- ⚡ New Talsec SDK artifact hosting - better stability and availibility
+
 # freeRASP 6.5.0
 
 ## What's new in 6.5.0?
@@ -136,9 +146,13 @@ also no longer rely on HMS.
 - ❗ Only one version of the SDK is used from now on, instead of two separate for dev and release
   
   ### Android
+
 - ❗ Removed the HMS dependencies
+
 - ⚡ Improved root detection accuracy by moving the 'ro.debuggable' property state to an ignored group
+
 - ⚡ Enhanced root detection capabilities by moving the selinux properties check to device state
+
 - ⚡ Fine-tuning root evaluation strategy
 
 ### iOS
@@ -228,21 +242,33 @@ For iOS devices, we prepared upgraded and polished incident detections and even 
 ### General/Flutter
 
 * Fixed bug causing Talsec to not run properly (initialization checks for non null-safe version of Flutter)
+
 * Added configuration tests
   
   ### Android
+
 * Improved performance during library initialization
+
 * Improved method handling
+
 * Improved incident handling
+
 * Sensitive content logging modification,  package names of well-known dangerous applications (rooting apps, hooking frameworks, etc...) are no longer sent to Elastic, only a flag that device contains one of those applications is sent
+
 * Fixed usage of deprecated API calls (DexFile) for Android 8.0 and above
+
 * Fixed issue with root prompt ("app asking for root permission") on rooted devices
   
   ### iOS
+
 * Updated jailbreak checks to detect jailbreak hiders
+
 * Updated hook checks
+
 * Better debugger handling
+
 * Better incident handling
+
 * Fixed issue with false positive during device binding check
 
 ## 1.1.0
@@ -279,6 +305,7 @@ For iOS devices, we prepared upgraded and polished incident detections and even 
 * Updated README.md
   
   ### iOS
+
 * Fixed build failure on Xcode
 
 ## 0.0.1
