@@ -1,5 +1,3 @@
-package android
-
 group 'com.aheaditec.freerasp'
 version '1.0-SNAPSHOT'
 
@@ -20,7 +18,7 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://nexus3-public.monetplus.cz/repository/ahead-talsec-free-rasp" }
+        maven { url 'https://europe-west3-maven.pkg.dev/talsec-artifact-repository/freerasp' }
         maven { url 'https://jitpack.io' }
     }
 }
@@ -58,5 +56,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Talsec SDK
-    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:9.0.2'
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:9.1.0'
 }
