@@ -172,6 +172,12 @@ class Talsec {
         case Threat.secureHardwareNotAvailable:
           callback.onSecureHardwareNotAvailable?.call();
           break;
+        case Threat.systemVPN:
+          callback.onSystemVPN?.call();
+          break;
+        case Threat.devMode:
+          callback.onDevMode?.call();
+          break;
       }
     });
   }

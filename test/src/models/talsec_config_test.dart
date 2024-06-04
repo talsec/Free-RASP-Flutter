@@ -4,7 +4,7 @@ import 'package:freerasp/freerasp.dart';
 void main() {
   const packageName = 'packageName';
   const signingHashes = <String>[
-    'AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='
+    'AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0=',
   ];
 
   const appBundleIds = ['appBundleId'];

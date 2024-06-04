@@ -27,4 +27,8 @@ internal sealed class Threat(val value: Int) {
     object PrivilegedAccess : Threat(44506749)
 
     object SecureHardwareNotAvailable : Threat(1564314755)
+
+    object SystemVPN : Threat(659382561)
+
+    object DevMode : Threat(45291047)
 }

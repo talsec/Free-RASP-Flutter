@@ -39,6 +39,7 @@ public enum SecurityThreat : Swift.String, Swift.Codable, Swift.CaseIterable, Sw
   case passcodeChange
   case simulator
   case missingSecureEnclave
+  case systemVPN
   case deviceChange
   case deviceID
   case unofficialStore

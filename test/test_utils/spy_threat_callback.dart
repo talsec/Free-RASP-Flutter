@@ -18,6 +18,8 @@ class SpyThreatListener {
     onSecureHardwareNotAvailable: () => _log(Threat.secureHardwareNotAvailable),
     onSimulator: () => _log(Threat.simulator),
     onUnofficialStore: () => _log(Threat.unofficialStore),
+    onSystemVPN: () => _log(Threat.systemVPN),
+    onDevMode: () => _log(Threat.devMode),
   );
 
   static void _log(Threat threat) {
@@ -58,6 +60,12 @@ class SpyThreatListener {
         break;
       case Threat.secureHardwareNotAvailable:
         callback.onSecureHardwareNotAvailable?.call();
+        break;
+      case Threat.systemVPN:
+        callback.onSystemVPN?.call();
+        break;
+      case Threat.devMode:
+        callback.onDevMode?.call();
         break;
     }
   }

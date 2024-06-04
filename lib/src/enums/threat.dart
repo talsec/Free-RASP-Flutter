@@ -45,7 +45,15 @@ enum Threat {
 
   /// The application is running on a device which doesn't support secure
   /// hardware based cryptography.
-  secureHardwareNotAvailable
+  secureHardwareNotAvailable,
+
+  /// The application is running on a device that has active system VPN
+  systemVPN,
+
+  /// The device has Developer mode enabled
+  ///
+  /// Android only
+  devMode,
 }
 
 /// An extension on the [Threat] enum to provide additional functionality.
@@ -74,6 +82,8 @@ extension ThreatX on Threat {
   /// * 629780916 - unofficialStore
   /// * 44506749 - privilegedAccess
   /// * 1564314755 - secureHardwareNotAvailable
+  /// * 659382561 - systemVPN
+  /// * 45291047 - devMode
   static Threat fromInt(int code) {
     switch (code) {
       case 1268968002:
@@ -98,6 +108,10 @@ extension ThreatX on Threat {
         return Threat.privilegedAccess;
       case 1564314755:
         return Threat.secureHardwareNotAvailable;
+      case 659382561:
+        return Threat.systemVPN;
+      case 45291047:
+        return Threat.devMode;
       default:
         // Unknown data came from native code. This shouldn't normally happen.
         exit(127);

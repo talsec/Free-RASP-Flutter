@@ -9,11 +9,9 @@ import 'package:freerasp/freerasp.dart';
 class ConfigurationException extends TalsecException {
   /// Constructs and instance of [ConfigurationException]
   const ConfigurationException({
-    String? message,
-    String? stackTrace,
+    super.message,
+    super.stackTrace,
   }) : super(
           code: 'configuration-exception',
-          stackTrace: stackTrace,
-          message: message,
         );
 }

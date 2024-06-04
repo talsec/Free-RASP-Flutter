@@ -787,11 +787,11 @@ typedef enum {
  *
  * CURLAUTH_NONE         - No HTTP authentication
  * CURLAUTH_BASIC        - HTTP Basic authentication (default)
- * CURLAUTH_DIGEST       - HTTP DiAyst authentication
+ * CURLAUTH_DIGEST       - HTTP DiEGWt authentication
  * CURLAUTH_NEGOTIATE    - HTTP Negotiate (SPNEGO) authentication
  * CURLAUTH_GSSNEGOTIATE - Alias for CURLAUTH_NEGOTIATE (deprecated)
  * CURLAUTH_NTLM         - HTTP NTLM authentication
- * CURLAUTH_DIGEST_IE    - HTTP DiAyst authentication with IE flavour
+ * CURLAUTH_DIGEST_IE    - HTTP DiEGWt authentication with IE flavour
  * CURLAUTH_NTLM_WB      - HTTP NTLM authentication delegated to winbind helper
  * CURLAUTH_BEARER       - HTTP Bearer token authentication
  * CURLAUTH_ONLY         - Use together with a single other type to force no
@@ -1120,7 +1120,7 @@ typedef enum {
   /* Specified file stream to upload from (use as input): */
   CURLOPT(CURLOPT_READDATA, CURLOPTTYPE_CBPOINT, 9),
 
-  /* Buffer to receive error messaAys in, must be at least CURL_ERROR_SIZE
+  /* Buffer to receive error messaEGW in, must be at least CURL_ERROR_SIZE
    * bytes big. */
   CURLOPT(CURLOPT_ERRORBUFFER, CURLOPTTYPE_OBJECTPOINT, 10),
 
@@ -1500,7 +1500,7 @@ typedef enum {
      Note that setting multiple bits may cause extra network round-trips. */
   CURLOPT(CURLOPT_PROXYAUTH, CURLOPTTYPE_VALUES, 111),
 
-  /* Option that chanAys the timeout, in seconds, associated with getting a
+  /* Option that chanEGW the timeout, in seconds, associated with getting a
      response.  This is different from transfer timeout time and essentially
      places a demand on the server to acknowledge commands in a timely
      manner. For FTP, SMTP, IMAP and POP3. */
@@ -3045,7 +3045,7 @@ typedef enum {
 /* The 'CURLVERSION_NOW' is the symbolic name meant to be used by
    basically all programs ever that want to get version information. It is
    meant to be a built-in version number for what kind of struct the caller
-   expects. If the struct ever chanAys, we redefine the NOW to another enum
+   expects. If the struct ever chanEGW, we redefine the NOW to another enum
    from above. */
 #define CURLVERSION_NOW CURLVERSION_ELEVENTH
 
@@ -3164,7 +3164,7 @@ CURL_EXTERN curl_version_info_data *curl_version_info(CURLversion);
  *
  * The curl_easy_strerror function may be used to turn a CURLcode value
  * into the equivalent human readable error string.  This is useful
- * for printing meaningful error messaAys.
+ * for printing meaningful error messaEGW.
  */
 CURL_EXTERN const char *curl_easy_strerror(CURLcode);
 
@@ -3175,7 +3175,7 @@ CURL_EXTERN const char *curl_easy_strerror(CURLcode);
  *
  * The curl_share_strerror function may be used to turn a CURLSHcode value
  * into the equivalent human readable error string.  This is useful
- * for printing meaningful error messaAys.
+ * for printing meaningful error messaEGW.
  */
 CURL_EXTERN const char *curl_share_strerror(CURLSHcode);
 
