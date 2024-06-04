@@ -1,4 +1,4 @@
-// ignore_for_file: cascade_invocations
+// ignore_for_file: cascade_invocations, sdk_version_since
 
 import 'dart:async';
 
@@ -146,7 +146,10 @@ void main() {
       // Arrange
       final eventChannel = MockEventChannel(
         eventChannel: Talsec.instance.eventChannel,
-        data: [Threat.privilegedAccess.name, Threat.appIntegrity.name],
+        data: [
+          44506749,
+          1115787534,
+        ],
       );
       final talsec =
           Talsec.private(FakeMethodChannel(), eventChannel.eventChannel);
@@ -197,8 +200,8 @@ void main() {
       final eventChannel = MockEventChannel(
         eventChannel: Talsec.instance.eventChannel,
         data: [
-          Threat.privilegedAccess.name,
-          Threat.appIntegrity.name,
+          44506749,
+          1115787534,
         ],
         exceptions: [PlatformException(code: 'dummy-code')],
       );

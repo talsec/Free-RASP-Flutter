@@ -725,6 +725,16 @@
       },
       {
         "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "TalsecRuntime",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
         "name": "TalsecRuntime.Private",
         "printedName": "TalsecRuntime.Private",
         "declKind": "Import",
@@ -736,6 +746,16 @@
         "printedName": "CryptoKit",
         "declKind": "Import",
         "moduleName": "TalsecRuntime"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "TalsecRuntime",
+        "declAttributes": [
+          "RawDocComment"
+        ]
       },
       {
         "kind": "Import",
@@ -1315,6 +1335,46 @@
             "declKind": "EnumElement",
             "usr": "s:13TalsecRuntime14SecurityThreatO20missingSecureEnclaveyA2CmF",
             "mangledName": "$s13TalsecRuntime14SecurityThreatO20missingSecureEnclaveyA2CmF",
+            "moduleName": "TalsecRuntime",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "systemVPN",
+            "printedName": "systemVPN",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(TalsecRuntime.SecurityThreat.Type) -> TalsecRuntime.SecurityThreat",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "SecurityThreat",
+                    "printedName": "TalsecRuntime.SecurityThreat",
+                    "usr": "s:13TalsecRuntime14SecurityThreatO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "TalsecRuntime.SecurityThreat.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "SecurityThreat",
+                        "printedName": "TalsecRuntime.SecurityThreat",
+                        "usr": "s:13TalsecRuntime14SecurityThreatO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:13TalsecRuntime14SecurityThreatO9systemVPNyA2CmF",
+            "mangledName": "$s13TalsecRuntime14SecurityThreatO9systemVPNyA2CmF",
             "moduleName": "TalsecRuntime",
             "declAttributes": [
               "RawDocComment"
@@ -2611,28 +2671,28 @@
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/DynamicConfiguration\/DefaultConfig.swift",
       "kind": "Array",
-      "offset": 8387,
+      "offset": 9007,
       "length": 61,
       "value": "[0x01, 0xe9, 0x4c, 0xa7, 0xb5, 0xfb, 0xf9, 0x38, 0xd5, 0x79]"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/DynamicConfiguration\/DefaultConfig.swift",
       "kind": "StringLiteral",
-      "offset": 8526,
+      "offset": 9146,
       "length": 7,
-      "value": "\"6.1.2\""
+      "value": "\"6.4.0\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/DynamicConfiguration\/DefaultConfig.swift",
       "kind": "StringLiteral",
-      "offset": 8594,
+      "offset": 9214,
       "length": 9,
       "value": "\"Flutter\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/DynamicConfiguration\/DefaultConfig.swift",
       "kind": "StringLiteral",
-      "offset": 8952,
+      "offset": 9746,
       "length": 2,
       "value": "\"\""
     },
@@ -2723,245 +2783,266 @@
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 1496,
+      "offset": 1430,
+      "length": 18,
+      "value": "\"endOfGracePeriod\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
+      "kind": "StringLiteral",
+      "offset": 1430,
+      "length": 18,
+      "value": "\"endOfGracePeriod\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
+      "kind": "StringLiteral",
+      "offset": 1874,
       "length": 15,
       "value": "\"appIdentifier\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 1538,
+      "offset": 1916,
       "length": 12,
       "value": "\"appVersion\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 1496,
+      "offset": 1874,
       "length": 15,
       "value": "\"appIdentifier\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 1538,
+      "offset": 1916,
       "length": 12,
       "value": "\"appVersion\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 5241,
+      "offset": 5848,
       "length": 5,
       "value": "\"iOS\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6102,
+      "offset": 6285,
+      "length": 7,
+      "value": "\"en_US\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
+      "kind": "StringLiteral",
+      "offset": 6764,
       "length": 3,
       "value": "\".\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6152,
+      "offset": 6814,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6375,
+      "offset": 7037,
       "length": 12,
       "value": "\"instanceId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6414,
+      "offset": 7076,
       "length": 12,
       "value": "\"deviceInfo\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6454,
+      "offset": 7116,
       "length": 13,
       "value": "\"deviceState\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6491,
+      "offset": 7153,
       "length": 9,
       "value": "\"appInfo\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6525,
+      "offset": 7187,
       "length": 10,
       "value": "\"platform\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6561,
+      "offset": 7223,
       "length": 11,
       "value": "\"occurence\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6603,
+      "offset": 7265,
       "length": 16,
       "value": "\"incidentReport\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6642,
+      "offset": 7304,
       "length": 8,
       "value": "\"checks\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6677,
+      "offset": 7339,
       "length": 12,
       "value": "\"externalId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6715,
+      "offset": 7377,
       "length": 11,
       "value": "\"sessionId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6751,
+      "offset": 7413,
       "length": 10,
       "value": "\"deviceId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6788,
+      "offset": 7450,
       "length": 12,
       "value": "\"sdkVersion\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6828,
+      "offset": 7490,
       "length": 13,
       "value": "\"sdkPlatform\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6871,
+      "offset": 7533,
       "length": 15,
       "value": "\"sdkIdentifier\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6375,
+      "offset": 7037,
       "length": 12,
       "value": "\"instanceId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6414,
+      "offset": 7076,
       "length": 12,
       "value": "\"deviceInfo\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6454,
+      "offset": 7116,
       "length": 13,
       "value": "\"deviceState\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6491,
+      "offset": 7153,
       "length": 9,
       "value": "\"appInfo\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6525,
+      "offset": 7187,
       "length": 10,
       "value": "\"platform\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6561,
+      "offset": 7223,
       "length": 11,
       "value": "\"occurence\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6603,
+      "offset": 7265,
       "length": 16,
       "value": "\"incidentReport\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6642,
+      "offset": 7304,
       "length": 8,
       "value": "\"checks\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6677,
+      "offset": 7339,
       "length": 12,
       "value": "\"externalId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6715,
+      "offset": 7377,
       "length": 11,
       "value": "\"sessionId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6751,
+      "offset": 7413,
       "length": 10,
       "value": "\"deviceId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6788,
+      "offset": 7450,
       "length": 12,
       "value": "\"sdkVersion\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6828,
+      "offset": 7490,
       "length": 13,
       "value": "\"sdkPlatform\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/Report.swift",
       "kind": "StringLiteral",
-      "offset": 6871,
+      "offset": 7533,
       "length": 15,
       "value": "\"sdkIdentifier\""
     },
@@ -3038,142 +3119,163 @@
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1039,
+      "offset": 883,
+      "length": 7,
+      "value": "\"en_US\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
+      "kind": "StringLiteral",
+      "offset": 1138,
       "length": 12,
       "value": "\"instanceId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1078,
+      "offset": 1177,
       "length": 12,
       "value": "\"sdkVersion\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1115,
+      "offset": 1214,
       "length": 10,
       "value": "\"platform\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1153,
+      "offset": 1252,
       "length": 13,
       "value": "\"sdkPlatform\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1193,
+      "offset": 1292,
       "length": 12,
       "value": "\"deviceInfo\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1233,
+      "offset": 1332,
       "length": 13,
       "value": "\"deviceState\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1272,
+      "offset": 1371,
       "length": 11,
       "value": "\"occurence\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1306,
+      "offset": 1405,
       "length": 8,
       "value": "\"checks\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1339,
+      "offset": 1438,
       "length": 10,
       "value": "\"deviceId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1376,
+      "offset": 1475,
       "length": 12,
       "value": "\"externalId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1039,
+      "offset": 1513,
+      "length": 11,
+      "value": "\"licensing\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
+      "kind": "StringLiteral",
+      "offset": 1138,
       "length": 12,
       "value": "\"instanceId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1078,
+      "offset": 1177,
       "length": 12,
       "value": "\"sdkVersion\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1115,
+      "offset": 1214,
       "length": 10,
       "value": "\"platform\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1153,
+      "offset": 1252,
       "length": 13,
       "value": "\"sdkPlatform\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1193,
+      "offset": 1292,
       "length": 12,
       "value": "\"deviceInfo\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1233,
+      "offset": 1332,
       "length": 13,
       "value": "\"deviceState\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1272,
+      "offset": 1371,
       "length": 11,
       "value": "\"occurence\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1306,
+      "offset": 1405,
       "length": 8,
       "value": "\"checks\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1339,
+      "offset": 1438,
       "length": 10,
       "value": "\"deviceId\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
       "kind": "StringLiteral",
-      "offset": 1376,
+      "offset": 1475,
       "length": 12,
       "value": "\"externalId\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Cryptogram\/ThreatFlags.swift",
+      "kind": "StringLiteral",
+      "offset": 1513,
+      "length": 11,
+      "value": "\"licensing\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Common\/SecurityError.swift",
@@ -3981,11 +4083,32 @@
       "value": "true"
     },
     {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/Reactions\/SystemVPNReaction.swift",
+      "kind": "IntegerLiteral",
+      "offset": 490,
+      "length": 1,
+      "value": "5"
+    },
+    {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Report\/ReportTask.swift",
       "kind": "StringLiteral",
       "offset": 4677,
       "length": 2,
       "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/SystemVPN\/SystemVPNDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 682,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/SystemVPN\/SystemVPNDetection.swift",
+      "kind": "Array",
+      "offset": 1455,
+      "length": 2,
+      "value": "[]"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Common\/AppVersion.swift",
@@ -4131,6 +4254,13 @@
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/DynamicConfiguration\/Config.swift",
       "kind": "StringLiteral",
       "offset": 1453,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/DynamicConfiguration\/Config.swift",
+      "kind": "StringLiteral",
+      "offset": 1526,
       "length": 2,
       "value": "\"\""
     },
@@ -4935,7 +5065,7 @@
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/SecurityThreat.swift",
       "kind": "StringLiteral",
-      "offset": 853,
+      "offset": 900,
       "length": 15,
       "value": "\"deviceBinding\""
     },
@@ -4970,7 +5100,7 @@
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/SecurityThreat.swift",
       "kind": "StringLiteral",
-      "offset": 853,
+      "offset": 900,
       "length": 15,
       "value": "\"deviceBinding\""
     },
@@ -4984,98 +5114,98 @@
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 8107,
+      "offset": 7704,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "Dictionary",
-      "offset": 8122,
+      "offset": 7719,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 8466,
+      "offset": 8063,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "Dictionary",
-      "offset": 8481,
+      "offset": 8078,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 9362,
+      "offset": 8959,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "Dictionary",
-      "offset": 9377,
+      "offset": 8974,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 10600,
+      "offset": 10678,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 11198,
+      "offset": 11276,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 11238,
+      "offset": 11316,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 11313,
+      "offset": 11391,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 11404,
+      "offset": 11482,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 11445,
+      "offset": 11523,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "StringLiteral",
-      "offset": 13169,
+      "offset": 13323,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/testing\/builds\/82aA3BrM\/0\/talsec\/rasp\/Talsec_iOS_Security_Library\/Talsec\/TalsecRuntime\/Classes\/Runtime\/TalsecRuntime.swift",
       "kind": "BooleanLiteral",
-      "offset": 14607,
+      "offset": 14837,
       "length": 4,
       "value": "true"
     }

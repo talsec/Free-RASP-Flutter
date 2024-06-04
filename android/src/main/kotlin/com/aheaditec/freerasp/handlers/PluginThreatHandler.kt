@@ -65,6 +65,14 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
         notify(Threat.SecureHardwareNotAvailable)
     }
 
+    override fun onSystemVPNDetected() {
+        notify(Threat.SystemVPN)
+    }
+
+    override fun onDeveloperModeDetected() {
+        notify(Threat.DevMode)
+    }
+
     private fun notify(threat: Threat) {
         listener?.threatDetected(threat) ?: detectedThreats.add(threat)
     }

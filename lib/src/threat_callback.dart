@@ -31,6 +31,8 @@ class ThreatCallback {
     this.onUnofficialStore,
     this.onPrivilegedAccess,
     this.onSecureHardwareNotAvailable,
+    this.onSystemVPN,
+    this.onDevMode,
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -71,4 +73,11 @@ class ThreatCallback {
 
   /// This method is called when secure hardware is not available on device.
   final VoidCallback? onSecureHardwareNotAvailable;
+
+  /// This method is called when the application is running on
+  /// a device that has active system VPN
+  final VoidCallback? onSystemVPN;
+
+  /// This method is called whe the device has Developer mode enabled
+  final VoidCallback? onDevMode;
 }

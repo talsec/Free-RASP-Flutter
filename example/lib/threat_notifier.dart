@@ -20,6 +20,8 @@ class ThreatNotifier extends StateNotifier<Map<Threat, bool>> {
           _updateThreat(Threat.secureHardwareNotAvailable),
       onSimulator: () => _updateThreat(Threat.simulator),
       onUnofficialStore: () => _updateThreat(Threat.unofficialStore),
+      onSystemVPN: () => _updateThreat(Threat.systemVPN),
+      onDevMode: () => _updateThreat(Threat.devMode),
     );
 
     Talsec.instance.attachListener(callback);
@@ -31,6 +33,10 @@ class ThreatNotifier extends StateNotifier<Map<Threat, bool>> {
 
     if (Platform.isAndroid) {
       threatMap.remove(Threat.deviceId);
+    }
+
+    if (Platform.isIOS) {
+      threatMap.remove(Threat.devMode);
     }
 
     return threatMap;

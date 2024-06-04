@@ -70,14 +70,11 @@ We will guide you step-by-step, but you can always check the expected result in 
 
 ## Step 1: Prepare freeRASP library
 
-Add dependency to your `pubspec.yaml` file
+Run following command inside the project directory to add the freeRASP dependency:
 
-```yaml
-dependencies:
-  freerasp: 6.5.1
+```bash
+flutter pub add freerasp
 ```
-
-and run `pub get`
 
 ### iOS setup
 
@@ -141,7 +138,7 @@ void main() {
       signingCertHashes: [
         'AKoRu...'
       ],
-      supportedStores: ['com.sec.android.app.samsungapps'],
+      supportedStores: ['some.other.store'],
     ),
 
     /// For iOS
@@ -440,6 +437,8 @@ freeRASP is freemium software i.e. there is a Fair Usage Policy (FUP) that impos
                     <li>Screen lock control</li>
                     <li>Google Play Services enabled/disabled</li>
                     <li>Last security patch update</li>
+                    <li>System VPN control</li>
+                    <li>Developer mode control</li>
                 </ul>
             </td>
             <td>yes</td>

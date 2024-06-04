@@ -1,3 +1,24 @@
+# freeRASP 6.6.0
+
+## What's new in 6.6.0?
+
+- 🔎 Added new threat `Threat.systemVPN` for VPN detection
+- 🔎 Added new callback `onSystemVPN` in `ThreatCallback` for handling `Threat.systemVPN` threat
+- ❗ Increased minimal Dart SDK version to **2.18.0** and minimal Flutter version to **3.3.0**
+- ⚡ Resolved issue in logging caused by the device's default system locale.
+- ✔️ Updated CA bundle
+- 📄 Documentation updates
+
+## Android
+
+- 🔎 Added new threat `Threat.devMode` for detecting Developer mode on Android
+- 🔎 Added new callback `onDevMode` in `ThreatCallback` for handling `Threat.devMode` threat
+- ✔️ Increased the version of the GMS dependency
+
+## iOS
+
+- ⚡ Passcode check is now periodical
+
 # freeRASP 6.5.1
 
 ## What's new in 6.5.1?

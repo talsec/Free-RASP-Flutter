@@ -93,6 +93,7 @@ class HomePage extends ConsumerWidget {
               final currentThreat = threatMap.keys.elementAt(index);
               final isDetected = threatMap[currentThreat]!;
               return ListTile(
+                // ignore: sdk_version_since
                 title: Text(currentThreat.name),
                 subtitle: Text(isDetected ? 'Danger' : 'Safe'),
                 trailing: SafetyIcon(isDetected: isDetected),

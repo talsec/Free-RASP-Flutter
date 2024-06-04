@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:freerasp/freerasp.dart';
 
 void main() {
-  test('Threat enum should contain 11 values', () {
+  test('Threat enum should contain 13 values', () {
     final threatValuesLength = Threat.values.length;
 
-    expect(threatValuesLength, 11);
+    expect(threatValuesLength, 13);
   });
 
   test('Threat enum should match its values index', () {
@@ -22,35 +22,27 @@ void main() {
     expect(threatValues[8], Threat.unofficialStore);
     expect(threatValues[9], Threat.privilegedAccess);
     expect(threatValues[10], Threat.secureHardwareNotAvailable);
+    expect(threatValues[11], Threat.systemVPN);
+    expect(threatValues[12], Threat.devMode);
   });
 
   test(
     'ThreatX.fromString should return correct Threat enum for '
     'valid String value',
     () {
-      expect(ThreatX.fromString('debug'), Threat.debug);
-      expect(ThreatX.fromString('hooks'), Threat.hooks);
-      expect(ThreatX.fromString('passcode'), Threat.passcode);
-      expect(ThreatX.fromString('deviceId'), Threat.deviceId);
-      expect(ThreatX.fromString('simulator'), Threat.simulator);
-      expect(ThreatX.fromString('appIntegrity'), Threat.appIntegrity);
-      expect(ThreatX.fromString('deviceBinding'), Threat.deviceBinding);
-      expect(ThreatX.fromString('unofficialStore'), Threat.unofficialStore);
-      expect(ThreatX.fromString('privilegedAccess'), Threat.privilegedAccess);
-      expect(
-        ThreatX.fromString('secureHardwareNotAvailable'),
-        Threat.secureHardwareNotAvailable,
-      );
-    },
-  );
-
-  test(
-    'ThreatX.fromString should throw TalsecException for invalid String value',
-    () {
-      expect(
-        () => ThreatX.fromString('passcodeChange'),
-        throwsA(isA<TalsecException>()),
-      );
+      expect(ThreatX.fromInt(1268968002), Threat.debug);
+      expect(ThreatX.fromInt(209533833), Threat.hooks);
+      expect(ThreatX.fromInt(1293399086), Threat.passcode);
+      expect(ThreatX.fromInt(1514211414), Threat.deviceId);
+      expect(ThreatX.fromInt(477190884), Threat.simulator);
+      expect(ThreatX.fromInt(1115787534), Threat.appIntegrity);
+      expect(ThreatX.fromInt(1001443554), Threat.obfuscationIssues);
+      expect(ThreatX.fromInt(1806586319), Threat.deviceBinding);
+      expect(ThreatX.fromInt(629780916), Threat.unofficialStore);
+      expect(ThreatX.fromInt(44506749), Threat.privilegedAccess);
+      expect(ThreatX.fromInt(1564314755), Threat.secureHardwareNotAvailable);
+      expect(ThreatX.fromInt(659382561), Threat.systemVPN);
+      expect(ThreatX.fromInt(45291047), Threat.devMode);
     },
   );
 }
