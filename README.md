@@ -221,6 +221,8 @@ void main() {
       onPasscode: () => print("Passcode not set"),
       onPrivilegedAccess: () => print("Privileged access"),
       onSecureHardwareNotAvailable: () => print("Secure hardware not available"),
+      onSystemVPN: () => print("System VPN"),
+      onDevMode: () => print("Developer mode"),
       onSimulator: () => print("Simulator"),
       onUnofficialStore: () => print("Unofficial store")
   );
