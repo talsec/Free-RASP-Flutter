@@ -1,0 +1,21 @@
+name: Issue watcher
+on:
+  workflow_dispatch:
+  schedule:
+    # Date follows the cron syntax: https://en.wikipedia.org/wiki/Cron
+    # Every Monday at 6:30 AM
+    - cron: '30 6 * * 1'
+
+jobs:
+  close-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v5
+        with:
+          days-before-issue-stale: 14
+          stale-issue-message: "This issue has been labeled as stale because it has been for 14 days without any activity."
+          stale-issue-label: "stale"
+          days-before-issue-close: 14
+          close-issue-message: "This issue has been closed because it has been for 14 days without any activity since labeled as stale."
+          only-labels: "waiting for response", "can't reproduce", "invalid", "wontfix", "duplicate"
+          debug-only: true
