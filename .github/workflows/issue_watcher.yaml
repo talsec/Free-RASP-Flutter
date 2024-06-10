@@ -20,4 +20,3 @@ jobs:
           days-before-issue-close: 14
           close-issue-message: "This issue has been closed because it has been for 14 days without any activity since labeled as stale."
           any-of-issue-labels: "waiting for response,can't reproduce,invalid,wontfix,duplicate"
-          debug-only: true
