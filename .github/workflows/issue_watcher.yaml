@@ -15,8 +15,13 @@ jobs:
       - uses: actions/stale@v9.0.0
         with:
           days-before-issue-stale: 14
-          stale-issue-message: "This issue has been labeled as stale because it has been for 14 days without any activity."
+          stale-issue-message: |
+            Hello!
+            This issue has been marked as inactive. If there is no further activity within the next 14 days, this issue will be automatically closed.
+            If you believe this issue is still relevant and requires attention, please comment or provide additional information.
           stale-issue-label: "stale"
           days-before-issue-close: 14
-          close-issue-message: "This issue has been closed because it has been for 14 days without any activity since labeled as stale."
+          close-issue-message: |
+            Hello!
+            This issue has been closed. If you believe this issue is still relevant and requires attention, please reopen the issue.
           any-of-issue-labels: "waiting for response,can't reproduce,invalid,wontfix,duplicate"
