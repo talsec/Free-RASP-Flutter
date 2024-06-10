@@ -17,7 +17,7 @@ jobs:
           stale-issue-label: "stale"
           days-before-issue-close: 14
           close-issue-message: "This issue has been closed because it has been for 14 days without any activity since labeled as stale."
-          only-labels: |
+          any-of-labels: |
             waiting for response
             can't reproduce
             invalid
