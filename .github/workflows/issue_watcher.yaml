@@ -9,18 +9,15 @@ on:
 jobs:
   close-issues:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
-      - uses: actions/stale@v5
+      - uses: actions/stale@v9.0.0
         with:
           days-before-issue-stale: 14
           stale-issue-message: "This issue has been labeled as stale because it has been for 14 days without any activity."
           stale-issue-label: "stale"
           days-before-issue-close: 14
           close-issue-message: "This issue has been closed because it has been for 14 days without any activity since labeled as stale."
-          any-of-labels: |
-            waiting for response
-            can't reproduce
-            invalid
-            wontfix
-            duplicate
+          any-of-issue-labels: "waiting for response,can't reproduce,invalid,wontfix,duplicate"
           debug-only: true
