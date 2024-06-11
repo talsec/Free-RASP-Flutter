@@ -7,5 +7,5 @@ on:
     - cron: '30 6 * * 1'
 
 jobs:
-  check-issues:
+  check_issues:
     uses: talsec/github-workflows/.github/workflows/issue_watcher.yml@master
