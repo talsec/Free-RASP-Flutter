@@ -8,4 +8,4 @@ on:
 
 jobs:
   check-issues:
-    uses: talsec/github-workflows/.github/workflows/issue_watcher@main
+    uses: talsec/github-workflows/.github/workflows/issue_watcher.yml@main
