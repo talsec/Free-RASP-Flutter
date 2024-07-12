@@ -1,0 +1,98 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**/*.md'
+      - '.github/**'
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - '**/*.md'
+      - '.github/**'
+
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: 3.19.0
+  PANA_VERSION: 0.22.8
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2.16.0
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: 📦 Install Additional Tooling
+        # Add additional Flutter tooling
+        run: |
+          dart pub global activate pana ${{ env.PANA_VERSION }}
+
+      - name: ✂ Format Code
+        run: dart format --set-exit-if-changed .
+
+      - name: 📊 Analyze Code
+        run: flutter analyze --fatal-infos --fatal-warnings .
+
+      - name: 🔎 Pana Check
+        run: pana --no-warning
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2.16.0
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: 🧪 Run Tests
+        run: flutter test
+
+  build-android:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2.16.0
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: 🤖 Build Android app
+        run: flutter build apk --release
+
+  build-ios:
+    runs-on: macos-latest
+    needs: test
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2.16.0
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: 🍎 Build iOS app
+        run: flutter build ios --release --no-codesign
