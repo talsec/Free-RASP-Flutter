@@ -32,6 +32,7 @@ jobs:
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
 
       - name: 📦 Install Additional Tooling
         # Add additional Flutter tooling
@@ -59,6 +60,7 @@ jobs:
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
 
       - name: 🧪 Run Tests
         run: flutter test
@@ -76,6 +78,7 @@ jobs:
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
 
       - name: 🤖 Build Android app
         working-directory: example
@@ -94,6 +97,7 @@ jobs:
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
 
       - name: 🍎 Build iOS app
         working-directory: example
