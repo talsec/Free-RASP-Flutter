@@ -66,7 +66,7 @@ jobs:
   build-android:
     runs-on: ubuntu-latest
     needs: test
-
+    
     steps:
       - name: 📚 Git Checkout
         uses: actions/checkout@v4
@@ -78,6 +78,7 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
 
       - name: 🤖 Build Android app
+        working-directory: example
         run: flutter build apk --release
 
   build-ios:
@@ -95,4 +96,5 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
 
       - name: 🍎 Build iOS app
+        working-directory: example
         run: flutter build ios --release --no-codesign
