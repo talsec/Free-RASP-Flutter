@@ -9,6 +9,7 @@
 
 freeRASP for Flutter is a mobile in-app protection and security monitoring SDK. It aims to cover the main aspects of RASP (Runtime App Self Protection) and application shielding.
 
+:loudspeaker: The official documentation has been moved to a new location. You can now find it [here](https://talsec.gitbook.io/freerasp). :loudspeaker:
 
 
 # Overview
@@ -46,13 +47,15 @@ Learn more about commercial features at [https://talsec.app](https://talsec.app)
 
 Learn more about freemium freeRASP features at [GitHub main repository](https://github.com/talsec/Free-RASP-Community).
 
-# :rocket: Discover our GitBook Documentation
-For comprehensive and up-to-date guides, tutorials, and technical documentation, visit our [GitBook page](https://talsec.gitbook.io/freerasp). It serves as your go-to resource, offering everything from basic instructions to advanced tips and tricks to help you get the most out of our project. 
 
-:link: For integrating it on the Flutter platform, be sure to follow all the steps in our [Integration Guide](https://talsec.gitbook.io/freerasp/integration). This guide provides detailed instructions to help you achieve a smooth and efficient integration.
+# :rocket: Discover Official Documentation
+Visit the [GitBook page](https://talsec.gitbook.io/freerasp) for comprehensive and up-to-date guides, tutorials, and technical documentation. It serves as your go-to resource, offering everything from basic instructions to advanced tips and tricks to help you get the most out of the project.
+
+## :link: Integration Guide
+For integrating freeRASP on the Flutter platform, be sure to follow all the steps in the [Integration Guide](https://talsec.gitbook.io/freerasp/integration). This guide provides detailed instructions to help you achieve a smooth and efficient integration.
 
 Be sure to bookmark it and stay informed! :books: :sparkles:.
 
+## Reference to Legacy Documentation
 
-# Reference to Our Legacy Documentation
-If you encounter any discrepancies or errors in the documentation, please let us know so we can improve it and ensure the best experience for all users. For information on older integration methods, you can refer to the [freeRASP wiki](https://github.com/talsec/Free-RASP-Flutter/wiki), which includes comprehensive legacy details and guidance. We appreciate your feedback, as it helps us refine our resources and better support your needs.
+If you have any suggestions for improvement or notice anything that could be clarified in the new GitBook documentation, please open an issue. Your feedback helps us maintain high-quality resources for all users. For information on older integration methods, you can refer to the [freeRASP wiki](https://github.com/talsec/Free-RASP-Flutter/wiki), which includes comprehensive legacy details and guidance. Additionally, the old integration can be found when you checkout to a specific tag. Your input is invaluable in helping us improve our resources and provide even better support for your needs.
