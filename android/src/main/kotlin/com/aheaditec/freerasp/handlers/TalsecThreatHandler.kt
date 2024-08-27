@@ -1,6 +1,8 @@
 package com.aheaditec.freerasp.handlers
 
+import android.app.Activity
 import android.content.Context
+import android.view.WindowManager
 import com.aheaditec.freerasp.Threat
 import com.aheaditec.talsec_security.security.api.Talsec
 import com.aheaditec.talsec_security.security.api.TalsecConfig
@@ -13,15 +15,21 @@ import io.flutter.plugin.common.EventChannel.EventSink
 internal object TalsecThreatHandler {
     private var eventSink: EventSink? = null
     private var isListening = false
+    private var enableScreenCaptureGuard = false
 
     /**
      * Initializes [Talsec] and starts the [PluginThreatHandler] listener with this object.
      *
      * @param context The Android application context.
      */
-    internal fun start(context: Context, config: TalsecConfig) {
+    internal fun start(context: Context, extendedConfig: Pair<TalsecConfig, Boolean>) {
         attachListener(context)
-        Talsec.start(context, config)
+
+        if (extendedConfig.first.isProd && extendedConfig.second) {
+            enableScreenCaptureGuard = true
+        }
+
+        Talsec.start(context, extendedConfig.first)
     }
 
     /**
@@ -122,6 +130,12 @@ internal object TalsecThreatHandler {
     internal fun detachSink() {
         eventSink = null
         PluginThreatHandler.listener = null
+    }
+
+    internal fun guardActivity(activity: Activity?) {
+        if (enableScreenCaptureGuard) {
+            activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        }
     }
 
     /**

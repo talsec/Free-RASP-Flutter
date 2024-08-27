@@ -1,6 +1,8 @@
 package com.aheaditec.freerasp
 
+import android.app.Activity
 import android.content.Context
+import android.view.WindowManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -19,6 +21,7 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     private var methodCallHandler: MethodCallHandler = MethodCallHandler()
     private var context: Context? = null
     private var lifecycle: Lifecycle? = null
+    private var activity: Activity? = null
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val messenger = flutterPluginBinding.binaryMessenger
@@ -38,6 +41,8 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding).also {
             it.addObserver(this)
         }
+
+        TalsecThreatHandler.guardActivity(binding.getActivity() as Activity?)
     }
 
     override fun onDetachedFromActivity() {

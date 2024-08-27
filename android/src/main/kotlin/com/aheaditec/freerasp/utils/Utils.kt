@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 internal class Utils {
     companion object {
-        fun toTalsecConfigThrowing(configJson: String?): TalsecConfig {
+        fun toExtendedTalsecConfigThrowing(configJson: String?): Pair<TalsecConfig, Boolean> {
             if (configJson == null) {
                 throw JSONException("Configuration is null")
             }
@@ -31,12 +31,19 @@ internal class Utils {
                 isProd = json.getBoolean("isProd")
             }
 
-            return TalsecConfig(
-                packageName,
-                certificateHashes.toTypedArray(),
-                watcherMail,
-                alternativeStores.toTypedArray(),
-                isProd
+            var enableScreenCaptureGuard = false
+            if (json.has("enableScreenCaptureGuard")) {
+                enableScreenCaptureGuard = json.getBoolean("enableScreenCaptureGuard")
+            }
+
+            return Pair(
+                TalsecConfig(
+                    packageName,
+                    certificateHashes.toTypedArray(),
+                    watcherMail,
+                    alternativeStores.toTypedArray(),
+                    isProd
+                ), enableScreenCaptureGuard
             )
         }
     }

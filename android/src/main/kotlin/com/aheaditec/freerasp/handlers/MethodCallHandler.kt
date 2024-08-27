@@ -72,9 +72,9 @@ internal class MethodCallHandler : MethodCallHandler {
     private fun start(call: MethodCall, result: MethodChannel.Result) {
         runResultCatching(result) {
             val config = call.argument<String>("config")
-            val talsecConfig = Utils.toTalsecConfigThrowing(config)
+            val extendedTalsecConfig = Utils.toExtendedTalsecConfigThrowing(config)
             context?.let {
-                TalsecThreatHandler.start(it, talsecConfig)
+                TalsecThreatHandler.start(it, extendedTalsecConfig)
             } ?: throw IllegalStateException("Unable to run Talsec - context is null")
             result.success(null)
         }
