@@ -11,6 +11,7 @@ class AndroidConfig {
     required this.packageName,
     required this.signingCertHashes,
     this.supportedStores = const <String>[],
+    this.enableScreenCaptureGuard = false,
   }) {
     ConfigVerifier.verifyAndroid(this);
   }
@@ -30,4 +31,6 @@ class AndroidConfig {
 
   /// List of supported sources where application can be installed from.
   final List<String> supportedStores;
+
+  final bool enableScreenCaptureGuard;
 }

@@ -1,6 +1,7 @@
 package com.aheaditec.freerasp.handlers
 
 import android.content.Context
+import com.aheaditec.freerasp.CaptureType
 import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.utils.Utils
 import io.flutter.Log
@@ -38,6 +39,7 @@ internal class MethodCallHandler : MethodCallHandler {
             it.setMethodCallHandler(this)
         }
 
+        TalsecThreatHandler.attachMethod(sink)
         this.context = context
     }
 
@@ -47,6 +49,7 @@ internal class MethodCallHandler : MethodCallHandler {
     fun destroyMethodChannel() {
         methodChannel?.setMethodCallHandler(null)
         methodChannel = null
+        TalsecThreatHandler.detachMethod()
         this.context = null
     }
 
@@ -78,5 +81,18 @@ internal class MethodCallHandler : MethodCallHandler {
             } ?: throw IllegalStateException("Unable to run Talsec - context is null")
             result.success(null)
         }
+    }
+
+    private val sink = object : MethodSink {
+        override fun onScreenCaptureDetected(captureType: CaptureType) {
+            methodChannel?.invokeMethod(
+                "onScreenCaptureDetected",
+                mapOf(Pair("type", captureType.value))
+            )
+        }
+    }
+
+    internal interface MethodSink {
+        fun onScreenCaptureDetected(captureType: CaptureType)
     }
 }

@@ -16,6 +16,8 @@ AndroidConfig _$AndroidConfigFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
+      enableScreenCaptureGuard:
+          json['enableScreenCaptureGuard'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) =>
@@ -23,4 +25,5 @@ Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) =>
       'packageName': instance.packageName,
       'signingCertHashes': instance.signingCertHashes,
       'supportedStores': instance.supportedStores,
+      'enableScreenCaptureGuard': instance.enableScreenCaptureGuard,
     };
