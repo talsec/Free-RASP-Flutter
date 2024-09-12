@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -178,6 +179,14 @@ class Talsec {
         case Threat.devMode:
           callback.onDevMode?.call();
           break;
+      }
+    });
+
+    methodChannel.setMethodCallHandler((call) {
+      if (call.method == "onScreenCaptureDetected") {
+        final value = call.arguments as int;
+
+        callback.onScreenCaptureDetected?.call(CaptureType.fromInt(value));
       }
     });
   }

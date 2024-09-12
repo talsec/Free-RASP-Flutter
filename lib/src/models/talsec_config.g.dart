@@ -12,8 +12,7 @@ TalsecConfig _$TalsecConfigFromJson(Map<String, dynamic> json) => TalsecConfig(
       androidConfig: json['androidConfig'] == null
           ? null
           : AndroidConfig.fromJson(
-              json['androidConfig'] as Map<String, dynamic>,
-            ),
+              json['androidConfig'] as Map<String, dynamic>),
       iosConfig: json['iosConfig'] == null
           ? null
           : IOSConfig.fromJson(json['iosConfig'] as Map<String, dynamic>),

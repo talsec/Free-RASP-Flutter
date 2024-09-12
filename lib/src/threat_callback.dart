@@ -33,6 +33,7 @@ class ThreatCallback {
     this.onSecureHardwareNotAvailable,
     this.onSystemVPN,
     this.onDevMode,
+    this.onScreenCaptureDetected
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -80,4 +81,24 @@ class ThreatCallback {
 
   /// This method is called whe the device has Developer mode enabled
   final VoidCallback? onDevMode;
+
+  void Function(CaptureType type)? onScreenCaptureDetected;
+}
+
+enum CaptureType {
+  unknown(1115787534),
+  screenshot(0),
+  recording(0),
+  mirroring(0);
+
+  final int value;
+
+  const CaptureType(this.value);
+
+  static CaptureType fromInt(int value) {
+    switch (value) {
+      case 1115787534: return CaptureType.unknown;
+      default: return CaptureType.unknown;
+    }
+  }
 }

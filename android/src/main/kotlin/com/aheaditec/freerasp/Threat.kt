@@ -31,4 +31,6 @@ internal sealed class Threat(val value: Int) {
     object SystemVPN : Threat(659382561)
 
     object DevMode : Threat(45291047)
+
+    object ScreenCapture : Threat(669512294)
 }

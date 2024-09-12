@@ -1,6 +1,10 @@
 package com.aheaditec.freerasp.handlers
 
+import android.app.Activity
 import android.content.Context
+import android.os.Build
+import android.view.WindowManager
+import com.aheaditec.freerasp.CaptureType
 import com.aheaditec.freerasp.Threat
 import com.aheaditec.talsec_security.security.api.Talsec
 import com.aheaditec.talsec_security.security.api.TalsecConfig
@@ -12,16 +16,23 @@ import io.flutter.plugin.common.EventChannel.EventSink
  */
 internal object TalsecThreatHandler {
     private var eventSink: EventSink? = null
+    private var methodSink: MethodCallHandler.MethodSink? = null
     private var isListening = false
+    private var enableScreenCaptureGuard = false
 
     /**
      * Initializes [Talsec] and starts the [PluginThreatHandler] listener with this object.
      *
      * @param context The Android application context.
      */
-    internal fun start(context: Context, config: TalsecConfig) {
+    internal fun start(context: Context, extendedConfig: Pair<TalsecConfig, Boolean>) {
         attachListener(context)
-        Talsec.start(context, config)
+
+        if (extendedConfig.first.isProd && extendedConfig.second) {
+            enableScreenCaptureGuard = true
+        }
+
+        Talsec.start(context, extendedConfig.first)
     }
 
     /**
@@ -116,12 +127,32 @@ internal object TalsecThreatHandler {
         flushThreatCache(eventSink)
     }
 
+    internal fun attachMethod(methodSink: MethodCallHandler.MethodSink) {
+        this.methodSink = methodSink
+    }
+
     /**
      * Called when a listener unsubscribes from the event channel.
      */
     internal fun detachSink() {
         eventSink = null
         PluginThreatHandler.listener = null
+    }
+
+    internal fun detachMethod() {
+        methodSink = null
+    }
+
+    internal fun guardActivity(activity: Activity?) {
+        if (enableScreenCaptureGuard) {
+            activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        }
+
+        if (Build.VERSION.SDK_INT >= 34) {
+            Activity.ScreenCaptureCallback {
+                methodSink?.onScreenCaptureDetected(CaptureType.Unknown)
+            }
+        }
     }
 
     /**
