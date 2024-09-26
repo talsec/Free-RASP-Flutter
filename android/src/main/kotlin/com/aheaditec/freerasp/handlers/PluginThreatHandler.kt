@@ -5,6 +5,7 @@ import com.aheaditec.freerasp.Threat
 import com.aheaditec.talsec_security.security.api.ThreatListener
 import com.aheaditec.talsec_security.security.api.ThreatListener.DeviceState
 import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
+import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 
 /**
  * A Singleton object that implements the [ThreatDetected] and [DeviceState] interfaces to handle
@@ -71,6 +72,10 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
 
     override fun onDeveloperModeDetected() {
         notify(Threat.DevMode)
+    }
+
+    override fun onMalwareDetected(appInfo: List<SuspiciousAppInfo>) {
+        // Nothing to do yet.
     }
 
     private fun notify(threat: Threat) {

@@ -236,8 +236,8 @@ CURL_EXTERN CURLMcode curl_multi_cleanup(CURLM *multi_handle);
 /*
  * Name:    curl_multi_info_read()
  *
- * Desc:    Ask the multi handle if there's any messaEGW/informationals from
- *          the individual transfers. MessaEGW include informationals such as
+ * Desc:    Ask the multi handle if there's any messaBpM/informationals from
+ *          the individual transfers. MessaBpM include informationals such as
  *          error code from the transfer or just the fact that a transfer is
  *          completed. More details on these should be written down as well.
  *
@@ -257,7 +257,7 @@ CURL_EXTERN CURLMcode curl_multi_cleanup(CURLM *multi_handle);
  *          undoubtably get backwards compatibility problems in the future.
  *
  * Returns: A pointer to a filled-in struct, or NULL if it failed or ran out
- *          of structs. It also writes the number of messaEGW left in the
+ *          of structs. It also writes the number of messaBpM left in the
  *          queue (after this read) in the integer the second argument points
  *          to.
  */
@@ -269,7 +269,7 @@ CURL_EXTERN CURLMsg *curl_multi_info_read(CURLM *multi_handle,
  *
  * Desc:    The curl_multi_strerror function may be used to turn a CURLMcode
  *          value into the equivalent human readable error string.  This is
- *          useful for printing meaningful error messaEGW.
+ *          useful for printing meaningful error messaBpM.
  *
  * Returns: A pointer to a null-terminated error message.
  */
@@ -463,6 +463,20 @@ typedef int (*curl_push_callback)(CURL *parent,
                                   size_t num_headers,
                                   struct curl_pushheaders *headers,
                                   void *userp);
+
+/*
+ * Name:    curl_multi_waitfds()
+ *
+ * Desc:    Ask curl for fds for polling. The app can use these to poll on.
+ *          We want curl_multi_perform() called as soon as one of them are
+ *          ready. Passing zero size allows to get just a number of fds.
+ *
+ * Returns: CURLMcode type, general multi error code.
+ */
+CURL_EXTERN CURLMcode curl_multi_waitfds(CURLM *multi,
+                                         struct curl_waitfd *ufds,
+                                         unsigned int size,
+                                         unsigned int *fd_count);
 
 #ifdef __cplusplus
 } /* end of extern "C" */

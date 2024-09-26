@@ -1,3 +1,50 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [6.7.0] - 2024-09-26
+
+- Android SDK version: 11.1.0
+- iOS SDK version: 6.6.0
+
+### Flutter
+
+#### Added
+- Auditing mechanism for runtime checks 
+
+#### Changed
+- Migration to [declarative Gradle plugin](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply)
+- [CHANGELOG.md](CHANGELOG.md) now follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+- Updated [README.md](README.md) with new documentation links
+
+### Android
+
+#### Added
+- Auditing mechanism for runtime checks
+
+#### Changed
+- Breaking: TalsecConfig creation was migrated to a Builder pattern
+- Refactored fetching the list of installed applications for root and hook detection
+- Updated OpenSSL to version 3.0.14
+- Updated CURL to version 8.8.0
+
+#### Fixed
+- Native crashes (SEGFAULT) in `ifpip` method
+- Collision for command line tools (e.g. `ping`) which couldn't be invoked without the full path
+
+### iOS
+
+#### Added
+- [Dopamine](https://github.com/opa334/Dopamine) jailbreak detection.
+
+#### Changed
+- Enhanced and accelerated the data collection logic
+- Updated OpenSSL to version 3.0.14
+- Updated CURL to version 8.8.0
+
 # freeRASP 6.6.0
 
 ## What's new in 6.6.0?
