@@ -42,6 +42,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 - [Dopamine](https://github.com/opa334/Dopamine) jailbreak detection.
 
+#### Changed
+- Enhanced and accelerated the data collection logic
+
 #### Security
 - Updated OpenSSL to version 3.0.14
 - Updated CURL to version 8.8.0
