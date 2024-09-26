@@ -2,6 +2,7 @@ package com.aheaditec.freerasp.handlers
 
 import android.content.Context
 import com.aheaditec.freerasp.Threat
+import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.Talsec
 import com.aheaditec.talsec_security.security.api.TalsecConfig
 import io.flutter.plugin.common.EventChannel.EventSink
@@ -12,6 +13,7 @@ import io.flutter.plugin.common.EventChannel.EventSink
  */
 internal object TalsecThreatHandler {
     private var eventSink: EventSink? = null
+    private var methodSink: MethodCallInvoker.MethodSink? = null
     private var isListening = false
 
     /**
@@ -78,7 +80,7 @@ internal object TalsecThreatHandler {
      * In contrast to [detachListener], this function does not unregister the listener. It only
      * suspends the listener, meaning all detected threats are cached and sent later.
      *
-     * In contrast to [detachSink], this function does not nullify the [eventSink]. It only suspends
+     * In contrast to [detachEventSink], this function does not nullify the [eventSink]. It only suspends
      * sending events to the event sink. This is useful when the application goes to background and
      * [EventSink] is not destroyed but also is not able to send events.
      */
@@ -92,7 +94,7 @@ internal object TalsecThreatHandler {
      * In contrast to [attachListener], this function does not register the listener. It only
      * resumes the listener, meaning all cached threats are sent to the [EventSink].
      *
-     * In contrast to [attachSink], this function does not assign new [EventSink] to [eventSink].
+     * In contrast to [attachEventSink], this function does not assign new [EventSink] to [eventSink].
      * It only resumes sending events to the current [eventSink].
      * This is useful when the application comes to foreground and [EventSink] is not destroyed but
      * also is not able to send events.
@@ -110,7 +112,7 @@ internal object TalsecThreatHandler {
      *
      * @param eventSink The event sink of the new listener.
      */
-    internal fun attachSink(eventSink: EventSink) {
+    internal fun attachEventSink(eventSink: EventSink) {
         this.eventSink = eventSink
         PluginThreatHandler.listener = ThreatListener
         flushThreatCache(eventSink)
@@ -119,7 +121,7 @@ internal object TalsecThreatHandler {
     /**
      * Called when a listener unsubscribes from the event channel.
      */
-    internal fun detachSink() {
+    internal fun detachEventSink() {
         eventSink = null
         PluginThreatHandler.listener = null
     }
@@ -134,6 +136,19 @@ internal object TalsecThreatHandler {
             eventSink?.success(it.value)
         }
         PluginThreatHandler.detectedThreats.clear()
+
+        PluginThreatHandler.detectedMalware.let {
+            methodSink?.onMalwareDetected(it)
+        }
+        PluginThreatHandler.detectedMalware.clear()
+    }
+
+    internal fun attachMethodSink(methodSink: MethodCallInvoker.MethodSink) {
+        this.methodSink = methodSink
+    }
+
+    internal fun detachMethodSink() {
+        methodSink = null
     }
 
     /**
@@ -145,5 +160,10 @@ internal object TalsecThreatHandler {
         override fun threatDetected(threatType: Threat) {
             eventSink?.success(threatType.value)
         }
+
+        override fun malwareDetected(suspiciousApps: List<SuspiciousAppInfo>) {
+            methodSink?.onMalwareDetected(suspiciousApps)
+        }
     }
 }
+
