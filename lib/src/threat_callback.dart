@@ -33,6 +33,7 @@ class ThreatCallback {
     this.onSecureHardwareNotAvailable,
     this.onSystemVPN,
     this.onDevMode,
+    this.onMalware,
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -80,4 +81,7 @@ class ThreatCallback {
 
   /// This method is called whe the device has Developer mode enabled
   final VoidCallback? onDevMode;
+
+  /// This method is called when malware is detected on the device
+  final MalwareCallback? onMalware;
 }
