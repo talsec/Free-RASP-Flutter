@@ -28,14 +28,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Changed
 - Breaking: TalsecConfig creation was migrated to a Builder pattern
 - Refactored fetching the list of installed applications for root and hook detection
+- Updated OpenSSL to version 3.0.14
+- Updated CURL to version 8.8.0
 
 #### Fixed
 - Native crashes (SEGFAULT) in `ifpip` method
 - Collision for command line tools (e.g. `ping`) which couldn't be invoked without the full path
-
-#### Security
-- Updated OpenSSL to version 3.0.14
-- Updated CURL to version 8.8.0
 
 ### iOS
 
@@ -44,8 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Changed
 - Enhanced and accelerated the data collection logic
-
-#### Security
 - Updated OpenSSL to version 3.0.14
 - Updated CURL to version 8.8.0
 
