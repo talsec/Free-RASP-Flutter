@@ -11,6 +11,10 @@ class AndroidConfig {
     required this.packageName,
     required this.signingCertHashes,
     this.supportedStores = const <String>[],
+    this.blocklistedPackageNames = const <String>[],
+    this.blocklistedHashes = const <String>[],
+    this.blocklistedPermissions = const <List<String>>[[]],
+    this.whitelistedInstallationSources = const <String>[],
   }) {
     ConfigVerifier.verifyAndroid(this);
   }
@@ -30,4 +34,12 @@ class AndroidConfig {
 
   /// List of supported sources where application can be installed from.
   final List<String> supportedStores;
+
+  final List<String> blocklistedPackageNames;
+
+  final List<String> blocklistedHashes;
+
+  final List<List<String>> blocklistedPermissions;
+
+  final List<String> whitelistedInstallationSources;
 }
