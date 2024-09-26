@@ -50,7 +50,7 @@ Learn more about freemium freeRASP features at [GitHub main repository](https://
 Visit the [GitBook page](https://docs.talsec.app/freerasp) for comprehensive and up-to-date guides, tutorials, and technical documentation specifically for freeRASP. It serves as your go-to resource, offering everything from basic instructions to advanced tips and tricks to help you get the most out of the project.
 
 ## :link: Integration Guide
-For integrating freeRASP on the Android platform, be sure to follow all the steps in the [Integration Guide](https://docs.talsec.app/freerasp/integration). This guide provides detailed instructions to help you achieve a smooth and efficient integration.
+For integrating freeRASP on the Flutter, be sure to follow all the steps in the [Integration Guide](https://docs.talsec.app/freerasp/integration). This guide provides detailed instructions to help you achieve a smooth and efficient integration.
 
 Be sure to bookmark it and stay informed! :books: :sparkles:.
 
@@ -67,7 +67,7 @@ Don’t miss out on any updates and explore the changelog to see how we’re con
 
 # :sparkles: Enhancements
 
-If you have any ideas for improvements, feel free to [raise an issue](https://github.com/talsec/Free-RASP-Android/issues) and mark it with an **enhancement** label. We track these enhancements using [GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects) to keep tasks organized and connected to relevant issues or pull requests.
+If you have any ideas for improvements, feel free to [raise an issue](https://github.com/talsec/Free-RASP-Flutter/issues) and mark it with an **enhancement** label. We track these enhancements using [GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects) to keep tasks organized and connected to relevant issues or pull requests.
 
 You can check out the project board [here](https://github.com/orgs/talsec/projects/2).
 
