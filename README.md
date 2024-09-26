@@ -50,7 +50,7 @@ Learn more about freemium freeRASP features at [GitHub main repository](https://
 Visit the [GitBook page](https://docs.talsec.app/freerasp) for comprehensive and up-to-date guides, tutorials, and technical documentation specifically for freeRASP. It serves as your go-to resource, offering everything from basic instructions to advanced tips and tricks to help you get the most out of the project.
 
 ## :link: Integration Guide
-For integrating freeRASP on the Flutter, be sure to follow all the steps in the [Integration Guide](https://docs.talsec.app/freerasp/integration). This guide provides detailed instructions to help you achieve a smooth and efficient integration.
+For integrating freeRASP on the Flutter platform, be sure to follow all the steps in the [Integration Guide](https://docs.talsec.app/freerasp/integration). This guide provides detailed instructions to help you achieve a smooth and efficient integration.
 
 Be sure to bookmark it and stay informed! :books: :sparkles:.
 
@@ -58,7 +58,7 @@ Be sure to bookmark it and stay informed! :books: :sparkles:.
 
 If you have any suggestions for improvement or notice anything that could be clarified in the new GitBook documentation, please open an issue. Your feedback helps us maintain high-quality resources for all users.
 
-For information on older integration methods, you can refer to the [freeRASP wiki](https://github.com/talsec/Free-RASP-Android/wiki), which includes comprehensive legacy details and guidance. Additionally, the old integration can be found when you checkout to a specific tag. Your input is invaluable in helping us improve our resources and provide even better support for your needs.
+For information on older integration methods, you can refer to the [freeRASP wiki](https://github.com/talsec/Free-RASP-Flutter/wiki), which includes comprehensive legacy details and guidance. Additionally, the old integration can be found when you checkout to a specific tag. Your input is invaluable in helping us improve our resources and provide even better support for your needs.
 
 # :rocket: What's New and Changelog
 Stay informed and make the most of freeRASP by checking out [What's New and Changelog](https://docs.talsec.app/freerasp/whats-new-and-changelog)! Here, you’ll discover the latest features, enhancements, and bug fixes we’ve implemented to improve your experience across all platforms, including Android, iOS, Flutter, React Native, Capacitor, and Cordova.
