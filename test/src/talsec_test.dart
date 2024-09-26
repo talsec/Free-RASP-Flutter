@@ -43,8 +43,11 @@ void main() {
           watcherMail: mockWatcherMail,
         );
         // Act
-        final talsec =
-            Talsec.private(methodChannel.methodChannel, FakeEventChannel());
+        final talsec = Talsec.private(
+          methodChannel.methodChannel,
+          methodChannel.methodChannel,
+          FakeEventChannel(),
+        );
 
         // Assert
         expect(
@@ -67,8 +70,11 @@ void main() {
           watcherMail: mockWatcherMail,
         );
         // Act
-        final talsec =
-            Talsec.private(methodChannel.methodChannel, FakeEventChannel());
+        final talsec = Talsec.private(
+          methodChannel.methodChannel,
+          methodChannel.methodChannel,
+          FakeEventChannel(),
+        );
 
         // Assert
         expect(
@@ -87,8 +93,11 @@ void main() {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
 
         // Act
-        final talsec =
-            Talsec.private(methodChannel.methodChannel, FakeEventChannel());
+        final talsec = Talsec.private(
+          methodChannel.methodChannel,
+          methodChannel.methodChannel,
+          FakeEventChannel(),
+        );
 
         // Assert
         expect(
@@ -113,8 +122,11 @@ void main() {
         );
 
         // Act
-        final talsec =
-            Talsec.private(methodChannel.methodChannel, FakeEventChannel());
+        final talsec = Talsec.private(
+          methodChannel.methodChannel,
+          methodChannel.methodChannel,
+          FakeEventChannel(),
+        );
 
         // Assert
         expect(
@@ -151,8 +163,11 @@ void main() {
           1115787534,
         ],
       );
-      final talsec =
-          Talsec.private(FakeMethodChannel(), eventChannel.eventChannel);
+      final talsec = Talsec.private(
+        FakeMethodChannel(),
+        FakeMethodChannel(),
+        eventChannel.eventChannel,
+      );
 
       // Act
       final stream = talsec.onThreatDetected;
@@ -174,8 +189,11 @@ void main() {
         data: [],
         exceptions: [PlatformException(code: 'dummy-code')],
       );
-      final talsec =
-          Talsec.private(FakeMethodChannel(), eventChannel.eventChannel);
+      final talsec = Talsec.private(
+        FakeMethodChannel(),
+        FakeMethodChannel(),
+        eventChannel.eventChannel,
+      );
 
       // Act
       final stream = talsec.onThreatDetected;
@@ -205,8 +223,11 @@ void main() {
         ],
         exceptions: [PlatformException(code: 'dummy-code')],
       );
-      final talsec =
-          Talsec.private(FakeMethodChannel(), eventChannel.eventChannel);
+      final talsec = Talsec.private(
+        FakeMethodChannel(),
+        FakeMethodChannel(),
+        eventChannel.eventChannel,
+      );
 
       // Act
       final stream = talsec.onThreatDetected;
