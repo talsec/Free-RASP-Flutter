@@ -3,6 +3,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.7.20'
+    ext.talsec_version = '11.1.0'
     repositories {
         google()
         mavenCentral()
@@ -56,5 +57,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Talsec SDK
-    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:11.1.0'
+    implementation "com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:$talsec_version"
 }
