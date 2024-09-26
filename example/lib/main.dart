@@ -19,6 +19,7 @@ void main() async {
       packageName: 'com.aheaditec.freeraspExample',
       signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       supportedStores: ['com.sec.android.app.samsungapps'],
+      blocklistedPackageNames: ['com.aheaditec.freeraspExample'],
     ),
 
     /// For iOS
