@@ -31,13 +31,11 @@ internal class Utils {
                 isProd = json.getBoolean("isProd")
             }
 
-            return TalsecConfig(
-                packageName,
-                certificateHashes.toTypedArray(),
-                watcherMail,
-                alternativeStores.toTypedArray(),
-                isProd
-            )
+            return TalsecConfig.Builder(packageName, certificateHashes.toTypedArray())
+                .watcherMail(watcherMail)
+                .supportedAlternativeStores(alternativeStores.toTypedArray())
+                .prod(isProd)
+                .build()
         }
     }
 }
