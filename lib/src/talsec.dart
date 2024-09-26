@@ -27,7 +27,17 @@ import 'package:freerasp/freerasp.dart';
 class Talsec {
   /// Private constructor for internal and testing purposes.
   @visibleForTesting
-  Talsec.private(this.methodChannel, this.eventChannel);
+  Talsec.private(this.methodChannel, this.handlerChannel, this.eventChannel) {
+   handlerChannel.setMethodCallHandler(_methodHandler);
+  }
+
+  Future<dynamic> _methodHandler(MethodCall call) async {
+    if (call.method != 'onMalwareDetected') {
+      return;
+    }
+
+    print("data");
+  }
 
   /// Named channel used to communicate with platform plugins.
   ///
@@ -42,8 +52,12 @@ class Talsec {
   static const MethodChannel _methodChannel =
       MethodChannel('talsec.app/freerasp/methods');
 
+  static const MethodChannel _handlerChannel =
+      MethodChannel('talsec.app/freerasp/invoke');
+
   /// Private [Talsec] variable which holds current instance of class.
-  static final _instance = Talsec.private(_methodChannel, _eventChannel);
+  static final _instance =
+      Talsec.private(_methodChannel, _handlerChannel, _eventChannel);
 
   /// Initialize Talsec lazily/obtain current instance of Talsec.
   static Talsec get instance => _instance;
@@ -52,6 +66,10 @@ class Talsec {
   @visibleForTesting
   late final MethodChannel methodChannel;
 
+  /// [MethodChannel] used to invoke native platform.
+  @visibleForTesting
+  late final MethodChannel handlerChannel;
+
   /// [EventChannel] used to receive Threats from the native platform.
   @visibleForTesting
   late final EventChannel eventChannel;
@@ -59,6 +77,8 @@ class Talsec {
   StreamSubscription<Threat>? _streamSubscription;
 
   Stream<Threat>? _onThreatDetected;
+
+  List<SuspiciousAppInfo> _suspiciousAppsCache = [];
 
   /// Returns a broadcast stream. When security is compromised
   /// [onThreatDetected] receives what type of Threat caused it.
@@ -96,6 +116,8 @@ class Talsec {
 
     return _onThreatDetected!;
   }
+
+  ThreatCallback? _callback;
 
   /// Starts freeRASP with configuration provided in [config].
   Future<void> start(TalsecConfig config) {
@@ -137,46 +159,47 @@ class Talsec {
   /// invoked.
   void attachListener(ThreatCallback callback) {
     detachListener();
+    _callback = callback;
     _streamSubscription ??= onThreatDetected.listen((event) {
       switch (event) {
         case Threat.hooks:
-          callback.onHooks?.call();
+          _callback?.onHooks?.call();
           break;
         case Threat.debug:
-          callback.onDebug?.call();
+          _callback?.onDebug?.call();
           break;
         case Threat.passcode:
-          callback.onPasscode?.call();
+          _callback?.onPasscode?.call();
           break;
         case Threat.deviceId:
-          callback.onDeviceID?.call();
+          _callback?.onDeviceID?.call();
           break;
         case Threat.simulator:
-          callback.onSimulator?.call();
+          _callback?.onSimulator?.call();
           break;
         case Threat.appIntegrity:
-          callback.onAppIntegrity?.call();
+          _callback?.onAppIntegrity?.call();
           break;
         case Threat.obfuscationIssues:
-          callback.onObfuscationIssues?.call();
+          _callback?.onObfuscationIssues?.call();
           break;
         case Threat.deviceBinding:
-          callback.onDeviceBinding?.call();
+          _callback?.onDeviceBinding?.call();
           break;
         case Threat.unofficialStore:
-          callback.onUnofficialStore?.call();
+          _callback?.onUnofficialStore?.call();
           break;
         case Threat.privilegedAccess:
-          callback.onPrivilegedAccess?.call();
+          _callback?.onPrivilegedAccess?.call();
           break;
         case Threat.secureHardwareNotAvailable:
-          callback.onSecureHardwareNotAvailable?.call();
+          _callback?.onSecureHardwareNotAvailable?.call();
           break;
         case Threat.systemVPN:
-          callback.onSystemVPN?.call();
+          _callback?.onSystemVPN?.call();
           break;
         case Threat.devMode:
-          callback.onDevMode?.call();
+          _callback?.onDevMode?.call();
           break;
       }
     });
@@ -189,6 +212,7 @@ class Talsec {
   void detachListener() {
     _streamSubscription?.cancel();
     _streamSubscription = null;
+    _callback = null;
   }
 
   void _handleStreamError(Object error) {
