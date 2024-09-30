@@ -3,7 +3,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.7.20'
-    ext.talsec_version = '11.1.0'
+    ext.talsec_version = '11.1.1'
     repositories {
         google()
         mavenCentral()
