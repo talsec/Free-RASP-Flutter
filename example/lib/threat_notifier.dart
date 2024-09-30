@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +23,7 @@ class ThreatNotifier extends StateNotifier<Map<Threat, bool>> {
       onUnofficialStore: () => _updateThreat(Threat.unofficialStore),
       onSystemVPN: () => _updateThreat(Threat.systemVPN),
       onDevMode: () => _updateThreat(Threat.devMode),
+      onMalware: (threat) => log('Malware detected: $threat'),
     );
 
     Talsec.instance.attachListener(callback);

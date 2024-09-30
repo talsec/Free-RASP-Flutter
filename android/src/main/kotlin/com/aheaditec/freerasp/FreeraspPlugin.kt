@@ -5,7 +5,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.aheaditec.freerasp.handlers.MethodCallHandler
-import com.aheaditec.freerasp.handlers.MethodCallInvoker
 import com.aheaditec.freerasp.handlers.StreamHandler
 import com.aheaditec.freerasp.handlers.TalsecThreatHandler
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -18,7 +17,6 @@ import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
 class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     private var streamHandler: StreamHandler = StreamHandler()
     private var methodCallHandler: MethodCallHandler = MethodCallHandler()
-    private var methodCallInvoker : MethodCallInvoker = MethodCallInvoker()
 
     private var context: Context? = null
     private var lifecycle: Lifecycle? = null
@@ -28,13 +26,11 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
         context = flutterPluginBinding.applicationContext
 
         methodCallHandler.createMethodChannel(messenger, flutterPluginBinding.applicationContext)
-        methodCallInvoker.createMethodChannel(messenger, flutterPluginBinding.applicationContext)
         streamHandler.createEventChannel(messenger)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         methodCallHandler.destroyMethodChannel()
-        methodCallInvoker.destroyMethodChannel()
         streamHandler.destroyEventChannel()
         TalsecThreatHandler.detachListener(binding.applicationContext)
     }

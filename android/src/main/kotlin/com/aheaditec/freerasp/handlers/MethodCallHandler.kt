@@ -2,7 +2,11 @@ package com.aheaditec.freerasp.handlers
 
 import android.content.Context
 import com.aheaditec.freerasp.runResultCatching
-import com.aheaditec.freerasp.utils.Utils
+import com.aheaditec.freerasp.Utils
+import com.aheaditec.freerasp.generated.TalsecPigeonApi
+import com.aheaditec.freerasp.getOrElseThenThrow
+import com.aheaditec.freerasp.toPigeon
+import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import io.flutter.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -15,9 +19,29 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 internal class MethodCallHandler : MethodCallHandler {
     private var context: Context? = null
     private var methodChannel: MethodChannel? = null
+    private var pigeonApi: TalsecPigeonApi? = null
 
     companion object {
         private const val CHANNEL_NAME: String = "talsec.app/freerasp/methods"
+    }
+
+    private val sink = object : MethodSink {
+        override fun onMalwareDetected(packageInfo: List<SuspiciousAppInfo>) {
+            context?.let { context ->
+                val pigeonPackageInfo = packageInfo.map { it.toPigeon(context) }
+                pigeonApi?.onMalwareDetected(pigeonPackageInfo) { result ->
+                    // Parse the result (which is Unit so we can ignore it) or throw an exception
+                    // Exceptions are translated to Flutter errors automatically
+                    result.getOrElseThenThrow {
+                        Log.e("MethodCallHandlerSink", "Result ended with failure")
+                    }
+                }
+            }
+        }
+    }
+
+    internal interface MethodSink {
+        fun onMalwareDetected(packageInfo: List<SuspiciousAppInfo>)
     }
 
     /**
@@ -39,6 +63,9 @@ internal class MethodCallHandler : MethodCallHandler {
         }
 
         this.context = context
+        this.pigeonApi = TalsecPigeonApi(messenger)
+
+        TalsecThreatHandler.attachMethodSink(sink)
     }
 
     /**
@@ -47,7 +74,11 @@ internal class MethodCallHandler : MethodCallHandler {
     fun destroyMethodChannel() {
         methodChannel?.setMethodCallHandler(null)
         methodChannel = null
+
         this.context = null
+        this.pigeonApi = null
+
+        TalsecThreatHandler.detachMethodSink()
     }
 
     /**

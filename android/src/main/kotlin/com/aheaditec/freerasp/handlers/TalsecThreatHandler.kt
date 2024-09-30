@@ -13,7 +13,7 @@ import io.flutter.plugin.common.EventChannel.EventSink
  */
 internal object TalsecThreatHandler {
     private var eventSink: EventSink? = null
-    private var methodSink: MethodCallInvoker.MethodSink? = null
+    private var methodSink: MethodCallHandler.MethodSink? = null
     private var isListening = false
 
     /**
@@ -135,16 +135,19 @@ internal object TalsecThreatHandler {
         PluginThreatHandler.detectedThreats.forEach {
             eventSink?.success(it.value)
         }
-        PluginThreatHandler.detectedThreats.clear()
 
         PluginThreatHandler.detectedMalware.let {
-            methodSink?.onMalwareDetected(it)
+            if (it.isNotEmpty()) {
+                methodSink?.onMalwareDetected(it)
+            }
         }
+
+        PluginThreatHandler.detectedThreats.clear()
         PluginThreatHandler.detectedMalware.clear()
     }
 
-    internal fun attachMethodSink(methodSink: MethodCallInvoker.MethodSink) {
-        this.methodSink = methodSink
+    internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
+        this.methodSink = sink
     }
 
     internal fun detachMethodSink() {

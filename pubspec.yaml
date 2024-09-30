@@ -29,6 +29,7 @@ dev_dependencies:
     sdk: flutter
   json_serializable: ^6.0.1
   mocktail: ^0.2.0
+  pigeon: ^22.4.0
   very_good_analysis: ^3.0.0
 
 flutter:
