@@ -45,7 +45,6 @@ void main() {
         // Act
         final talsec = Talsec.private(
           methodChannel.methodChannel,
-          methodChannel.methodChannel,
           FakeEventChannel(),
         );
 
@@ -72,7 +71,6 @@ void main() {
         // Act
         final talsec = Talsec.private(
           methodChannel.methodChannel,
-          methodChannel.methodChannel,
           FakeEventChannel(),
         );
 
@@ -94,7 +92,6 @@ void main() {
 
         // Act
         final talsec = Talsec.private(
-          methodChannel.methodChannel,
           methodChannel.methodChannel,
           FakeEventChannel(),
         );
@@ -123,7 +120,6 @@ void main() {
 
         // Act
         final talsec = Talsec.private(
-          methodChannel.methodChannel,
           methodChannel.methodChannel,
           FakeEventChannel(),
         );
@@ -165,7 +161,6 @@ void main() {
       );
       final talsec = Talsec.private(
         FakeMethodChannel(),
-        FakeMethodChannel(),
         eventChannel.eventChannel,
       );
 
@@ -190,7 +185,6 @@ void main() {
         exceptions: [PlatformException(code: 'dummy-code')],
       );
       final talsec = Talsec.private(
-        FakeMethodChannel(),
         FakeMethodChannel(),
         eventChannel.eventChannel,
       );
@@ -224,7 +218,6 @@ void main() {
         exceptions: [PlatformException(code: 'dummy-code')],
       );
       final talsec = Talsec.private(
-        FakeMethodChannel(),
         FakeMethodChannel(),
         eventChannel.eventChannel,
       );
