@@ -28,10 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Fixed
 - False positives for hook detection
 
-## [6.8.0] - 2024-10-01
-
-
-
 ## [6.7.0] - 2024-09-26
 
 - Android SDK version: 11.1.0
