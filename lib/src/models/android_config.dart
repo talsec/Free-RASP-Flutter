@@ -35,11 +35,15 @@ class AndroidConfig {
   /// List of supported sources where application can be installed from.
   final List<String> supportedStores;
 
+  /// List of blocklisted applications with given package name.
   final List<String> blocklistedPackageNames;
 
+  /// List of blocklisted applications with given hash.
   final List<String> blocklistedHashes;
 
+  /// List of blocklisted applications with given permissions.
   final List<List<String>> blocklistedPermissions;
 
+  /// List of whitelisted installation sources.
   final List<String> whitelistedInstallationSources;
 }
