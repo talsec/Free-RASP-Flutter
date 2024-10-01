@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.8.0] - 2024-10-01
+- Android SDK version: 11.1.1
+- iOS SDK version: 6.6.0
+
+### Android
+
+#### Added
+- Implement empty callbacks for malware detection
+
+### Flutter
+
+#### Added
+- Application detection and restriction based on configuration
+
 ## [6.7.1] - 2024-09-30
 - Android SDK version: 11.1.1
 - iOS SDK version: 6.6.0
@@ -13,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Fixed
 - False positives for hook detection
+
+## [6.8.0] - 2024-10-01
+
+
 
 ## [6.7.0] - 2024-09-26
 
