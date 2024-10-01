@@ -7,6 +7,7 @@ import com.aheaditec.freerasp.generated.TalsecPigeonApi
 import com.aheaditec.freerasp.getOrElseThenThrow
 import com.aheaditec.freerasp.toPigeon
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
+import com.aheaditec.talsec_security.security.api.Talsec
 import io.flutter.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -90,6 +91,7 @@ internal class MethodCallHandler : MethodCallHandler {
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "start" -> start(call, result)
+            "addToWhitelist" -> addToWhitelist(call, result)
             else -> result.notImplemented()
         }
     }
@@ -107,6 +109,18 @@ internal class MethodCallHandler : MethodCallHandler {
             context?.let {
                 TalsecThreatHandler.start(it, talsecConfig)
             } ?: throw IllegalStateException("Unable to run Talsec - context is null")
+            result.success(null)
+        }
+    }
+
+    private fun addToWhitelist(call: MethodCall, result: MethodChannel.Result) {
+        runResultCatching(result) {
+            val packageName = call.argument<String>("packageName")
+            context?.let {
+                if (packageName != null) {
+                    Talsec.addToWhitelist(it, packageName)
+                }
+            } ?: throw IllegalStateException("Unable to add package to whitelist - context is null")
             result.success(null)
         }
     }
