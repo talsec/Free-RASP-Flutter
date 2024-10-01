@@ -44,8 +44,7 @@ class Talsec {
       MethodChannel('talsec.app/freerasp/methods');
 
   /// Private [Talsec] variable which holds current instance of class.
-  static final _instance =
-      Talsec.private(_methodChannel, _eventChannel);
+  static final _instance = Talsec.private(_methodChannel, _eventChannel);
 
   /// Initialize Talsec lazily/obtain current instance of Talsec.
   static Talsec get instance => _instance;
@@ -105,6 +104,22 @@ class Talsec {
     return methodChannel.invokeMethod(
       'start',
       {'config': jsonEncode(config.toJson())},
+    );
+  }
+
+  /// Adds [packageName] to the whitelist.
+  ///
+  /// Once added, the package will be excluded from the list of blocklisted
+  /// packages and won't appear in the list of suspicious applications in
+  /// the future detections.
+  ///
+  /// **Adding package is one-way process** - to remove the package from the
+  /// whitelist, you need to remove application data or reinstall the
+  /// application.
+  Future<void> addToWhitelist(String packageName) {
+    return methodChannel.invokeMethod(
+      'addToWhitelist',
+      {'packageName': packageName},
     );
   }
 
