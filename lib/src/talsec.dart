@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
+import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
 
 /// A class which maintains all security related operations.
 ///
@@ -106,6 +108,26 @@ class Talsec {
     );
   }
 
+  /// Adds [packageName] to the whitelist.
+  ///
+  /// Once added, the package will be excluded from the list of blocklisted
+  /// packages and won't appear in the list of suspicious applications in
+  /// the future detections.
+  ///
+  /// **Adding package is one-way process** - to remove the package from the
+  /// whitelist, you need to remove application data or reinstall the
+  /// application.
+  Future<void> addToWhitelist(String packageName) async {
+    if (!Platform.isAndroid) {
+      return;
+    }
+
+    return methodChannel.invokeMethod(
+      'addToWhitelist',
+      {'packageName': packageName},
+    );
+  }
+
   void _checkConfig(TalsecConfig config) {
     // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
@@ -136,6 +158,7 @@ class Talsec {
   /// When threat is detected, respective callback of [ThreatCallback] is
   /// invoked.
   void attachListener(ThreatCallback callback) {
+    TalsecPigeonApi.setUp(callback);
     detachListener();
     _streamSubscription ??= onThreatDetected.listen((event) {
       switch (event) {

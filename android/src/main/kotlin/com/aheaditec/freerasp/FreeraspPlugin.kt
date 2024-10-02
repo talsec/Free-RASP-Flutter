@@ -17,6 +17,7 @@ import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
 class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     private var streamHandler: StreamHandler = StreamHandler()
     private var methodCallHandler: MethodCallHandler = MethodCallHandler()
+
     private var context: Context? = null
     private var lifecycle: Lifecycle? = null
 

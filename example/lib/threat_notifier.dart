@@ -1,49 +1,42 @@
-import 'dart:io';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
+import 'package:freerasp_example/threat_state.dart';
 
 /// Class responsible for setting up listeners to detected threats
-class ThreatNotifier extends StateNotifier<Map<Threat, bool>> {
-  /// Sets up reactions to detected threats and starts the threat listener
-  ThreatNotifier() : super(_emptyState()) {
-    final callback = ThreatCallback(
+class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
+  @override
+  ThreatState build() {
+    _init();
+    return ThreatState.initial();
+  }
+
+  void _init() {
+    final threatCallback = ThreatCallback(
+      onMalware: _updateMalware,
+      onHooks: () => _updateThreat(Threat.hooks),
+      onDebug: () => _updateThreat(Threat.debug),
+      onPasscode: () => _updateThreat(Threat.passcode),
+      onDeviceID: () => _updateThreat(Threat.deviceId),
+      onSimulator: () => _updateThreat(Threat.simulator),
       onAppIntegrity: () => _updateThreat(Threat.appIntegrity),
       onObfuscationIssues: () => _updateThreat(Threat.obfuscationIssues),
-      onDebug: () => _updateThreat(Threat.debug),
       onDeviceBinding: () => _updateThreat(Threat.deviceBinding),
-      onDeviceID: () => _updateThreat(Threat.deviceId),
-      onHooks: () => _updateThreat(Threat.hooks),
-      onPasscode: () => _updateThreat(Threat.passcode),
+      onUnofficialStore: () => _updateThreat(Threat.unofficialStore),
       onPrivilegedAccess: () => _updateThreat(Threat.privilegedAccess),
       onSecureHardwareNotAvailable: () =>
           _updateThreat(Threat.secureHardwareNotAvailable),
-      onSimulator: () => _updateThreat(Threat.simulator),
-      onUnofficialStore: () => _updateThreat(Threat.unofficialStore),
       onSystemVPN: () => _updateThreat(Threat.systemVPN),
       onDevMode: () => _updateThreat(Threat.devMode),
     );
 
-    Talsec.instance.attachListener(callback);
-  }
-
-  static Map<Threat, bool> _emptyState() {
-    final threatMap =
-        Threat.values.asMap().map((key, value) => MapEntry(value, false));
-
-    if (Platform.isAndroid) {
-      threatMap.remove(Threat.deviceId);
-    }
-
-    if (Platform.isIOS) {
-      threatMap.remove(Threat.devMode);
-    }
-
-    return threatMap;
+    Talsec.instance.attachListener(threatCallback);
   }
 
   void _updateThreat(Threat threat) {
-    final threatMap = {threat: true};
-    state = {...state, ...threatMap};
+    state = state.copyWith(detectedThreats: {...state.detectedThreats, threat});
+  }
+
+  void _updateMalware(List<SuspiciousAppInfo?> malware) {
+    state = state.copyWith(detectedMalware: malware.nonNulls.toList());
   }
 }
