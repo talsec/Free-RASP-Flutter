@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -116,7 +117,11 @@ class Talsec {
   /// **Adding package is one-way process** - to remove the package from the
   /// whitelist, you need to remove application data or reinstall the
   /// application.
-  Future<void> addToWhitelist(String packageName) {
+  Future<void> addToWhitelist(String packageName) async {
+    if (!Platform.isAndroid) {
+      return;
+    }
+
     return methodChannel.invokeMethod(
       'addToWhitelist',
       {'packageName': packageName},

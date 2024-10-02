@@ -3,10 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
-import 'package:freerasp_example/extensions.dart';
-import 'package:freerasp_example/safety_icon.dart';
 import 'package:freerasp_example/threat_notifier.dart';
 import 'package:freerasp_example/threat_state.dart';
+import 'package:freerasp_example/widgets/widgets.dart';
 
 /// Represents current state of the threats detectable by freeRASP
 final threatProvider =
@@ -85,75 +84,11 @@ class HomePage extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               Expanded(
-                child: _ThreatListView(threatState: threatState),
+                child: ThreatListView(threats: threatState.detectedThreats),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// ListView displaying all detected threats
-class _ThreatListView extends StatelessWidget {
-  const _ThreatListView({required this.threatState});
-
-  final ThreatState threatState;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: Threat.values.length,
-      itemBuilder: (context, index) {
-        final currentThreat = Threat.values[index];
-        final isDetected = threatState.detectedThreats.contains(currentThreat);
-
-        return ListTile(
-          title: Text(currentThreat.name.toTitleCase()),
-          subtitle: Text(isDetected ? 'Danger' : 'Safe'),
-          trailing: SafetyIcon(isDetected: isDetected),
-        );
-      },
-      separatorBuilder: (_, __) => const Divider(height: 1),
-    );
-  }
-}
-
-/// Bottom sheet widget that displays malware information
-class MalwareBottomSheet extends StatelessWidget {
-  const MalwareBottomSheet({super.key, required this.suspiciousApps});
-
-  final List<SuspiciousAppInfo> suspiciousApps;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Suspicious Apps', style: textTheme.titleMedium),
-          const SizedBox(height: 8),
-          ...suspiciousApps.map((malware) {
-            return ListTile(
-              title: Text(malware.packageInfo.packageName),
-              subtitle: Text('Reason: ${malware.reason}'),
-              leading: const Icon(Icons.warning, color: Colors.red),
-            );
-          }),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Dismiss'),
-            ),
-          ),
-        ],
       ),
     );
   }
