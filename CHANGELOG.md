@@ -9,15 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Android SDK version: 11.1.1
 - iOS SDK version: 6.6.0
 
-### Android
-
-#### Added
-- Implement empty callbacks for malware detection
-
 ### Flutter
 
 #### Added
 - Application detection and restriction based on configuration
+
+### Android
+
+#### Added
+- New feature: Malware detection
 
 ## [6.7.1] - 2024-09-30
 - Android SDK version: 11.1.1
