@@ -104,8 +104,9 @@ void _showMalwareBottomSheet(
       context: context,
       isDismissible: false,
       enableDrag: false,
-      builder: (BuildContext context) =>
-          MalwareBottomSheet(suspiciousApps: suspiciousApps),
+      builder: (BuildContext context) => MalwareBottomSheet(
+        suspiciousApps: suspiciousApps,
+      ),
     );
   });
 }
