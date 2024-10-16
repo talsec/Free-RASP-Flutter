@@ -137,14 +137,17 @@ class Talsec {
             message: 'Android config is required for Android platform',
           );
         }
-        break;
       case TargetPlatform.iOS:
         if (config.iosConfig == null) {
           throw const ConfigurationException(
             message: 'iOS config is required for iOS platform',
           );
         }
-        break;
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.macOS:
+      case TargetPlatform.windows:
+        throw UnimplementedError('Platform is not supported');
     }
   }
 
@@ -164,43 +167,30 @@ class Talsec {
       switch (event) {
         case Threat.hooks:
           callback.onHooks?.call();
-          break;
         case Threat.debug:
           callback.onDebug?.call();
-          break;
         case Threat.passcode:
           callback.onPasscode?.call();
-          break;
         case Threat.deviceId:
           callback.onDeviceID?.call();
-          break;
         case Threat.simulator:
           callback.onSimulator?.call();
-          break;
         case Threat.appIntegrity:
           callback.onAppIntegrity?.call();
-          break;
         case Threat.obfuscationIssues:
           callback.onObfuscationIssues?.call();
-          break;
         case Threat.deviceBinding:
           callback.onDeviceBinding?.call();
-          break;
         case Threat.unofficialStore:
           callback.onUnofficialStore?.call();
-          break;
         case Threat.privilegedAccess:
           callback.onPrivilegedAccess?.call();
-          break;
         case Threat.secureHardwareNotAvailable:
           callback.onSecureHardwareNotAvailable?.call();
-          break;
         case Threat.systemVPN:
           callback.onSystemVPN?.call();
-          break;
         case Threat.devMode:
           callback.onDevMode?.call();
-          break;
       }
     });
   }
