@@ -1,3 +1,4 @@
+import 'package:freerasp/freerasp.dart';
 import 'package:freerasp/src/utils/utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +11,8 @@ class AndroidConfig {
   AndroidConfig({
     required this.packageName,
     required this.signingCertHashes,
-    this.supportedStores = const <String>[],
+    this.supportedStores = const [],
+    this.malwareConfig,
   }) {
     ConfigVerifier.verifyAndroid(this);
   }
@@ -30,4 +32,7 @@ class AndroidConfig {
 
   /// List of supported sources where application can be installed from.
   final List<String> supportedStores;
+
+  /// Malware configuration for Android.
+  final MalwareConfig? malwareConfig;
 }

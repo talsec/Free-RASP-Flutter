@@ -2,10 +2,10 @@ package com.aheaditec.freerasp.handlers
 
 import android.content.Context
 import com.aheaditec.freerasp.Threat
+import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.ThreatListener
 import com.aheaditec.talsec_security.security.api.ThreatListener.DeviceState
 import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
-import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 
 /**
  * A Singleton object that implements the [ThreatDetected] and [DeviceState] interfaces to handle
@@ -15,6 +15,8 @@ import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
  */
 internal object PluginThreatHandler : ThreatDetected, DeviceState {
     internal val detectedThreats = mutableSetOf<Threat>()
+    internal val detectedMalware = mutableListOf<SuspiciousAppInfo>()
+
     internal var listener: TalsecFlutter? = null
     private val internalListener = ThreatListener(this, this)
 
@@ -74,15 +76,21 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
         notify(Threat.DevMode)
     }
 
-    override fun onMalwareDetected(appInfo: List<SuspiciousAppInfo>) {
-        // Nothing to do yet.
+    override fun onMalwareDetected(suspiciousApps: List<SuspiciousAppInfo>) {
+        notify(suspiciousApps)
     }
 
     private fun notify(threat: Threat) {
         listener?.threatDetected(threat) ?: detectedThreats.add(threat)
     }
 
+    private fun notify(suspiciousApps: List<SuspiciousAppInfo>) {
+        listener?.malwareDetected(suspiciousApps) ?: detectedMalware.addAll(suspiciousApps)
+    }
+
     internal interface TalsecFlutter {
         fun threatDetected(threatType: Threat)
+
+        fun malwareDetected(suspiciousApps: List<SuspiciousAppInfo>)
     }
 }
