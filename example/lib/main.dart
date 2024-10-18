@@ -33,7 +33,7 @@ Future<void> _initializeTalsec() async {
         blocklistedPackageNames: ['com.aheaditec.freeraspExample'],
         blocklistedPermissions: [
           ['android.permission.CAMERA'],
-          ['android.permission.READ_SMS', 'android.permission.READ_CONTACTS']
+          ['android.permission.READ_SMS', 'android.permission.READ_CONTACTS'],
         ],
       ),
     ),
