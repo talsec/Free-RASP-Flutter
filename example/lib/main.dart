@@ -29,7 +29,13 @@ Future<void> _initializeTalsec() async {
       packageName: 'com.aheaditec.freeraspExample',
       signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       supportedStores: ['com.sec.android.app.samsungapps'],
-      blocklistedPackageNames: ['com.aheaditec.freeraspExample'],
+      malwareConfig: MalwareConfig(
+        blocklistedPackageNames: ['com.aheaditec.freeraspExample'],
+        blocklistedPermissions: [
+          ['android.permission.CAMERA'],
+          ['android.permission.READ_SMS', 'android.permission.READ_CONTACTS']
+        ],
+      ),
     ),
     iosConfig: IOSConfig(
       bundleIds: ['com.aheaditec.freeraspExample'],
