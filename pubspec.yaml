@@ -1,6 +1,6 @@
 name: freerasp
 description: Flutter library for improving app security and threat monitoring on Android and iOS mobile devices. Learn more about provided features on the freeRASP's homepage first.
-version: 6.7.1
+version: 6.7.2
 homepage: https://www.talsec.app/freerasp-in-app-protection-security-talsec
 repository: https://github.com/talsec/Free-RASP-Flutter
 
