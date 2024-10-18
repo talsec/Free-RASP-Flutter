@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.7.2] - 2024-10-18
+
+### Android
+
+#### Fixed
+- Reported ANR issues present on some devices were resolved ([GH Flutter issue #138](https://github.com/talsec/Free-RASP-Flutter/issues/138))
+- Reported crashes caused by ConcurrentModificationException and NullPointerException were resolved ([GH Flutter issue #140](https://github.com/talsec/Free-RASP-Flutter/issues/140))
+- Reported crashes caused by the UnsupportedOperationException were resolved
+
 ## [6.7.1] - 2024-09-30
 - Android SDK version: 11.1.1
 - iOS SDK version: 6.6.0
