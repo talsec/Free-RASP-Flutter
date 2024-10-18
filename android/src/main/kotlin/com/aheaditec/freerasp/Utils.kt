@@ -8,56 +8,61 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Base64
 import com.aheaditec.talsec_security.security.api.TalsecConfig
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
 internal object Utils {
+    @Suppress("ArrayInDataClass")
+    data class MalwareConfig(
+        val blocklistedPackageNames: Array<String>,
+        val blocklistedHashes: Array<String>,
+        val blocklistedPermissions: Array<Array<String>>,
+        val whitelistedInstallationSources: Array<String>
+    )
+
     fun toTalsecConfigThrowing(configJson: String?): TalsecConfig {
         if (configJson == null) {
             throw JSONException("Configuration is null")
         }
+
         val json = JSONObject(configJson)
 
         val watcherMail = json.getString("watcherMail")
-        var isProd = true
-        if (json.has("isProd")) {
-            isProd = json.getBoolean("isProd")
-        }
+        val isProd = json.getBoolean("isProd")
         val androidConfig = json.getJSONObject("androidConfig")
-
         val packageName = androidConfig.getString("packageName")
         val certificateHashes = androidConfig.extractArray<String>("signingCertHashes")
         val alternativeStores = androidConfig.extractArray<String>("supportedStores")
-        val blocklistedPackageNames =
-            androidConfig.extractArray<String>("blocklistedPackageNames")
-        val blocklistedHashes = androidConfig.extractArray<String>("blocklistedHashes")
-        val whitelistedInstallationSources =
-            androidConfig.extractArray<String>("whitelistedInstallationSources")
-
-        val blocklistedPermissions = mutableListOf<Array<String>>()
-        if (androidConfig.has("blocklistedPermissions")) {
-            val permissions = androidConfig.getJSONArray("blocklistedPermissions")
-            for (i in 0 until permissions.length()) {
-                val permission = permissions.getJSONArray(i)
-                val permissionList = mutableListOf<String>()
-                for (j in 0 until permission.length()) {
-                    permissionList.add(permission.getString(j))
-                }
-                blocklistedPermissions.add(permissionList.toTypedArray())
-            }
-        }
+        val malwareConfig = parseMalwareConfig(androidConfig)
 
         return TalsecConfig.Builder(packageName, certificateHashes)
             .watcherMail(watcherMail)
             .supportedAlternativeStores(alternativeStores)
             .prod(isProd)
-            .blocklistedPackageNames(blocklistedPackageNames)
-            .blocklistedHashes(blocklistedHashes)
-            .blocklistedPermissions(blocklistedPermissions.toTypedArray())
-            .whitelistedInstallationSources(whitelistedInstallationSources)
+            .blocklistedPackageNames(malwareConfig.blocklistedPackageNames)
+            .blocklistedHashes(malwareConfig.blocklistedHashes)
+            .blocklistedPermissions(malwareConfig.blocklistedPermissions)
+            .whitelistedInstallationSources(malwareConfig.whitelistedInstallationSources)
             .build()
     }
+
+    private fun parseMalwareConfig(androidConfig: JSONObject): MalwareConfig {
+        if (!androidConfig.has("malwareConfig")) {
+            return MalwareConfig(emptyArray(), emptyArray(), emptyArray(), emptyArray())
+        }
+
+        val malwareConfig = androidConfig.getJSONObject("malwareConfig")
+
+        return MalwareConfig(
+            malwareConfig.extractArray("blocklistedPackageNames"),
+            malwareConfig.extractArray("blocklistedHashes"),
+            malwareConfig.extractArray<Array<String>>("blocklistedPermissions"),
+            malwareConfig.extractArray("whitelistedInstallationSources")
+        )
+    }
+
 
     /**
      * Retrieves the package name of the installer for a given app package.
@@ -134,25 +139,38 @@ internal object Utils {
         val byteArrayOutputStream = ByteArrayOutputStream()
         compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
 }
 
-inline fun <reified T> JSONObject.extractArray(key: String): Array<T> {
+private inline fun <reified T> JSONObject.extractArray(key: String): Array<T> {
+    return this.optJSONArray(key)?.let { processArray(it) } ?: emptyArray()
+}
+
+private inline fun <reified T> processArray(jsonArray: JSONArray): Array<T> {
     val list = mutableListOf<T>()
-    if (this.has(key)) {
-        val jsonArray = this.getJSONArray(key)
-        for (i in 0 until jsonArray.length()) {
-            val element = when (T::class) {
-                String::class -> jsonArray.getString(i) as T
-                Int::class -> jsonArray.getInt(i) as T
-                Double::class -> jsonArray.getDouble(i) as T
-                Boolean::class -> jsonArray.getBoolean(i) as T
-                Long::class -> jsonArray.getLong(i) as T
-                else -> throw IllegalArgumentException("Unsupported type")
+
+    for (i in 0 until jsonArray.length()) {
+        val element: T = when (T::class) {
+            String::class -> jsonArray.getString(i) as T
+            Int::class -> jsonArray.getInt(i) as T
+            Double::class -> jsonArray.getDouble(i) as T
+            Boolean::class -> jsonArray.getBoolean(i) as T
+            Long::class -> jsonArray.getLong(i) as T
+            Array<String>::class -> {
+                // Not universal or ideal solution, but should work for our use case
+                val nestedArray = jsonArray.getJSONArray(i)
+                val nestedList = mutableListOf<String>()
+                for (j in 0 until nestedArray.length()) {
+                    nestedList.add(nestedArray.getString(j))
+                }
+                nestedList.toTypedArray() as T
             }
-            list.add(element)
+
+            else -> throw JSONException("Unsupported type")
         }
+        list.add(element)
     }
+
     return list.toTypedArray()
 }

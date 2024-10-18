@@ -45,7 +45,7 @@ internal fun SuspiciousAppInfo.toPigeon(context: Context): FlutterSuspiciousAppI
 private fun PackageInfo.toPigeon(context: Context): FlutterPackageInfo {
     return FlutterPackageInfo(
         packageName = packageName,
-        appName = applicationInfo?.name,
+        appName = context.packageManager.getApplicationLabel(applicationInfo) as String,
         version = getVersionString(),
         appIcon = Utils.parseIconBase64(context, packageName),
         installationSource = Utils.getInstallerPackageName(context, packageName),
