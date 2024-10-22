@@ -4,7 +4,6 @@
 
 package com.aheaditec.freerasp.generated
 
-import android.util.Log
 import io.flutter.plugin.common.BasicMessageChannel
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MessageCodec
