@@ -21,7 +21,7 @@ class ThreatListView extends StatelessWidget {
         final isDetected = threats.contains(currentThreat);
 
         return ListTile(
-          title: Text(currentThreat.name.toTitleCase()),
+          title: Text(currentThreat.name.capitalize()),
           subtitle: Text(isDetected ? 'Danger' : 'Safe'),
           trailing: SafetyIcon(isDetected: isDetected),
         );
