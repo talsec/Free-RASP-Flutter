@@ -67,23 +67,3 @@ internal fun PackageInfo.getVersionString(): String {
     @Suppress("DEPRECATION")
     return versionCode.toString()
 }
-
-/**
- * Returns the encapsulated value if this instance represents success or throws the encapsulated exception
- * if it is a failure, executing the given action before throwing.
- *
- * This function is similar to `Result.getOrThrow()`, but with the added functionality of performing
- * an action before throwing the exception.
- *
- * @param action The action to be executed if the result is a failure. This action should not throw an exception.
- * @return The encapsulated value if the result is a success.
- * @throws Throwable The encapsulated exception if the result is a failure.
- *
- * @see Result.getOrThrow
- */
-inline fun <T> Result<T>.getOrElseThenThrow(action: () -> Unit): T {
-    return getOrElse {
-        action()
-        throw it
-    }
-}

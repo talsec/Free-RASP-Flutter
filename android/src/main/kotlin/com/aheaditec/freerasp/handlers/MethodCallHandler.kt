@@ -4,7 +4,6 @@ import android.content.Context
 import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.Utils
 import com.aheaditec.freerasp.generated.TalsecPigeonApi
-import com.aheaditec.freerasp.getOrElseThenThrow
 import com.aheaditec.freerasp.toPigeon
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.Talsec
@@ -33,8 +32,9 @@ internal class MethodCallHandler : MethodCallHandler {
                 pigeonApi?.onMalwareDetected(pigeonPackageInfo) { result ->
                     // Parse the result (which is Unit so we can ignore it) or throw an exception
                     // Exceptions are translated to Flutter errors automatically
-                    result.getOrElseThenThrow {
+                    result.getOrElse {
                         Log.e("MethodCallHandlerSink", "Result ended with failure")
+                        throw it
                     }
                 }
             }
