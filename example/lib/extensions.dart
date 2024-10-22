@@ -8,7 +8,7 @@ extension StringX on String {
   /// the character.
   ///
   /// Otherwise, returns the string with the first character converted to
-  String toTitleCase() {
+  String capitalize() {
     if (isEmpty) return '';
     if (length == 1) return toUpperCase();
     return this[0].toUpperCase() + substring(1);
