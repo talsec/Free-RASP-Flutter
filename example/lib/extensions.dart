@@ -8,6 +8,7 @@ extension StringX on String {
   /// the character.
   ///
   /// Otherwise, returns the string with the first character converted to
+  /// uppercase.
   String capitalize() {
     if (isEmpty) return '';
     if (length == 1) return toUpperCase();
