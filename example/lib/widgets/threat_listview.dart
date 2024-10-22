@@ -6,7 +6,10 @@ import 'package:freerasp_example/widgets/widgets.dart';
 /// ListView displaying all detected threats
 class ThreatListView extends StatelessWidget {
   /// Represents a list of detected threats
-  const ThreatListView({super.key, required this.threats});
+  const ThreatListView({
+    required this.threats,
+    super.key,
+  });
 
   /// Set of detected threats
   final Set<Threat> threats;

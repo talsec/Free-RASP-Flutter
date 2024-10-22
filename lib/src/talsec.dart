@@ -119,7 +119,9 @@ class Talsec {
   /// application.
   Future<void> addToWhitelist(String packageName) async {
     if (!Platform.isAndroid) {
-      return;
+      throw UnimplementedError(
+        'Platform is not supported: $defaultTargetPlatform}',
+      );
     }
 
     return methodChannel.invokeMethod(
