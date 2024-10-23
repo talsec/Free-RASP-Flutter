@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'android_config.g.dart';
 
 /// Class responsible for freeRASP Android configuration
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class AndroidConfig {
   /// Android configuration fields
   AndroidConfig({
