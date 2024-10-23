@@ -42,7 +42,7 @@ internal class StreamHandler : EventChannel.StreamHandler {
 
         // Don't forget to remove old sink
         // @see https://stackoverflow.com/questions/61934900/tried-to-send-a-platform-message-to-flutter-but-flutterjni-was-detached-from-n
-        TalsecThreatHandler.detachSink()
+        TalsecThreatHandler.detachEventSink()
     }
 
     /**
@@ -54,7 +54,7 @@ internal class StreamHandler : EventChannel.StreamHandler {
      */
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
         events?.let {
-            TalsecThreatHandler.attachSink(it)
+            TalsecThreatHandler.attachEventSink(it)
         }
     }
 
@@ -65,6 +65,6 @@ internal class StreamHandler : EventChannel.StreamHandler {
      * @param arguments The arguments passed by the subscriber. Not used in this implementation.
      */
     override fun onCancel(arguments: Any?) {
-        TalsecThreatHandler.detachSink()
+        TalsecThreatHandler.detachEventSink()
     }
 }

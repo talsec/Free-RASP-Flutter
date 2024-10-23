@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// Class responsible for changing threat icon and style in the example app
 class SafetyIcon extends StatelessWidget {
   /// Represents security state icon in the example app
-  const SafetyIcon({required this.isDetected, Key? key}) : super(key: key);
+  const SafetyIcon({required this.isDetected, super.key});
 
   /// Determines whether given threat was detected
   final bool isDetected;
