@@ -76,7 +76,7 @@ void main() {
     test('Should encode TalsecConfig to String', () {
       // Arrange
       const expectedString =
-          '{"androidConfig":{"packageName":"com.aheaditec.freeraspExample","signingCertHashes":["AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0="],"supportedStores":["com.sec.android.app.samsungapps"],"blocklistedPackageNames":[],"blocklistedHashes":[],"blocklistedPermissions":[[]],"whitelistedInstallationSources":[]},"iosConfig":{"bundleIds":["com.aheaditec.freeraspExample"],"teamId":"M8AK35..."},"watcherMail":"test_mail@example.com","isProd":false}';
+          '{"androidConfig":{"packageName":"com.aheaditec.freeraspExample","signingCertHashes":["AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0="],"supportedStores":["com.sec.android.app.samsungapps"]},"iosConfig":{"bundleIds":["com.aheaditec.freeraspExample"],"teamId":"M8AK35..."},"watcherMail":"test_mail@example.com","isProd":false}';
       final config = TalsecConfig(
         androidConfig: AndroidConfig(
           packageName: 'com.aheaditec.freeraspExample',
