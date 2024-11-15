@@ -1,12 +1,12 @@
 name: freerasp
 description: Flutter library for improving app security and threat monitoring on Android and iOS mobile devices. Learn more about provided features on the freeRASP's homepage first.
-version: 6.7.3
+version: 6.8.0
 homepage: https://www.talsec.app/freerasp-in-app-protection-security-talsec
 repository: https://github.com/talsec/Free-RASP-Flutter
 
 environment:
-  sdk: ">=2.18.0 <4.0.0"
-  flutter: ">=3.3.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 topics:
   - app-shielding
@@ -20,16 +20,17 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_plugin_android_lifecycle: ^2.0.11
-  json_annotation: ^4.0.1
+  json_annotation: ^4.9.0
   meta: ^1.7.0
 
 dev_dependencies:
-  build_runner: ^2.1.5
+  build_runner: ^2.4.9
   flutter_test:
     sdk: flutter
-  json_serializable: ^6.0.1
-  mocktail: ^0.2.0
-  very_good_analysis: ^3.0.0
+  json_serializable: ^6.8.0
+  mocktail: ^1.0.4
+  pigeon: ^17.0.0
+  very_good_analysis: ^5.1.0
 
 flutter:
   plugin:

@@ -15,12 +15,26 @@ AndroidConfig _$AndroidConfigFromJson(Map<String, dynamic> json) =>
       supportedStores: (json['supportedStores'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          const <String>[],
+          const [],
+      malwareConfig: json['malwareConfig'] == null
+          ? null
+          : MalwareConfig.fromJson(
+              json['malwareConfig'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) =>
-    <String, dynamic>{
-      'packageName': instance.packageName,
-      'signingCertHashes': instance.signingCertHashes,
-      'supportedStores': instance.supportedStores,
-    };
+Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) {
+  final val = <String, dynamic>{
+    'packageName': instance.packageName,
+    'signingCertHashes': instance.signingCertHashes,
+    'supportedStores': instance.supportedStores,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('malwareConfig', instance.malwareConfig);
+  return val;
+}

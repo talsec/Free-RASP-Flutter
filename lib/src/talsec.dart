@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
+import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
 
 /// A class which maintains all security related operations.
 ///
@@ -106,6 +108,28 @@ class Talsec {
     );
   }
 
+  /// Adds [packageName] to the whitelist.
+  ///
+  /// Once added, the package will be excluded from the list of blocklisted
+  /// packages and won't appear in the list of suspicious applications in
+  /// the future detections.
+  ///
+  /// **Adding package is one-way process** - to remove the package from the
+  /// whitelist, you need to remove application data or reinstall the
+  /// application.
+  Future<void> addToWhitelist(String packageName) async {
+    if (!Platform.isAndroid) {
+      throw UnimplementedError(
+        'Platform is not supported: $defaultTargetPlatform}',
+      );
+    }
+
+    return methodChannel.invokeMethod(
+      'addToWhitelist',
+      {'packageName': packageName},
+    );
+  }
+
   void _checkConfig(TalsecConfig config) {
     // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
@@ -115,14 +139,17 @@ class Talsec {
             message: 'Android config is required for Android platform',
           );
         }
-        break;
       case TargetPlatform.iOS:
         if (config.iosConfig == null) {
           throw const ConfigurationException(
             message: 'iOS config is required for iOS platform',
           );
         }
-        break;
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.macOS:
+      case TargetPlatform.windows:
+        throw UnimplementedError('Platform is not supported');
     }
   }
 
@@ -136,48 +163,36 @@ class Talsec {
   /// When threat is detected, respective callback of [ThreatCallback] is
   /// invoked.
   void attachListener(ThreatCallback callback) {
+    TalsecPigeonApi.setUp(callback);
     detachListener();
     _streamSubscription ??= onThreatDetected.listen((event) {
       switch (event) {
         case Threat.hooks:
           callback.onHooks?.call();
-          break;
         case Threat.debug:
           callback.onDebug?.call();
-          break;
         case Threat.passcode:
           callback.onPasscode?.call();
-          break;
         case Threat.deviceId:
           callback.onDeviceID?.call();
-          break;
         case Threat.simulator:
           callback.onSimulator?.call();
-          break;
         case Threat.appIntegrity:
           callback.onAppIntegrity?.call();
-          break;
         case Threat.obfuscationIssues:
           callback.onObfuscationIssues?.call();
-          break;
         case Threat.deviceBinding:
           callback.onDeviceBinding?.call();
-          break;
         case Threat.unofficialStore:
           callback.onUnofficialStore?.call();
-          break;
         case Threat.privilegedAccess:
           callback.onPrivilegedAccess?.call();
-          break;
         case Threat.secureHardwareNotAvailable:
           callback.onSecureHardwareNotAvailable?.call();
-          break;
         case Threat.systemVPN:
           callback.onSystemVPN?.call();
-          break;
         case Threat.devMode:
           callback.onDevMode?.call();
-          break;
       }
     });
   }

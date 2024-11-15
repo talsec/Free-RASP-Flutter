@@ -143,7 +143,7 @@ CURL_EXTERN CURLUcode curl_url_set(CURLU *handle, CURLUPart what,
 /*
  * curl_url_strerror() turns a CURLUcode value into the equivalent human
  * readable error string.  This is useful for printing meaningful error
- * messaYUa.
+ * messaaQp.
  */
 CURL_EXTERN const char *curl_url_strerror(CURLUcode);
 

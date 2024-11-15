@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'talsec_config.g.dart';
 
 /// Class responsible for freeRASP configuration
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class TalsecConfig {
   /// Configuration for [TalsecConfig].
   TalsecConfig({

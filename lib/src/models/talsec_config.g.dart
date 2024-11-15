@@ -12,17 +12,24 @@ TalsecConfig _$TalsecConfigFromJson(Map<String, dynamic> json) => TalsecConfig(
       androidConfig: json['androidConfig'] == null
           ? null
           : AndroidConfig.fromJson(
-              json['androidConfig'] as Map<String, dynamic>,
-            ),
+              json['androidConfig'] as Map<String, dynamic>),
       iosConfig: json['iosConfig'] == null
           ? null
           : IOSConfig.fromJson(json['iosConfig'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$TalsecConfigToJson(TalsecConfig instance) =>
-    <String, dynamic>{
-      'androidConfig': instance.androidConfig?.toJson(),
-      'iosConfig': instance.iosConfig?.toJson(),
-      'watcherMail': instance.watcherMail,
-      'isProd': instance.isProd,
-    };
+Map<String, dynamic> _$TalsecConfigToJson(TalsecConfig instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('androidConfig', instance.androidConfig?.toJson());
+  writeNotNull('iosConfig', instance.iosConfig?.toJson());
+  val['watcherMail'] = instance.watcherMail;
+  val['isProd'] = instance.isProd;
+  return val;
+}
