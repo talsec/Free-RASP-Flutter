@@ -16,9 +16,9 @@ import java.io.ByteArrayOutputStream
 internal object Utils {
     @Suppress("ArrayInDataClass")
     data class MalwareConfig(
-        val blocklistedPackageNames: Array<String>,
-        val blocklistedHashes: Array<String>,
-        val blocklistedPermissions: Array<Array<String>>,
+        val blacklistedPackageNames: Array<String>,
+        val blacklistedHashes: Array<String>,
+        val suspiciousPermissions: Array<Array<String>>,
         val whitelistedInstallationSources: Array<String>
     )
 
@@ -41,9 +41,9 @@ internal object Utils {
             .watcherMail(watcherMail)
             .supportedAlternativeStores(alternativeStores)
             .prod(isProd)
-            .blocklistedPackageNames(malwareConfig.blocklistedPackageNames)
-            .blocklistedHashes(malwareConfig.blocklistedHashes)
-            .blocklistedPermissions(malwareConfig.blocklistedPermissions)
+            .blacklistedPackageNames(malwareConfig.blacklistedPackageNames)
+            .blacklistedHashes(malwareConfig.blacklistedHashes)
+            .suspiciousPermissions(malwareConfig.suspiciousPermissions)
             .whitelistedInstallationSources(malwareConfig.whitelistedInstallationSources)
             .build()
     }
@@ -56,9 +56,9 @@ internal object Utils {
         val malwareConfig = androidConfig.getJSONObject("malwareConfig")
 
         return MalwareConfig(
-            malwareConfig.extractArray("blocklistedPackageNames"),
-            malwareConfig.extractArray("blocklistedHashes"),
-            malwareConfig.extractArray<Array<String>>("blocklistedPermissions"),
+            malwareConfig.extractArray("blacklistedPackageNames"),
+            malwareConfig.extractArray("blacklistedHashes"),
+            malwareConfig.extractArray<Array<String>>("suspiciousPermissions"),
             malwareConfig.extractArray("whitelistedInstallationSources")
         )
     }
