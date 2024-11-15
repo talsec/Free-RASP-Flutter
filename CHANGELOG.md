@@ -35,7 +35,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Team ID: PBDDS45LQS
   - Team Name: Lynx SFT s.r.o.
 
+## [6.7.3] - 2024-10-28
+- Android SDK version: 11.1.3
+- iOS SDK version: 6.6.1
+
+### iOS
+
+#### Changed
+- Renewed the signing certificate
+
 ## [6.7.2] - 2024-10-18
+- Android SDK version: 11.1.3
+- iOS SDK version: 6.6.0
 
 ### Android
 
