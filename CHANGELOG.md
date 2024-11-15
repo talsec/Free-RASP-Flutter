@@ -7,17 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [6.8.0] - 2024-10-01
 - Android SDK version: 11.1.3
-- iOS SDK version: 6.6.0
+- iOS SDK version: 6.6.3
 
 ### Flutter
 
 #### Added
+- Malware detection (Android only)
 - Configuration fields for Malware Detection
 
 ### Android
 
+#### Changed
+- Internal refactoring of Malware detection feature
+
+#### Fixed
+- Refactoring Magisk checks in the root detection
+- Resolving IllegalArgumentException caused by unregistering not registered receiver in TalsecMonitoringReceiver
+
+### iOS
+
 #### Added
-- New feature: Malware Detection
+
+- Enhanced security with **[Serotonin Jailbreak](https://github.com/SerotoninApp/Serotonin) Detection** to identify compromised devices.
+
+#### Changed
+
+- Updated SDK code signing; it will now be signed with:
+  - Team ID: PBDDS45LQS
+  - Team Name: Lynx SFT s.r.o.
 
 ## [6.7.2] - 2024-10-18
 
