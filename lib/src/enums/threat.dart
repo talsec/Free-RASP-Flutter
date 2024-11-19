@@ -90,6 +90,7 @@ extension ThreatX on Threat {
   /// * 1564314755 - secureHardwareNotAvailable
   /// * 659382561 - systemVPN
   /// * 45291047 - devMode
+  /// * 379769839 - adb
   static Threat fromInt(int code) {
     switch (code) {
       case 1268968002:
