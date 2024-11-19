@@ -43,8 +43,7 @@ android {
         applicationId "com.aheaditec.freerasp_example"
         // Talsec library needs higher version than default (16)
         minSdkVersion 23
-        // TODO: Update to "flutter.targetSdkVersion" when sdk will be updated to >= 2.0
-        targetSdkVersion 31
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
