@@ -54,6 +54,12 @@ enum Threat {
   ///
   /// Android only
   devMode,
+
+  /// The application is running on a device that has active ADB
+  /// (Android Debug Bridge).
+  ///
+  /// Android only
+  adb,
 }
 
 /// An extension on the [Threat] enum to provide additional functionality.
@@ -112,6 +118,8 @@ extension ThreatX on Threat {
         return Threat.systemVPN;
       case 45291047:
         return Threat.devMode;
+      case 379769839:
+        return Threat.adb;
       default:
         // Unknown data came from native code. This shouldn't normally happen.
         exit(127);

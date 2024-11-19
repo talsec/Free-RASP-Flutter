@@ -76,6 +76,10 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
         notify(Threat.DevMode)
     }
 
+    override fun onADBEnabledDetected() {
+        notify(Threat.ADBEnabled)
+    }
+
     override fun onMalwareDetected(suspiciousApps: List<SuspiciousAppInfo>) {
         notify(suspiciousApps)
     }

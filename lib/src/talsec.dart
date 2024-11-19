@@ -193,6 +193,8 @@ class Talsec {
           callback.onSystemVPN?.call();
         case Threat.devMode:
           callback.onDevMode?.call();
+        case Threat.adb:
+          callback.onADB?.call();
       }
     });
   }
