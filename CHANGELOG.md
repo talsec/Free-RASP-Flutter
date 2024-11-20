@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.9.0] - 2024-11-19
+- Android SDK version: 13.0.0
+- iOS SDK version: 6.6.3
+
+### Flutter
+
+#### Added
+- New feature: onADBEnabled callback allowing you to detect USB debugging option enabled in the developer settings on the device
+
+### Android
+
+#### Added
+- ADB detection feature
+
 ## [6.8.0] - 2024-11-15
 - Android SDK version: 12.0.0
 - iOS SDK version: 6.6.3

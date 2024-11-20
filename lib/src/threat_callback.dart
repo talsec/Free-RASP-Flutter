@@ -34,6 +34,7 @@ class ThreatCallback extends TalsecPigeonApi {
     this.onSecureHardwareNotAvailable,
     this.onSystemVPN,
     this.onDevMode,
+    this.onADBEnabled,
     this.onMalware,
   });
 
@@ -82,6 +83,9 @@ class ThreatCallback extends TalsecPigeonApi {
 
   /// This method is called whe the device has Developer mode enabled
   final VoidCallback? onDevMode;
+
+  /// This method is called when the device has active ADB (Android Debug)
+  final VoidCallback? onADBEnabled;
 
   @override
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo) {

@@ -54,6 +54,8 @@ class SpyThreatListener {
         callback.onSystemVPN?.call();
       case Threat.devMode:
         callback.onDevMode?.call();
+      case Threat.adbEnabled:
+        callback.onADBEnabled?.call();
     }
   }
 }
