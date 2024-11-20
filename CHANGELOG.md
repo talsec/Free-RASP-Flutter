@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Flutter
 
 #### Added
-- New feature: ADB detection as a new callback for enhanced app security
+- New feature: onADBEnabled callback allowing you to detect USB debugging option enabled in the developer settings on the device
 
 ### Android
 
