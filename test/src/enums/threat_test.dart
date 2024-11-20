@@ -24,7 +24,7 @@ void main() {
     expect(threatValues[10], Threat.secureHardwareNotAvailable);
     expect(threatValues[11], Threat.systemVPN);
     expect(threatValues[12], Threat.devMode);
-    expect(threatValues[13], Threat.adb);
+    expect(threatValues[13], Threat.adbEnabled);
   });
 
   test(
@@ -44,7 +44,7 @@ void main() {
       expect(ThreatX.fromInt(1564314755), Threat.secureHardwareNotAvailable);
       expect(ThreatX.fromInt(659382561), Threat.systemVPN);
       expect(ThreatX.fromInt(45291047), Threat.devMode);
-      expect(ThreatX.fromInt(379769839), Threat.adb);
+      expect(ThreatX.fromInt(379769839), Threat.adbEnabled);
     },
   );
 }
