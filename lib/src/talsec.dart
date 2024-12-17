@@ -5,9 +5,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
+import 'package:freerasp/src/errors/malware_failure_exception.dart';
 import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
-
-import 'errors/malware_failure_exception.dart';
 
 /// A class which maintains all security related operations.
 ///
@@ -218,6 +217,10 @@ class Talsec {
     throw error;
   }
 
+  /// Retrieves the app icon for the given [packageName] as base64 string.
+  ///
+  /// Throws a [TalsecException] with error message description if
+  /// the app with given package name couldn't be obtained.
   Future<String> getAppIcon(String packageName) async {
     if (!Platform.isAndroid) {
       throw UnimplementedError(
