@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
 import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
 
+import 'errors/malware_failure_exception.dart';
+
 /// A class which maintains all security related operations.
 ///
 /// To get started, you can obtain the singleton instance of [Talsec] by
@@ -214,5 +216,30 @@ class Talsec {
     }
     // ignore: only_throw_errors
     throw error;
+  }
+
+  Future<String> getAppIcon(String packageName) async {
+    if (!Platform.isAndroid) {
+      throw UnimplementedError(
+        'Platform is not supported: $defaultTargetPlatform}',
+      );
+    }
+
+    try {
+      return await _getAppIcon(packageName);
+    } on PlatformException catch (e) {
+      throw TalsecException.fromPlatformException(e);
+    }
+  }
+
+  Future<String> _getAppIcon(String packageName) async {
+    final args = {'packageName': packageName};
+    final result = await methodChannel.invokeMethod<String>('getAppIcon', args);
+
+    if (result is! String) {
+      throw const MalwareFailureException(message: 'Malware App icon is null.');
+    }
+
+    return result;
   }
 }
