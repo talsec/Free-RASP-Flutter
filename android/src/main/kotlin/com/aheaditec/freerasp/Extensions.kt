@@ -49,7 +49,6 @@ private fun PackageInfo.toPigeon(context: Context): FlutterPackageInfo {
             context.packageManager.getApplicationLabel(it) as String
         },
         version = getVersionString(),
-        appIcon = Utils.parseIconBase64(context, packageName),
         installationSource = Utils.getInstallerPackageName(context, packageName),
     )
 }

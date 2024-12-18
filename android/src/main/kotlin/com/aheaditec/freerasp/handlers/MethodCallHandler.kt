@@ -1,6 +1,12 @@
 package com.aheaditec.freerasp.handlers
 
 import android.content.Context
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.Utils
 import com.aheaditec.freerasp.generated.TalsecPigeonApi
@@ -16,10 +22,13 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 /**
  * A method handler that creates and manages an [MethodChannel] for freeRASP methods.
  */
-internal class MethodCallHandler : MethodCallHandler {
+internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
     private var context: Context? = null
     private var methodChannel: MethodChannel? = null
     private var pigeonApi: TalsecPigeonApi? = null
+    private val backgroundHandlerThread = HandlerThread("BackgroundThread").apply { start() }
+    private val backgroundHandler = Handler(backgroundHandlerThread.looper)
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     companion object {
         private const val CHANNEL_NAME: String = "talsec.app/freerasp/methods"
@@ -82,6 +91,20 @@ internal class MethodCallHandler : MethodCallHandler {
         TalsecThreatHandler.detachMethodSink()
     }
 
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_DESTROY -> {
+                context?.let {
+                    backgroundHandlerThread.quitSafely()
+                }
+            }
+
+            else -> {
+                // Nothing to do
+            }
+        }
+    }
+
     /**
      * Handles method calls received through the [MethodChannel].
      *
@@ -92,6 +115,7 @@ internal class MethodCallHandler : MethodCallHandler {
         when (call.method) {
             "start" -> start(call, result)
             "addToWhitelist" -> addToWhitelist(call, result)
+            "getAppIcon" -> getAppIcon(call, result)
             else -> result.notImplemented()
         }
     }
@@ -122,6 +146,27 @@ internal class MethodCallHandler : MethodCallHandler {
                 }
             } ?: throw IllegalStateException("Unable to add package to whitelist - context is null")
             result.success(null)
+        }
+    }
+
+    /**
+     * Retrieves app icon for the given package name.
+     *
+     * @param call The method call containing the package name.
+     * @param result The result handler of the method call.
+     */
+    private fun getAppIcon(call: MethodCall, result: MethodChannel.Result) {
+        runResultCatching(result) {
+            val packageName = call.argument<String>("packageName")
+                ?: throw NullPointerException("Package name cannot be null.")
+
+            backgroundHandler.post {
+                context?.let {
+                    val appIcon = Utils.parseIconBase64(it, packageName)
+                    mainHandler.post { result.success(appIcon) }
+                }
+            }
+
         }
     }
 }

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.10.0] - 2024-12-17
+
+- iOS SDK version:  6.6.3
+- Android SDK version: 13.0.0
+
+### Flutter
+
+#### Changed
+
+- App icons for detected malware are not fetched automatically anymore, which reduces computation required to retrieve malware data. From now on, app icons have to be retrieved using the `getAppIcon` method
+
+### Android
+
+#### Changed
+
+- Malware data is now parsed on background thread to improve responsiveness
+
 ## [6.9.0] - 2024-11-19
 - Android SDK version: 13.0.0
 - iOS SDK version: 6.6.3
