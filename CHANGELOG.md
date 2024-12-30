@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.11.0] - 2024-12-30
+
+- iOS SDK version:  6.6.3
+- Android SDK version: 13.2.0
+
+### Android
+
+#### Added
+
+- Added request integrity information to data collection headers.
+- Enhanced and accelerated the data collection logic.
+
 ## [6.10.0] - 2024-12-17
 
 - iOS SDK version:  6.6.3
