@@ -131,6 +131,50 @@ class Talsec {
     );
   }
 
+  /// Prevents the screen from being captured.
+  ///
+  /// This method applies `FLAG_SECURE` to the current activity window,
+  /// preventing screenshots and screen recording. Instead of actively blocking
+  /// capture attempts, this flag causes the captured content to appear black.
+  ///
+  /// **Limitation:** Behavior may vary across devices and Android
+  /// manufacturers.
+  ///
+  /// For more details, see the [official Android documentation](https://developer.android.com/security/fraud-prevention/activities).
+  ///
+  /// **Android only.**
+  Future<void> blockScreenCapture({required bool enabled}) async {
+    try {
+      await methodChannel
+          .invokeMethod('blockScreenCapture', {'enable': enabled});
+    } on PlatformException catch (e) {
+      throw Exception('Failed to call block screen capture: ${e.message}');
+    }
+  }
+
+  /// Checks status of screen capture protection.
+  ///
+  /// For more details about screen capture protection, see the
+  /// [blockScreenCapture] method.
+  ///
+  /// Returns `true` if screen capture protection is active, `false` otherwise.
+  ///
+  /// **Android only.**
+  Future<bool> isScreenCaptureBlocked() async {
+    try {
+      final result =
+          await methodChannel.invokeMethod<bool>('isScreenCaptureBlocked');
+
+      if (result is! bool) {
+        throw const TalsecException(message: 'Screen capture state failed.');
+      }
+
+      return result;
+    } on PlatformException catch (e) {
+      throw Exception('Failed to check screen capture state: ${e.message}');
+    }
+  }
+
   void _checkConfig(TalsecConfig config) {
     // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
@@ -196,6 +240,10 @@ class Talsec {
           callback.onDevMode?.call();
         case Threat.adbEnabled:
           callback.onADBEnabled?.call();
+        case Threat.screenshot:
+          callback.onScreenshot?.call();
+        case Threat.screenRecording:
+          callback.onScreenRecording?.call();
       }
     });
   }

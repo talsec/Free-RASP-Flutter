@@ -36,6 +36,8 @@ class ThreatCallback extends TalsecPigeonApi {
     this.onDevMode,
     this.onADBEnabled,
     this.onMalware,
+    this.onScreenshot,
+    this.onScreenRecording,
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -86,6 +88,12 @@ class ThreatCallback extends TalsecPigeonApi {
 
   /// This method is called when the device has active ADB (Android Debug)
   final VoidCallback? onADBEnabled;
+
+  /// This method is called when screenshot detected
+  final VoidCallback? onScreenshot;
+
+  /// This method is called when screen recording detected
+  final VoidCallback? onScreenRecording;
 
   @override
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo) {
