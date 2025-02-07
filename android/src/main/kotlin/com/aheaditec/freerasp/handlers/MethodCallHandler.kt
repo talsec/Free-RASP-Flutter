@@ -1,5 +1,6 @@
 package com.aheaditec.freerasp.handlers
 
+import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.HandlerThread
@@ -29,6 +30,8 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
     private val backgroundHandlerThread = HandlerThread("BackgroundThread").apply { start() }
     private val backgroundHandler = Handler(backgroundHandlerThread.looper)
     private val mainHandler = Handler(Looper.getMainLooper())
+
+    internal var activity: Activity? = null
 
     companion object {
         private const val CHANNEL_NAME: String = "talsec.app/freerasp/methods"
@@ -116,6 +119,8 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
             "start" -> start(call, result)
             "addToWhitelist" -> addToWhitelist(call, result)
             "getAppIcon" -> getAppIcon(call, result)
+            "blockScreenCapture" -> blockScreenCapture(call, result)
+            "isScreenCaptureBlocked" -> isScreenCaptureBlocked(result)
             else -> result.notImplemented()
         }
     }
@@ -167,6 +172,31 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
                 }
             }
 
+        }
+    }
+
+    /**
+     * Blocks or unblocks screen capture. Sets the window flag to secure the screen.
+     *
+     * @param call The method call containing the enable flag.
+     * @param result The result handler of the method call.
+     */
+    private fun blockScreenCapture(call: MethodCall, result: MethodChannel.Result) {
+        runResultCatching(result) {
+            val enable = call.argument<Boolean>("enable") ?: false
+            Talsec.blockScreenCapture(activity, enable)
+            result.success(null)
+        }
+    }
+
+    /**
+     * Checks if screen capture is blocked.
+     *
+     * @param result The result handler of the method call.
+     */
+    private fun isScreenCaptureBlocked(result: MethodChannel.Result) {
+        runResultCatching(result) {
+            result.success(Talsec.isScreenCaptureBlocked())
         }
     }
 }

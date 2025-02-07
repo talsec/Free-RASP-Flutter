@@ -44,18 +44,21 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
         }
         registerScreenProtector(binding.activity.applicationContext, binding.activity)
         activity = binding.activity
+        methodCallHandler.activity = activity
     }
 
     override fun onDetachedFromActivity() {
         lifecycle?.removeObserver(this)
         activity?.let { unregisterScreenProtector(it) }
         activity = null
+        methodCallHandler.activity = null
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
         lifecycle?.removeObserver(this)
         activity?.let { unregisterScreenProtector(it) }
         activity = null
+        methodCallHandler.activity = null
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -63,6 +66,7 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
         lifecycle?.addObserver(this)
         registerScreenProtector(binding.activity.applicationContext, binding.activity)
         activity = binding.activity
+        methodCallHandler.activity = activity
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
