@@ -5,38 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [6.12.0] - 2025-02-05
+## [6.12.0] - 2025-02-11
+
 - iOS SDK version:  6.8.0
-- Android SDK version: 14.0.1
+- Android SDK version: 14.0.2
 
 ### Flutter
 
 #### Added
+
 - `blockScreenCapture` method to block/unblock screen capture
 - `isScreenCaptureBlocked` method to get the current screen capture blocking status
 - New callbacks:
-  - `screenshot`: Detects when a screenshot is taken
-  - `screenRecording`: Detects when screen recording is active
+    - `screenshot`: Detects when a screenshot is taken
+    - `screenRecording`: Detects when screen recording is active
 
 #### Changed
+
 - Raised Android CompileSDK level to 35
 - Monitoring is now disabled by default
 
 ### Android
 
 #### Added
+
 - Passive and active screenshot/screen recording protection
 
 #### Changed
+
 - Improved root detection
 
 #### Fixed
+
 - Proguard rules to address warnings from okhttp dependency
 
 ### iOS
 
 #### Added
+
 - Active Screenshot/Screen Recording protection
+- Enhanced security with **[Serotonin Jailbreak](https://github.com/SerotoninApp/Serotonin)
+  Detection** to identify compromised devices.
+
+### Changed
+
+- Renewed the signing certificate.
+- Updated SDK code signing; it will now be signed with:
+    - Team ID: PBDDS45LQS
+    - Team Name: Lynx SFT s.r.o.
 
 ## [6.11.0] - 2024-12-30
 
@@ -59,7 +75,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Changed
 
-- App icons for detected malware are not fetched automatically anymore, which reduces computation required to retrieve malware data. From now on, app icons have to be retrieved using the `getAppIcon` method
+- App icons for detected malware are not fetched automatically anymore, which reduces computation
+  required to retrieve malware data. From now on, app icons have to be retrieved using
+  the `getAppIcon` method
 
 ### Android
 
@@ -68,76 +86,94 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Malware data is now parsed on background thread to improve responsiveness
 
 ## [6.9.0] - 2024-11-19
+
 - Android SDK version: 13.0.0
 - iOS SDK version: 6.6.3
 
 ### Flutter
 
 #### Added
-- New feature: onADBEnabled callback allowing you to detect USB debugging option enabled in the developer settings on the device
+
+- New feature: onADBEnabled callback allowing you to detect USB debugging option enabled in the
+  developer settings on the device
 
 ### Android
 
 #### Added
+
 - ADB detection feature
 
 ## [6.8.0] - 2024-11-15
+
 - Android SDK version: 12.0.0
 - iOS SDK version: 6.6.3
 
 ### Flutter
 
 #### Added
+
 - New feature: Malware detection as a new callback for enhanced app security
 
 ### Android
 
 #### Changed
+
 - Internal refactoring of Malware detection feature
 
 #### Fixed
+
 - Refactoring Magisk checks in the root detection
-- Resolving IllegalArgumentException caused by unregistering not registered receiver in TalsecMonitoringReceiver
+- Resolving IllegalArgumentException caused by unregistering not registered receiver in
+  TalsecMonitoringReceiver
 
 ### iOS
 
 #### Added
 
-- Enhanced security with **[Serotonin Jailbreak](https://github.com/SerotoninApp/Serotonin) Detection** to identify compromised devices.
+- Enhanced security with **[Serotonin Jailbreak](https://github.com/SerotoninApp/Serotonin)
+  Detection** to identify compromised devices.
 
 #### Changed
 
 - Updated SDK code signing; it will now be signed with:
-  - Team ID: PBDDS45LQS
-  - Team Name: Lynx SFT s.r.o.
+    - Team ID: PBDDS45LQS
+    - Team Name: Lynx SFT s.r.o.
 
 ## [6.7.3] - 2024-10-28
+
 - Android SDK version: 11.1.3
 - iOS SDK version: 6.6.1
 
 ### iOS
 
 #### Changed
+
 - Renewed the signing certificate
 
 ## [6.7.2] - 2024-10-18
+
 - Android SDK version: 11.1.3
 - iOS SDK version: 6.6.0
 
 ### Android
 
 #### Fixed
-- Reported ANR issues present on some devices were resolved ([GH Flutter issue #138](https://github.com/talsec/Free-RASP-Flutter/issues/138))
-- Reported crashes caused by ConcurrentModificationException and NullPointerException were resolved ([GH Flutter issue #140](https://github.com/talsec/Free-RASP-Flutter/issues/140))
+
+- Reported ANR issues present on some devices were
+  resolved ([GH Flutter issue #138](https://github.com/talsec/Free-RASP-Flutter/issues/138))
+- Reported crashes caused by ConcurrentModificationException and NullPointerException were
+  resolved ([GH Flutter issue #140](https://github.com/talsec/Free-RASP-Flutter/issues/140))
 - Reported crashes caused by the UnsupportedOperationException were resolved
 
 ## [6.7.1] - 2024-09-30
+
 - Android SDK version: 11.1.1
 - iOS SDK version: 6.6.0
 
 ### Android
 
 #### Fixed
+
 - False positives for hook detection
 
 ## [6.7.0] - 2024-09-26
@@ -148,34 +184,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Flutter
 
 #### Added
-- Auditing mechanism for runtime checks 
+
+- Auditing mechanism for runtime checks
 
 #### Changed
-- Migration to [declarative Gradle plugin](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply)
+
+- Migration
+  to [declarative Gradle plugin](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply)
 - [CHANGELOG.md](CHANGELOG.md) now follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 - Updated [README.md](README.md) with new documentation links
 
 ### Android
 
 #### Added
+
 - Auditing mechanism for runtime checks
 
 #### Changed
+
 - Breaking: TalsecConfig creation was migrated to a Builder pattern
 - Refactored fetching the list of installed applications for root and hook detection
 - Updated OpenSSL to version 3.0.14
 - Updated CURL to version 8.8.0
 
 #### Fixed
+
 - Native crashes (SEGFAULT) in `ifpip` method
 - Collision for command line tools (e.g. `ping`) which couldn't be invoked without the full path
 
 ### iOS
 
 #### Added
+
 - [Dopamine](https://github.com/opa334/Dopamine) jailbreak detection.
 
 #### Changed
+
 - Enhanced and accelerated the data collection logic
 - Updated OpenSSL to version 3.0.14
 - Updated CURL to version 8.8.0
@@ -215,12 +259,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## What's new in 6.5.0?
 
-- ⚡ Updated `CURL` to `8.5.0` and `OpenSSL` to `1.1.1w` (resolves [issue #93](https://github.com/talsec/Free-RASP-Flutter/issues/93))
-- 📄 Added information about APK size increase and ways to decrease it (resolves [issue #100](https://github.com/talsec/Free-RASP-Flutter/issues/100))
+- ⚡ Updated `CURL` to `8.5.0` and `OpenSSL` to `1.1.1w` (
+  resolves [issue #93](https://github.com/talsec/Free-RASP-Flutter/issues/93))
+- 📄 Added information about APK size increase and ways to decrease it (
+  resolves [issue #100](https://github.com/talsec/Free-RASP-Flutter/issues/100))
 
 ## Android
 
-- ⚡ Fixed issue with disappearing threats when the app is quickly put into the background and then back to the foreground (resolves [issue #91](https://github.com/talsec/Free-RASP-Flutter/issues/91))
+- ⚡ Fixed issue with disappearing threats when the app is quickly put into the background and then
+  back to the foreground (
+  resolves [issue #91](https://github.com/talsec/Free-RASP-Flutter/issues/91))
 - ⚡ Fixed a native crash bug during one of the native root checks (detected after NDK upgrade)
 - ⚡ Improved _appIntegrity_ check and its logging
 
@@ -228,8 +276,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - ❗ Added Privacy Manifest
 - ❗ Added codesigning for the SDK, it is signed by:
-  - _Team ID_: `ASQC376HCN`
-  - _Team Name_: `AHEAD iTec, s.r.o.`
+    - _Team ID_: `ASQC376HCN`
+    - _Team Name_: `AHEAD iTec, s.r.o.`
 - ⚡ Improved obfuscation of Swift and C strings
 
 # freeRASP 6.4.0
@@ -255,7 +303,8 @@ Improved logging of the Android SDK and minor bug fixes
 - ✔️ Updated CA bundle for logging pinning
 - ✔️ Added error logging of network issues within the logging process
 - ✔️ Added retry politics for logging
-- ⚡ Fixed issue with DeadObjectException on Android 5 and 6 caused by excessive PackageManager.queryIntentActivities() usage
+- ⚡ Fixed issue with DeadObjectException on Android 5 and 6 caused by excessive
+  PackageManager.queryIntentActivities() usage
 - ⚡ Improved root detection capabilities
 
 # freeRASP 6.2.0
@@ -267,19 +316,22 @@ Minor fixes and added support for AGP 8.0
 - ⚡ Added support for AGP 8.0
 - ❗ Removed PolarSSL dependency on Android
 - ❗ Removed forgotten `onOverlay` callback
-- ✔️ Fixed issue with [denied USE_BIOMETRICS permission](https://github.com/talsec/Free-RASP-Android/issues/20)
+- ✔️ Fixed issue
+  with [denied USE_BIOMETRICS permission](https://github.com/talsec/Free-RASP-Android/issues/20)
 
 # freeRASP 6.1.0
 
 ## What's new in 6.1.0?
 
-- ⚡ Fixed issue with incorrect Keystore type detection on Android 11 and above (https://github.com/talsec/Free-RASP-Flutter/issues/77)
+- ⚡ Fixed issue with incorrect Keystore type detection on Android 11 and
+  above (https://github.com/talsec/Free-RASP-Flutter/issues/77)
 - ⚡ Reduced timeout period for logging from 20 sec to 5 sec on iOS
 - ⚡ Logging is now async in all calls on iOS
 
 # freeRASP 6.0.0
 
-We are constantly working on improving your freeRASP experience. This update contains a new check - obfuscation detection. Minimal supported Android SDK level was raised to 23.
+We are constantly working on improving your freeRASP experience. This update contains a new check -
+obfuscation detection. Minimal supported Android SDK level was raised to 23.
 
 ## What's new in 6.0.0?
 
@@ -299,7 +351,8 @@ Fixed issue that caused freeRASP to be killed prematurely
 
 ## What's new in 5.0.3?
 
-- ✔️ Fixed issue when freeRASP throws [IllegalStateException: Talsec is not running](https://github.com/talsec/Free-RASP-Flutter/issues/70)
+- ✔️ Fixed issue when freeRASP
+  throws [IllegalStateException: Talsec is not running](https://github.com/talsec/Free-RASP-Flutter/issues/70)
 
 # freeRASP 5.0.2
 
@@ -307,7 +360,8 @@ Fixed issue causing app to freeze on iOS
 
 ## What's new in 5.0.2?
 
-- ✔️ Fixed issue with [app freezing after `start` called on iOS](https://github.com/talsec/Free-RASP-Flutter/issues/67)
+- ✔️ Fixed issue
+  with [app freezing after `start` called on iOS](https://github.com/talsec/Free-RASP-Flutter/issues/67)
 - 📄 Updated example application
 
 # freeRASP 5.0.1
@@ -320,8 +374,8 @@ Minor changes in documentation
 
 # freeRASP 5.0.0
 
-Get ready for some exciting updates! In this latest release, we have revamped the freeRASP's 
-codebase, which has helped to resolve several known issues. As a result, the integration of 
+Get ready for some exciting updates! In this latest release, we have revamped the freeRASP's
+codebase, which has helped to resolve several known issues. As a result, the integration of
 freeRASP into your workflow is even easier than before.
 
 ## What's new in 5.0.0?
@@ -329,8 +383,10 @@ freeRASP into your workflow is even easier than before.
 - ⚡ New enum values for threat types
 - ⚡ New threat handler for handling threat types
 - ✔️ Fixed issue with [platform detection](https://github.com/talsec/Free-RASP-Flutter/issues/61)
-- ✔️ Fixed issue with [Codemagic CI/CD on iOS](https://github.com/talsec/Free-RASP-Flutter/issues/22)
-- ✔️ Fixed issue with [app crashing on hot restart](https://github.com/talsec/Free-RASP-Flutter/issues/57)
+- ✔️ Fixed issue
+  with [Codemagic CI/CD on iOS](https://github.com/talsec/Free-RASP-Flutter/issues/22)
+- ✔️ Fixed issue
+  with [app crashing on hot restart](https://github.com/talsec/Free-RASP-Flutter/issues/57)
 
 ### Other improvements
 
@@ -340,19 +396,21 @@ freeRASP into your workflow is even easier than before.
 
 # freeRASP 5.0.0-dev.1
 
-New changes incoming! This major update, contains new API to for handling dev and release deployments
+New changes incoming! This major update, contains new API to for handling dev and release
+deployments
 of freeRASP. Now, you can integrate freeRASP more easily without pesky iOS installation steps. We
 also no longer rely on HMS.
 
 ## What's new in 5.0.0-dev.1?
 
 - ❗ Only one version of the SDK is used from now on, instead of two separate for dev and release
-  
+
   ### Android
 
 - ❗ Removed the HMS dependencies
 
-- ⚡ Improved root detection accuracy by moving the 'ro.debuggable' property state to an ignored group
+- ⚡ Improved root detection accuracy by moving the 'ro.debuggable' property state to an ignored
+  group
 
 - ⚡ Enhanced root detection capabilities by moving the selinux properties check to device state
 
@@ -370,27 +428,33 @@ also no longer rely on HMS.
 
 # freeRASP 4.0.0
 
-A new round of fixes and improvements! Here's the list of all the new things we included in the latest release.
+A new round of fixes and improvements! Here's the list of all the new things we included in the
+latest release.
 
 ## What's new in 4.0.0?
 
 - ❗ BREAKING API CHANGE: Added multi-signature support for certificate hashes of Android apps
-- ✔️ Fixed `NullPointerException` in RootDetector when there are no running processes ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/40)) on Android
-- ✔️ Removed deprecated SafetyNet dependency ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/28)) on Android
+- ✔️ Fixed `NullPointerException` in RootDetector when there are no running
+  processes ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/40)) on Android
+- ✔️ Removed deprecated SafetyNet
+  dependency ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/28)) on Android
 - ✔️ Fixed the ANR issue ([issue](https://github.com/talsec/Free-RASP-Flutter/issues/32)) on Android
 - ✔️ Updated HMS and GMS dependencies on Android
-- 🔎 Improved detection of BlueStacks and Nox emulators ([issue](https://github.com/talsec/Free-RASP-Android/issues/6)) on Android
+- 🔎 Improved detection of BlueStacks and Nox
+  emulators ([issue](https://github.com/talsec/Free-RASP-Android/issues/6)) on Android
 - ❗ Improved device binding detection to not trigger for moving the app to a new device on iOS
 - ⚡ Improved hook detection and logging on iOS
 - 🔎 Improved logging of non-existing hardware for biometrics on iOS
 
 # freeRASP 3.0.2
 
-We are constantly listening to our community to make freeRASP better. This update contain fixes to [reported issues](https://github.com/talsec/Free-RASP-Flutter/issues).
+We are constantly listening to our community to make freeRASP better. This update contain fixes
+to [reported issues](https://github.com/talsec/Free-RASP-Flutter/issues).
 
 ## What's new in 3.0.2?
 
-- 📄 Updated [troubleshoot](README.md#Troubleshoot) section related to ProGuard [issue](https://github.com/talsec/Free-RASP-Flutter/issues/21) 
+- 📄 Updated [troubleshoot](README.md#Troubleshoot) section related to
+  ProGuard [issue](https://github.com/talsec/Free-RASP-Flutter/issues/21)
 - ✔️ Fixed `Duplicate class` [issue](https://github.com/talsec/Free-RASP-Flutter/issues/23)
 
 # freeRASP 3.0.1
@@ -403,11 +467,15 @@ This update contains small fix of documentation.
 
 # freeRASP 3.0.0
 
-We are constantly working on improving your freeRASP experience, and today we're happy to announce a major update packed with new features and improvements! Here's the list of all the new things we included in the latest release.
+We are constantly working on improving your freeRASP experience, and today we're happy to announce a
+major update packed with new features and improvements! Here's the list of all the new things we
+included in the latest release.
 
 ## What's new in 3.0.0?
 
-Among the first changes, you will notice our prettier and easy-to-navigate README. We also created a much-desired tool for a hash conversion (including a guide on how to use it) and added a check, so you know you've done it right.
+Among the first changes, you will notice our prettier and easy-to-navigate README. We also created a
+much-desired tool for a hash conversion (including a guide on how to use it) and added a check, so
+you know you've done it right.
 
 - 👀 Updated README.md
 - 🛠️ Added tool for converting sha-256 hash to base64 form
@@ -415,12 +483,15 @@ Among the first changes, you will notice our prettier and easy-to-navigate READM
 
 And as usual, the new release also contains some bug squashing.
 
-- ✔️ Fixed [issue](https://github.com/talsec/Free-RASP-Flutter/issues/9) with profile mode on Android
+- ✔️ Fixed [issue](https://github.com/talsec/Free-RASP-Flutter/issues/9) with profile mode on
+  Android
 - ✔️ Fixed `onCancel` nullable [issue](https://github.com/talsec/Free-RASP-Flutter/issues/11)
 
 ## Android additions
 
-For Android builds, we focused on extending the critical tampering detection and improving the informational value provided by logs. You may also notice improved performance and API changes for device binding checks.
+For Android builds, we focused on extending the critical tampering detection and improving the
+informational value provided by logs. You may also notice improved performance and API changes for
+device binding checks.
 
 - 🔎 Added native checks in C
 - 📄 Added information about security patches to logs
@@ -430,7 +501,9 @@ For Android builds, we focused on extending the critical tampering detection and
 
 ## iOS improvements
 
-For iOS devices, we prepared upgraded and polished incident detections and even added some new ones. Other changes include several API modifications, based on [discussion](https://github.com/talsec/Free-RASP-Flutter/issues/15) with the community.
+For iOS devices, we prepared upgraded and polished incident detections and even added some new ones.
+Other changes include several API modifications, based
+on [discussion](https://github.com/talsec/Free-RASP-Flutter/issues/15) with the community.
 
 - 🔎 Improved detection of jailbreak hiders (Shadow)
 - ⚡ Improved jailbreak detection
@@ -444,10 +517,11 @@ For iOS devices, we prepared upgraded and polished incident detections and even 
 
 ### General/Flutter
 
-* Fixed bug causing Talsec to not run properly (initialization checks for non null-safe version of Flutter)
+* Fixed bug causing Talsec to not run properly (initialization checks for non null-safe version of
+  Flutter)
 
 * Added configuration tests
-  
+
   ### Android
 
 * Improved performance during library initialization
@@ -456,12 +530,14 @@ For iOS devices, we prepared upgraded and polished incident detections and even 
 
 * Improved incident handling
 
-* Sensitive content logging modification,  package names of well-known dangerous applications (rooting apps, hooking frameworks, etc...) are no longer sent to Elastic, only a flag that device contains one of those applications is sent
+* Sensitive content logging modification, package names of well-known dangerous applications (
+  rooting apps, hooking frameworks, etc...) are no longer sent to Elastic, only a flag that device
+  contains one of those applications is sent
 
 * Fixed usage of deprecated API calls (DexFile) for Android 8.0 and above
 
 * Fixed issue with root prompt ("app asking for root permission") on rooted devices
-  
+
   ### iOS
 
 * Updated jailbreak checks to detect jailbreak hiders
@@ -506,7 +582,7 @@ For iOS devices, we prepared upgraded and polished incident detections and even 
 ### General/Flutter
 
 * Updated README.md
-  
+
   ### iOS
 
 * Fixed build failure on Xcode
