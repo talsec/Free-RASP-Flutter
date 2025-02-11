@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.12.0] - 2025-02-05
+- iOS SDK version:  6.8.0
+- Android SDK version: 14.0.1
+
+### Flutter
+
+#### Added
+- `blockScreenCapture` method to block/unblock screen capture
+- `isScreenCaptureBlocked` method to get the current screen capture blocking status
+- New callbacks:
+  - `screenshot`: Detects when a screenshot is taken
+  - `screenRecording`: Detects when screen recording is active
+
+#### Changed
+- Raised Android CompileSDK level to 35
+- Monitoring is now disabled by default
+
+### Android
+
+#### Added
+- Passive and active screenshot/screen recording protection
+
+#### Changed
+- Improved root detection
+
+#### Fixed
+- Proguard rules to address warnings from okhttp dependency
+
+### iOS
+
+#### Added
+- Active Screenshot/Screen Recording protection
+
 ## [6.11.0] - 2024-12-30
 
 - iOS SDK version:  6.6.3

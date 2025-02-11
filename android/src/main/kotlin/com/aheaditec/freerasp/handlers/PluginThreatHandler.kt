@@ -80,6 +80,14 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
         notify(Threat.ADBEnabled)
     }
 
+    override fun onScreenshotDetected() {
+        notify(Threat.Screenshot)
+    }
+
+    override fun onScreenRecordingDetected() {
+        notify(Threat.ScreenRecording)
+    }
+
     override fun onMalwareDetected(suspiciousApps: List<SuspiciousAppInfo>) {
         notify(suspiciousApps)
     }

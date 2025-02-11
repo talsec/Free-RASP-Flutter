@@ -60,6 +60,12 @@ enum Threat {
   ///
   /// Android only
   adbEnabled,
+
+  /// Screenshot was taken while the application was in the foreground.
+  screenshot,
+
+  /// Screen recording was started active the application was in the foreground.
+  screenRecording,
 }
 
 /// An extension on the [Threat] enum to provide additional functionality.
@@ -91,6 +97,8 @@ extension ThreatX on Threat {
   /// * 659382561 - systemVPN
   /// * 45291047 - devMode
   /// * 379769839 - adbEnabled
+  /// * 705651459 - screenshot
+  /// * 64690214 - screenRecording
   static Threat fromInt(int code) {
     switch (code) {
       case 1268968002:
@@ -121,6 +129,10 @@ extension ThreatX on Threat {
         return Threat.devMode;
       case 379769839:
         return Threat.adbEnabled;
+      case 705651459:
+        return Threat.screenshot;
+      case 64690214:
+        return Threat.screenRecording;
       default:
         // Unknown data came from native code. This shouldn't normally happen.
         exit(127);

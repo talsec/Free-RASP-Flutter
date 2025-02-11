@@ -5,7 +5,7 @@ void main() {
   test('Threat enum should contain 14 values', () {
     final threatValuesLength = Threat.values.length;
 
-    expect(threatValuesLength, 14);
+    expect(threatValuesLength, 16);
   });
 
   test('Threat enum should match its values index', () {
@@ -25,6 +25,8 @@ void main() {
     expect(threatValues[11], Threat.systemVPN);
     expect(threatValues[12], Threat.devMode);
     expect(threatValues[13], Threat.adbEnabled);
+    expect(threatValues[14], Threat.screenshot);
+    expect(threatValues[15], Threat.screenRecording);
   });
 
   test(
@@ -45,6 +47,8 @@ void main() {
       expect(ThreatX.fromInt(659382561), Threat.systemVPN);
       expect(ThreatX.fromInt(45291047), Threat.devMode);
       expect(ThreatX.fromInt(379769839), Threat.adbEnabled);
+      expect(ThreatX.fromInt(705651459), Threat.screenshot);
+      expect(ThreatX.fromInt(64690214), Threat.screenRecording);
     },
   );
 }

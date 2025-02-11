@@ -2,15 +2,15 @@ group 'com.aheaditec.freerasp'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.20'
-    ext.talsec_version = '13.2.0'
+    ext.kotlin_version = '1.7.22'
+    ext.talsec_version = '14.0.1'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -32,15 +32,15 @@ android {
         namespace("com.aheaditec.freerasp")
     }
 
-    compileSdkVersion 33
+    compileSdk 35
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = 17
     }
 
     sourceSets {
@@ -58,7 +58,7 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Talsec SDK
     implementation "com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:$talsec_version"
