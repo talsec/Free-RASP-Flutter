@@ -1,6 +1,8 @@
 package com.aheaditec.freerasp.handlers
 
 import android.content.Context
+import android.os.Build
+import com.aheaditec.freerasp.ScreenProtector
 import com.aheaditec.freerasp.Threat
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.Talsec
@@ -24,6 +26,8 @@ internal object TalsecThreatHandler {
     internal fun start(context: Context, config: TalsecConfig) {
         attachListener(context)
         Talsec.start(context, config)
+        if (Build.VERSION.SDK_INT >= 34)
+            ScreenProtector.enable()
     }
 
     /**
