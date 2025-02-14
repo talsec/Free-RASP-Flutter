@@ -15,7 +15,7 @@ final threatProvider =
 });
 
 final screenCaptureProvider =
-AsyncNotifierProvider.autoDispose<ScreenNotifier, bool>(() {
+    AsyncNotifierProvider.autoDispose<ScreenNotifier, bool>(() {
   return ScreenNotifier();
 });
 
