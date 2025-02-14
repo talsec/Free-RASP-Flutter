@@ -19,6 +19,8 @@ import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
 class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     private var streamHandler: StreamHandler = StreamHandler()
     private var methodCallHandler: MethodCallHandler = MethodCallHandler()
+    private var screenProtector: ScreenProtector? =
+        if (Build.VERSION.SDK_INT >= 34) ScreenProtector else null
 
     private var activity: Activity? = null
     private var context: Context? = null
@@ -42,31 +44,36 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding).also {
             it.addObserver(this)
         }
-        registerScreenProtector(binding.activity.applicationContext, binding.activity)
         activity = binding.activity
         methodCallHandler.activity = activity
+        screenProtector?.activity = activity
+        screenProtector?.let { lifecycle?.addObserver(it) }
     }
 
     override fun onDetachedFromActivity() {
         lifecycle?.removeObserver(this)
-        activity?.let { unregisterScreenProtector(it) }
         activity = null
         methodCallHandler.activity = null
+        screenProtector?.let { lifecycle?.removeObserver(it) }
+        screenProtector?.activity = null
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
         lifecycle?.removeObserver(this)
-        activity?.let { unregisterScreenProtector(it) }
         activity = null
         methodCallHandler.activity = null
+        screenProtector?.let { lifecycle?.removeObserver(it) }
+        screenProtector?.activity = null
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding)
         lifecycle?.addObserver(this)
-        registerScreenProtector(binding.activity.applicationContext, binding.activity)
         activity = binding.activity
         methodCallHandler.activity = activity
+        screenProtector?.activity = activity
+        screenProtector?.let { lifecycle?.addObserver(it) }
+
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -76,20 +83,6 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
             else -> {
                 // Nothing to do
             }
-        }
-    }
-
-    private fun registerScreenProtector(context: Context, activity: Activity) {
-        if (Build.VERSION.SDK_INT >= 34) {
-            ScreenProtector.register(activity, context)
-        } else {
-            Log.w("TalsecPlugin", "Screen protector not supported on this device.")
-        }
-    }
-
-    private fun unregisterScreenProtector(activity: Activity) {
-        if (Build.VERSION.SDK_INT >= 34) {
-            ScreenProtector.unregister(activity)
         }
     }
 }
