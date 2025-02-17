@@ -140,8 +140,6 @@ class Talsec {
   /// **Limitation:** Behavior may vary across devices and Android
   /// manufacturers.
   ///
-  /// For more details, see the [official Android documentation](https://developer.android.com/security/fraud-prevention/activities).
-  ///
   /// **Android only.**
   Future<void> blockScreenCapture({required bool enabled}) async {
     try {
