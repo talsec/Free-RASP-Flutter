@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
-import 'package:freerasp_example/screen_notifier.dart';
+import 'package:freerasp_example/screen_capture_notifier.dart';
 import 'package:freerasp_example/threat_notifier.dart';
 import 'package:freerasp_example/threat_state.dart';
 import 'package:freerasp_example/widgets/widgets.dart';
@@ -15,8 +15,8 @@ final threatProvider =
 });
 
 final screenCaptureProvider =
-    AsyncNotifierProvider.autoDispose<ScreenNotifier, bool>(() {
-  return ScreenNotifier();
+    AsyncNotifierProvider.autoDispose<ScreenCaptureNotifier, bool>(() {
+  return ScreenCaptureNotifier();
 });
 
 Future<void> main() async {
