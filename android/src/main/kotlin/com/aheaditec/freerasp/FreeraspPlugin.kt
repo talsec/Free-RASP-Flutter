@@ -1,9 +1,7 @@
 package com.aheaditec.freerasp
 
-import android.app.Activity
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -22,7 +20,6 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     private var screenProtector: ScreenProtector? =
         if (Build.VERSION.SDK_INT >= 34) ScreenProtector else null
 
-    private var activity: Activity? = null
     private var context: Context? = null
     private var lifecycle: Lifecycle? = null
 
@@ -44,15 +41,13 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding).also {
             it.addObserver(this)
         }
-        activity = binding.activity
-        methodCallHandler.activity = activity
-        screenProtector?.activity = activity
+        methodCallHandler.activity = binding.activity
+        screenProtector?.activity = binding.activity
         screenProtector?.let { lifecycle?.addObserver(it) }
     }
 
     override fun onDetachedFromActivity() {
         lifecycle?.removeObserver(this)
-        activity = null
         methodCallHandler.activity = null
         screenProtector?.let { lifecycle?.removeObserver(it) }
         screenProtector?.activity = null
@@ -60,7 +55,6 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
 
     override fun onDetachedFromActivityForConfigChanges() {
         lifecycle?.removeObserver(this)
-        activity = null
         methodCallHandler.activity = null
         screenProtector?.let { lifecycle?.removeObserver(it) }
         screenProtector?.activity = null
@@ -69,9 +63,8 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding)
         lifecycle?.addObserver(this)
-        activity = binding.activity
-        methodCallHandler.activity = activity
-        screenProtector?.activity = activity
+        methodCallHandler.activity = binding.activity
+        screenProtector?.activity = binding.activity
         screenProtector?.let { lifecycle?.addObserver(it) }
 
     }
