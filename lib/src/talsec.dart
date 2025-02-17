@@ -133,9 +133,9 @@ class Talsec {
 
   /// Prevents the screen from being captured.
   ///
-  /// This method applies `FLAG_SECURE` to the current activity window,
-  /// preventing screenshots and screen recording. Instead of actively blocking
-  /// capture attempts, this flag causes the captured content to appear black.
+  /// This method secures current application screen, preventing screenshots
+  /// and screen recording. This protection is passive - instead of actively
+  /// blocking capture attempts, the captured content to appears black.
   ///
   /// **Limitation:** Behavior may vary across devices and Android
   /// manufacturers.
