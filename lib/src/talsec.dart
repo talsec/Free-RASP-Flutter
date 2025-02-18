@@ -142,6 +142,12 @@ class Talsec {
   ///
   /// **Android only.**
   Future<void> blockScreenCapture({required bool enabled}) async {
+    if (!Platform.isAndroid) {
+      throw UnimplementedError(
+        'Platform is not supported: $defaultTargetPlatform}',
+      );
+    }
+
     try {
       await methodChannel
           .invokeMethod('blockScreenCapture', {'enable': enabled});
@@ -159,6 +165,12 @@ class Talsec {
   ///
   /// **Android only.**
   Future<bool> isScreenCaptureBlocked() async {
+    if (!Platform.isAndroid) {
+      throw UnimplementedError(
+        'Platform is not supported: $defaultTargetPlatform}',
+      );
+    }
+
     try {
       final result =
           await methodChannel.invokeMethod<bool>('isScreenCaptureBlocked');
