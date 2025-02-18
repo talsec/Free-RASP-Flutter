@@ -22,6 +22,8 @@ class SpyThreatListener {
     onDevMode: () => _log(Threat.devMode),
     onADBEnabled: () => _log(Threat.adbEnabled),
     onScreenshot: () => _log(Threat.screenshot),
+    onScreenRecording: () => _log(Threat.screenRecording),
+    onObfuscationIssues: () => _log(Threat.obfuscationIssues),
   );
 
   static void _log(Threat threat) {
