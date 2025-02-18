@@ -6,20 +6,21 @@ import android.app.Activity.ScreenCaptureCallback
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import android.view.WindowManager.SCREEN_RECORDING_STATE_VISIBLE
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.aheaditec.talsec_security.security.api.Talsec
+import io.flutter.Log
 import java.util.function.Consumer
 
-@SuppressLint("StaticFieldLeak")
-internal object ScreenProtector : DefaultLifecycleObserver {
-    private const val TAG = "TalsecScreenProtector"
-    private const val SCREEN_CAPTURE_PERMISSION = "android.permission.DETECT_SCREEN_CAPTURE"
-    private const val SCREEN_RECORDING_PERMISSION = "android.permission.DETECT_SCREEN_RECORDING"
+internal class ScreenProtector : DefaultLifecycleObserver {
+    companion object {
+        private const val TAG = "ScreenProtector"
+        private const val SCREEN_CAPTURE_PERMISSION = "android.permission.DETECT_SCREEN_CAPTURE"
+        private const val SCREEN_RECORDING_PERMISSION = "android.permission.DETECT_SCREEN_RECORDING"
+    }
 
     internal var activity: Activity? = null
     private var isEnabled = false
@@ -32,24 +33,21 @@ internal object ScreenProtector : DefaultLifecycleObserver {
         }
     }
 
-    fun enable() {
+    internal fun enable() {
         if (isEnabled) return
         isEnabled = true
-        activity?.let { register(it) }
     }
 
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
 
-        if (isEnabled)
-            activity?.let { register(it) }
+        if (isEnabled) activity?.let { register(it) }
     }
 
     override fun onStop(owner: LifecycleOwner) {
         super.onStop(owner)
 
-        if (isEnabled)
-            activity?.let { unregister(it) }
+        if (isEnabled) activity?.let { unregister(it) }
     }
 
     private fun register(activity: Activity) {
@@ -68,14 +66,16 @@ internal object ScreenProtector : DefaultLifecycleObserver {
     private fun unregister(currentActivity: Activity) {
         val context = currentActivity.applicationContext
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
-            hasPermission(context, SCREEN_CAPTURE_PERMISSION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && hasPermission(
+                context, SCREEN_CAPTURE_PERMISSION
+            )
         ) {
             currentActivity.unregisterScreenCaptureCallback(screenCaptureCallback)
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM &&
-            hasPermission(context, SCREEN_RECORDING_PERMISSION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM && hasPermission(
+                context, SCREEN_RECORDING_PERMISSION
+            )
         ) {
             currentActivity.windowManager?.removeScreenRecordingCallback(screenRecordCallback)
         }

@@ -26,8 +26,6 @@ internal object TalsecThreatHandler {
     internal fun start(context: Context, config: TalsecConfig) {
         attachListener(context)
         Talsec.start(context, config)
-        if (Build.VERSION.SDK_INT >= 34)
-            ScreenProtector.enable()
     }
 
     /**
