@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, avoid_redundant_argument_values
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
@@ -95,18 +97,20 @@ class HomePage extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
-              ListTile(
-                title: const Text('Change Screen Capture'),
-                leading: SafetyIcon(
-                  isDetected: !(ref.watch(screenCaptureProvider).value ?? true),
+              if (Platform.isAndroid)
+                ListTile(
+                  title: const Text('Change Screen Capture'),
+                  leading: SafetyIcon(
+                    isDetected:
+                        !(ref.watch(screenCaptureProvider).value ?? true),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () {
+                      ref.read(screenCaptureProvider.notifier).toggle();
+                    },
+                  ),
                 ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {
-                    ref.read(screenCaptureProvider.notifier).toggle();
-                  },
-                ),
-              ),
               Expanded(
                 child: ThreatListView(threats: threatState.detectedThreats),
               ),
