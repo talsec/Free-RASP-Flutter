@@ -43,16 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 
-- Active Screenshot/Screen Recording protection
-- Enhanced security with **[Serotonin Jailbreak](https://github.com/SerotoninApp/Serotonin)
-  Detection** to identify compromised devices.
-
-### Changed
-
-- Renewed the signing certificate.
-- Updated SDK code signing; it will now be signed with:
-    - Team ID: PBDDS45LQS
-    - Team Name: Lynx SFT s.r.o.
+- Passive Screenshot/Screen Recording detection
 
 ## [6.11.0] - 2024-12-30
 
