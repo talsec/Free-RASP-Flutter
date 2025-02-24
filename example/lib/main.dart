@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, avoid_redundant_argument_values
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
+import 'package:freerasp_example/screen_capture_notifier.dart';
 import 'package:freerasp_example/threat_notifier.dart';
 import 'package:freerasp_example/threat_state.dart';
 import 'package:freerasp_example/widgets/widgets.dart';
@@ -11,6 +14,11 @@ import 'package:freerasp_example/widgets/widgets.dart';
 final threatProvider =
     NotifierProvider.autoDispose<ThreatNotifier, ThreatState>(() {
   return ThreatNotifier();
+});
+
+final screenCaptureProvider =
+    AsyncNotifierProvider.autoDispose<ScreenCaptureNotifier, bool>(() {
+  return ScreenCaptureNotifier();
 });
 
 Future<void> main() async {
@@ -89,6 +97,20 @@ class HomePage extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
+              if (Platform.isAndroid)
+                ListTile(
+                  title: const Text('Change Screen Capture'),
+                  leading: SafetyIcon(
+                    isDetected:
+                        !(ref.watch(screenCaptureProvider).value ?? true),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () {
+                      ref.read(screenCaptureProvider.notifier).toggle();
+                    },
+                  ),
+                ),
               Expanded(
                 child: ThreatListView(threats: threatState.detectedThreats),
               ),

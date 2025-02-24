@@ -20,6 +20,10 @@ class SpyThreatListener {
     onUnofficialStore: () => _log(Threat.unofficialStore),
     onSystemVPN: () => _log(Threat.systemVPN),
     onDevMode: () => _log(Threat.devMode),
+    onADBEnabled: () => _log(Threat.adbEnabled),
+    onScreenshot: () => _log(Threat.screenshot),
+    onScreenRecording: () => _log(Threat.screenRecording),
+    onObfuscationIssues: () => _log(Threat.obfuscationIssues),
   );
 
   static void _log(Threat threat) {
@@ -56,6 +60,10 @@ class SpyThreatListener {
         callback.onDevMode?.call();
       case Threat.adbEnabled:
         callback.onADBEnabled?.call();
+      case Threat.screenshot:
+        callback.onScreenshot?.call();
+      case Threat.screenRecording:
+        callback.onScreenRecording?.call();
     }
   }
 }

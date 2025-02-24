@@ -131,6 +131,60 @@ class Talsec {
     );
   }
 
+  /// Prevents the screen from being captured.
+  ///
+  /// This method secures current application screen, preventing screenshots
+  /// and screen recording. This protection is passive - instead of actively
+  /// blocking capture attempts, the captured content to appears black.
+  ///
+  /// **Limitation:** Behavior may vary across devices and Android
+  /// manufacturers.
+  ///
+  /// **Android only.**
+  Future<void> blockScreenCapture({required bool enabled}) async {
+    if (!Platform.isAndroid) {
+      throw UnimplementedError(
+        'Platform is not supported: $defaultTargetPlatform}',
+      );
+    }
+
+    try {
+      await methodChannel
+          .invokeMethod('blockScreenCapture', {'enable': enabled});
+    } on PlatformException catch (e) {
+      throw Exception('Failed to call block screen capture: ${e.message}');
+    }
+  }
+
+  /// Checks status of screen capture protection.
+  ///
+  /// For more details about screen capture protection, see the
+  /// [blockScreenCapture] method.
+  ///
+  /// Returns `true` if screen capture protection is active, `false` otherwise.
+  ///
+  /// **Android only.**
+  Future<bool> isScreenCaptureBlocked() async {
+    if (!Platform.isAndroid) {
+      throw UnimplementedError(
+        'Platform is not supported: $defaultTargetPlatform}',
+      );
+    }
+
+    try {
+      final result =
+          await methodChannel.invokeMethod<bool>('isScreenCaptureBlocked');
+
+      if (result is! bool) {
+        throw const TalsecException(message: 'Screen capture state failed.');
+      }
+
+      return result;
+    } on PlatformException catch (e) {
+      throw Exception('Failed to check screen capture state: ${e.message}');
+    }
+  }
+
   void _checkConfig(TalsecConfig config) {
     // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
@@ -196,6 +250,10 @@ class Talsec {
           callback.onDevMode?.call();
         case Threat.adbEnabled:
           callback.onADBEnabled?.call();
+        case Threat.screenshot:
+          callback.onScreenshot?.call();
+        case Threat.screenRecording:
+          callback.onScreenRecording?.call();
       }
     });
   }

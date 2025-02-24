@@ -33,4 +33,8 @@ internal sealed class Threat(val value: Int) {
     object DevMode : Threat(45291047)
 
     object ADBEnabled : Threat(379769839)
+
+    object Screenshot : Threat(705651459)
+
+    object ScreenRecording : Threat(64690214)
 }

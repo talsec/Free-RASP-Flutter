@@ -12,6 +12,8 @@ private let deviceChangeValue = 1806586319
 private let deviceIDValue =  1514211414
 private let unofficialStoreValue = 629780916
 private let systemVPNValue = 659382561
+private let screenshotValue = 705651459
+private let screenRecordingValue = 64690214
 
 /// Extension with submits events to plugin
 extension SecurityThreatCenter: SecurityThreatHandler {
@@ -49,6 +51,10 @@ extension SecurityThreat {
             return unofficialStoreValue
         case .systemVPN:
             return systemVPNValue
+        case .screenshot:
+            return screenshotValue
+        case .screenRecording:
+            return screenRecordingValue
         @unknown default:
             return unknownValue
         }

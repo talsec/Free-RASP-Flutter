@@ -28,6 +28,8 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
       onSystemVPN: () => _updateThreat(Threat.systemVPN),
       onDevMode: () => _updateThreat(Threat.devMode),
       onADBEnabled: () => _updateThreat(Threat.adbEnabled),
+      onScreenshot: () => _updateThreat(Threat.screenshot),
+      onScreenRecording: () => _updateThreat(Threat.screenRecording),
     );
 
     Talsec.instance.attachListener(threatCallback);
