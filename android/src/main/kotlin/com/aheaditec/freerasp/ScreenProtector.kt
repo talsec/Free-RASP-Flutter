@@ -36,6 +36,7 @@ internal class ScreenProtector : DefaultLifecycleObserver {
     internal fun enable() {
         if (isEnabled) return
         isEnabled = true
+        activity?.let { register(it) }
     }
 
     override fun onStart(owner: LifecycleOwner) {
