@@ -16,9 +16,9 @@ import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
 /** FreeraspPlugin */
 class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     private var streamHandler: StreamHandler = StreamHandler()
-    private var methodCallHandler: MethodCallHandler = MethodCallHandler()
     private var screenProtector: ScreenProtector? =
         if (Build.VERSION.SDK_INT >= 34) ScreenProtector() else null
+    private var methodCallHandler: MethodCallHandler = MethodCallHandler(screenProtector)
 
     private var context: Context? = null
     private var lifecycle: Lifecycle? = null
@@ -26,7 +26,6 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val messenger = flutterPluginBinding.binaryMessenger
         context = flutterPluginBinding.applicationContext
-        screenProtector?.enable()
         methodCallHandler.createMethodChannel(messenger, flutterPluginBinding.applicationContext)
         streamHandler.createEventChannel(messenger)
     }

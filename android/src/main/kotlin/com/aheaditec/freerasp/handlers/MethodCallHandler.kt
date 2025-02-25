@@ -8,9 +8,10 @@ import android.os.Looper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.aheaditec.freerasp.runResultCatching
+import com.aheaditec.freerasp.ScreenProtector
 import com.aheaditec.freerasp.Utils
 import com.aheaditec.freerasp.generated.TalsecPigeonApi
+import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.toPigeon
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.Talsec
@@ -23,7 +24,8 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 /**
  * A method handler that creates and manages an [MethodChannel] for freeRASP methods.
  */
-internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
+internal class MethodCallHandler(private val screenProtector: ScreenProtector?) : MethodCallHandler,
+    LifecycleEventObserver {
     private var context: Context? = null
     private var methodChannel: MethodChannel? = null
     private var pigeonApi: TalsecPigeonApi? = null
@@ -137,6 +139,7 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
             val talsecConfig = Utils.toTalsecConfigThrowing(config)
             context?.let {
                 TalsecThreatHandler.start(it, talsecConfig)
+                screenProtector?.enable()
             } ?: throw IllegalStateException("Unable to run Talsec - context is null")
             result.success(null)
         }
