@@ -2,15 +2,15 @@ group 'com.aheaditec.freerasp'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.22'
-    ext.talsec_version = '14.0.1'
+    ext.kotlin_version = '2.1.0'
+    ext.talsec_version = '15.0.0'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.1'
+        classpath 'com.android.tools.build:gradle:8.8.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
