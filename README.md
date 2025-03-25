@@ -1,13 +1,14 @@
 ![FreeRasp](https://raw.githubusercontent.com/talsec/Free-RASP-Community/master/visuals/freeRASP.png)
-![GitHub Repo stars](https://img.shields.io/github/stars/talsec/Free-RASP-Community?color=green)  
-![Likes](https://img.shields.io/pub/likes/freerasp?color=green!)  
-![Points](https://img.shields.io/pub/points/freerasp)  
-![License](https://img.shields.io/github/license/talsec/Free-RASP-Community)  
-![Last Commit](https://img.shields.io/github/last-commit/talsec/Free-RASP-Community)  
-[![Style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)  
+
+![GitHub Repo stars](https://img.shields.io/github/stars/talsec/Free-RASP-Community?color=green)
+![Likes](https://img.shields.io/pub/likes/freerasp?color=green!)
+![Points](https://img.shields.io/pub/points/freerasp)
+![License](https://img.shields.io/github/license/talsec/Free-RASP-Community)
+![Last Commit](https://img.shields.io/github/last-commit/talsec/Free-RASP-Community)
+[![Style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
+![Publisher](https://img.shields.io/pub/publisher/freerasp)
 ![Version Management](https://img.shields.io/badge/version%20management-fvm-purple?labelColor=gray&style=flat)
-![Publisher](https://img.shields.io/pub/publisher/freerasp)  
-[![42matters](https://42matters.com/badges/sdk-installations/talsec)](https://42matters.com/sdks/android/talsec)  
+[![42matters](https://42matters.com/badges/sdk-installations/talsec)](https://42matters.com/sdks/android/talsec)
 
 [<img src="https://assets.42matters.com/badges/2024/04/rising-star.svg?m=04" width="100"/>](https://42matters.com/sdks/android/talsec)
 
