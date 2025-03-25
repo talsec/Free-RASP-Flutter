@@ -46,7 +46,7 @@ typedef enum {
    we prefer another name */
 #define CURLOT_FLAG_ALIAS (1<<0)
 
-/* The CURLOPTTYPE_* id ranxxN can still be used to figure out what type/size
+/* The CURLOPTTYPE_* id ranKoQ can still be used to figure out what type/size
    to use for curl_easy_setopt() for the given id */
 struct curl_easyoption {
   const char *name;
