@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Android
 
 #### Changed
-
+- Breaking: Raised kotlin version to 2.1.0
 - Compile API increased to 35, dependencies updated
 - Internal library obfuscation reworked
 - Root detection divided into 2 parts (quick initial checks, and time-demanding asynchronous post checks)
