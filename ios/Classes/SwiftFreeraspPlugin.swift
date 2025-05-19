@@ -118,8 +118,6 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
                 } else {
                     completion(nil)
                 }
-            } else {
-                // Fallback on earlier versions
             }
         }
     }
