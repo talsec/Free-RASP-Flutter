@@ -51,11 +51,11 @@ internal class ScreenProtector : DefaultLifecycleObserver {
     }
 
     private fun register(activity: Activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (Build.VERSION.SDK_INT >= 34) {
             registerScreenCapture(activity)
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+        if (Build.VERSION.SDK_INT >= 35) {
             registerScreenRecording(activity)
         }
     }
@@ -66,14 +66,14 @@ internal class ScreenProtector : DefaultLifecycleObserver {
     private fun unregister(currentActivity: Activity) {
         val context = currentActivity.applicationContext
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && hasPermission(
+        if (Build.VERSION.SDK_INT >= 34 && hasPermission(
                 context, SCREEN_CAPTURE_PERMISSION
             )
         ) {
             currentActivity.unregisterScreenCaptureCallback(screenCaptureCallback)
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM && hasPermission(
+        if (Build.VERSION.SDK_INT >= 35 && hasPermission(
                 context, SCREEN_RECORDING_PERMISSION
             )
         ) {
@@ -84,7 +84,7 @@ internal class ScreenProtector : DefaultLifecycleObserver {
     // Missing permission is suppressed because the decision to use the screen capture API is made
     // by developer, and not enforced by the library.
     @SuppressLint("MissingPermission")
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    @RequiresApi(34)
     private fun registerScreenCapture(currentActivity: Activity) {
         val context = currentActivity.applicationContext
 
@@ -99,7 +99,7 @@ internal class ScreenProtector : DefaultLifecycleObserver {
     // Missing permission is suppressed because the decision to use the screen capture API is made
     // by developer, and not enforced by the library.
     @SuppressLint("MissingPermission")
-    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    @RequiresApi(35)
     private fun registerScreenRecording(currentActivity: Activity) {
         val context = currentActivity.applicationContext
 
