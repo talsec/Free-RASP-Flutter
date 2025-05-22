@@ -28,6 +28,9 @@ public struct TalsecConfig {
 }
 @_hasMissingDesignatedInitializers public class Talsec {
   public static func start(config: TalsecRuntime.TalsecConfig)
+  public static func blockScreenCapture(enable: Swift.Bool, window: UIKit.UIWindow)
+  public static func isScreenCaptureBlocked(in window: UIKit.UIWindow) -> Swift.Bool
+  public static func storeExternalId(externalId: Swift.String)
   @objc deinit
 }
 public enum SecurityThreat : Swift.String, Swift.Codable, Swift.CaseIterable, Swift.Equatable {

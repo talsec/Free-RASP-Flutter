@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
+import 'package:freerasp/src/errors/external_id_failure_exception.dart';
 import 'package:freerasp/src/errors/malware_failure_exception.dart';
 import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
 
@@ -140,14 +141,7 @@ class Talsec {
   /// **Limitation:** Behavior may vary across devices and Android
   /// manufacturers.
   ///
-  /// **Android only.**
   Future<void> blockScreenCapture({required bool enabled}) async {
-    if (!Platform.isAndroid) {
-      throw UnimplementedError(
-        'Platform is not supported: $defaultTargetPlatform}',
-      );
-    }
-
     try {
       await methodChannel
           .invokeMethod('blockScreenCapture', {'enable': enabled});
@@ -163,14 +157,7 @@ class Talsec {
   ///
   /// Returns `true` if screen capture protection is active, `false` otherwise.
   ///
-  /// **Android only.**
   Future<bool> isScreenCaptureBlocked() async {
-    if (!Platform.isAndroid) {
-      throw UnimplementedError(
-        'Platform is not supported: $defaultTargetPlatform}',
-      );
-    }
-
     try {
       final result =
           await methodChannel.invokeMethod<bool>('isScreenCaptureBlocked');
@@ -182,6 +169,18 @@ class Talsec {
       return result;
     } on PlatformException catch (e) {
       throw Exception('Failed to check screen capture state: ${e.message}');
+    }
+  }
+
+  /// Sends given [data] to the backend. Each call overwrites data stored in
+  /// the backend.
+  ///
+  /// Throws a [ExternalIdFailureException] when storing failed.
+  Future<void> storeExternalId(String data) async {
+    try {
+      await methodChannel.invokeMethod<void>('storeExternalId', {'data': data});
+    } on PlatformException catch (e) {
+      throw ExternalIdFailureException.fromPlatformException(e);
     }
   }
 

@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, avoid_redundant_argument_values
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
@@ -56,6 +54,11 @@ Future<void> _initializeTalsec() async {
   await Talsec.instance.start(config);
 }
 
+/// Example of how to use [Talsec.storeExternalId].
+Future<void> testStoreExternalId(String data) async {
+  await Talsec.instance.storeExternalId(data);
+}
+
 /// The root widget of the application
 class App extends StatelessWidget {
   const App({super.key});
@@ -97,20 +100,27 @@ class HomePage extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
-              if (Platform.isAndroid)
-                ListTile(
-                  title: const Text('Change Screen Capture'),
-                  leading: SafetyIcon(
-                    isDetected:
-                        !(ref.watch(screenCaptureProvider).value ?? true),
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () {
-                      ref.read(screenCaptureProvider.notifier).toggle();
-                    },
-                  ),
+              ListTile(
+                title: const Text('Store External ID'),
+                trailing: IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () {
+                    testStoreExternalId('testData');
+                  },
                 ),
+              ),
+              ListTile(
+                title: const Text('Change Screen Capture'),
+                leading: SafetyIcon(
+                  isDetected: !(ref.watch(screenCaptureProvider).value ?? true),
+                ),
+                trailing: IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () {
+                    ref.read(screenCaptureProvider.notifier).toggle();
+                  },
+                ),
+              ),
               Expanded(
                 child: ThreatListView(threats: threatState.detectedThreats),
               ),

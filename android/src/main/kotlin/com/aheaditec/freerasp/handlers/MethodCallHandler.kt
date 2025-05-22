@@ -121,6 +121,7 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
             "getAppIcon" -> getAppIcon(call, result)
             "blockScreenCapture" -> blockScreenCapture(call, result)
             "isScreenCaptureBlocked" -> isScreenCaptureBlocked(result)
+            "storeExternalId" -> storeExternalId(call, result)
             else -> result.notImplemented()
         }
     }
@@ -197,6 +198,20 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
     private fun isScreenCaptureBlocked(result: MethodChannel.Result) {
         runResultCatching(result) {
             result.success(Talsec.isScreenCaptureBlocked())
+        }
+    }
+
+    /**
+     * Stores an external ID.
+     *
+     * @param call The method call containing the external ID.
+     * @param result The result handler of the method call.
+     */
+    private fun storeExternalId(call: MethodCall, result: MethodChannel.Result) {
+        runResultCatching(result) {
+            val data = call.argument<String>("data")
+            Talsec.storeExternalId(context, data)
+            result.success(null)
         }
     }
 }

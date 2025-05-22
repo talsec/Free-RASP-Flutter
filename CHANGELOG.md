@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.0] - 2025-05-19
+
+- iOS SDK version:  6.11.0
+- Android SDK version: 15.1.0
+
+### Flutter
+
+#### Added
+
+- Added interface for screenshot / screen recording blocking on iOS
+- Added interface for external ID storage
+
+### Android
+
+#### Added
+
+- Added externalId to put an integrator-specified custom identifier into the logs.
+- Added eventId to the logs, which is unique per each log. It allows traceability of the same log across various systems.
+
+#### Changed
+
+- New root detection checks added
+
+### iOS
+
+#### Added
+
+- Added externalId to put an integrator-specified custom identifier into the logs.
+- Added eventId to the logs, which is unique per each log. It allows traceability of the same log across various systems.
+- Screen capture protection obscuring app content in screenshots and screen recordings preventing unauthorized content capture. Refer to the freeRASP integration documentation.
+
+#### Fixed
+
+- Issue with the screen recording detection.
+- Issue that prevented Xcode tests from running correctly.
+- Issue that caused compilation errors due to unknown references.
+
 ## [7.0.0] - 2024-03-26
 
 - iOS SDK version:  6.9.0
