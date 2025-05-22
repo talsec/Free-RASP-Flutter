@@ -38,8 +38,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Fixed
 
-- Resolved an issue with the screen recording detection.
-- Resolved an issue that prevented Xcode tests from running correctly.
+- Issue with the screen recording detection.
+- Issue that prevented Xcode tests from running correctly.
+- Issue that caused compilation errors due to unknown references.
 
 ## [7.0.0] - 2024-03-26
 
