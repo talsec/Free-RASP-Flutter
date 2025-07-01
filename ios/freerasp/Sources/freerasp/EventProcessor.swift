@@ -1,4 +1,5 @@
 import TalsecRuntime
+import Flutter
 
 /// Class for processing security threat events
 class EventProcessor {

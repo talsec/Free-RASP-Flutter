@@ -13,13 +13,16 @@ FreeRASP for iOS is a lightweight and easy-to-use mobile app protection and secu
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Talsec' => 'talsec.app' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*', 'TalsecRuntime.xcframework'
+  s.source_files = 'freerasp/Sources/**/*.swift', 'TalsecRuntime.xcframework'
   s.dependency 'Flutter'
-  s.platform = :ios, '8.0'
-
+  s.platform = :ios, '12.0'
   s.preserve_paths = 'TalsecRuntime.xcframework'
-  s.xcconfig = { 'OTHER_LDFLAGS' => '-framework TalsecRuntime' }
   s.vendored_frameworks = 'TalsecRuntime.xcframework'
+  s.xcconfig = {
+      'LIBRARY_SEARCH_PATHS' => '$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)/ $(SDKROOT)/usr/lib/swift',
+      'LD_RUNPATH_SEARCH_PATHS' => '/usr/lib/swift',
+      'OTHER_LDFLAGS' => '-framework TalsecRuntime'
+  }
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

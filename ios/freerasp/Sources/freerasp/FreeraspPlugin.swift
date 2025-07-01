@@ -3,12 +3,12 @@ import UIKit
 import TalsecRuntime
 
 /// A Flutter plugin that interacts with the Talsec runtime library, handles method calls and provides event streams.
-public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
+public class FreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     /// The event processor used to handle and dispatch events.
     private let eventProcessor = EventProcessor()
     
-    /// The singleton instance of `SwiftTalsecPlugin`.
-    static let instance = SwiftFreeraspPlugin()
+    /// The singleton instance of `FreeraspPlugin`.
+    static let instance = FreeraspPlugin()
     
     private override init() {}
     

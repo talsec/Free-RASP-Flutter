@@ -16,10 +16,10 @@ private let screenshotValue = 705651459
 private let screenRecordingValue = 64690214
 
 /// Extension with submits events to plugin
-extension SecurityThreatCenter: SecurityThreatHandler {
+extension SecurityThreatCenter: @retroactive SecurityThreatHandler {
     
     public func threatDetected(_ securityThreat: TalsecRuntime.SecurityThreat) {
-        SwiftFreeraspPlugin.instance.submitEvent(securityThreat)
+        FreeraspPlugin.instance.submitEvent(securityThreat)
     }
 }
 
