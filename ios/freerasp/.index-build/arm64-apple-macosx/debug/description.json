@@ -196,7 +196,7 @@
   },
   "targetDependencyMap" : {
     "freerasp" : [
-
+      "TalsecRuntime"
     ]
   },
   "testDiscoveryCommands" : {

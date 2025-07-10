@@ -1,21 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - freerasp (1.0.0):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - freerasp (from `.symlinks/plugins/freerasp/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  freerasp:
-    :path: ".symlinks/plugins/freerasp/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  freerasp: 9bd38498e07d3f3f419218f0b0077768fbd50791
 
 PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011
 
