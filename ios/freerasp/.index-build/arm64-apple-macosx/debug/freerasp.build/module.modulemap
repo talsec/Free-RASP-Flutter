@@ -1,0 +1,4 @@
+module freerasp {
+    header "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/freerasp-Swift.h"
+    requires objc
+}

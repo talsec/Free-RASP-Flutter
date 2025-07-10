@@ -1,0 +1,29 @@
+{
+  "": {
+    "swift-dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/master.swiftdeps"
+  },
+  "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/Sources/freerasp/EventProcessor.swift": {
+    "dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/EventProcessor.d",
+    "object": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/EventProcessor.swift.o",
+    "swiftmodule": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/EventProcessor~partial.swiftmodule",
+    "swift-dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/EventProcessor.swiftdeps"
+  },
+  "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/Sources/freerasp/FlutterTalsecConfig.swift": {
+    "dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/FlutterTalsecConfig.d",
+    "object": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/FlutterTalsecConfig.swift.o",
+    "swiftmodule": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/FlutterTalsecConfig~partial.swiftmodule",
+    "swift-dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/FlutterTalsecConfig.swiftdeps"
+  },
+  "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/Sources/freerasp/FreeraspPlugin.swift": {
+    "dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/FreeraspPlugin.d",
+    "object": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/FreeraspPlugin.swift.o",
+    "swiftmodule": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/FreeraspPlugin~partial.swiftmodule",
+    "swift-dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/FreeraspPlugin.swiftdeps"
+  },
+  "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/Sources/freerasp/TalsecHandlers.swift": {
+    "dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/TalsecHandlers.d",
+    "object": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/TalsecHandlers.swift.o",
+    "swiftmodule": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/TalsecHandlers~partial.swiftmodule",
+    "swift-dependencies": "/Users/jaroslavnovotny/Development/RASP/freerasp-flutter/ios/freerasp/.index-build/arm64-apple-macosx/debug/freerasp.build/TalsecHandlers.swiftdeps"
+  }
+}
