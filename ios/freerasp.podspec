@@ -16,7 +16,7 @@ FreeRASP for iOS is a lightweight and easy-to-use mobile app protection and secu
   s.source_files = 'freerasp/Sources/**/*.swift', 'TalsecRuntime.xcframework'
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
-  s.preserve_paths = 'TalsecRuntime.xcframework'
+  s.preserve_paths = './freerasp/TalsecRuntime.xcframework'
   s.vendored_frameworks = 'TalsecRuntime.xcframework'
   s.xcconfig = {
       'LIBRARY_SEARCH_PATHS' => '$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)/ $(SDKROOT)/usr/lib/swift',
