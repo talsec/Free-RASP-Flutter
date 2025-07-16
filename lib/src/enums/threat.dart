@@ -67,7 +67,8 @@ enum Threat {
   /// Screen recording was started active the application was in the foreground.
   screenRecording,
 
-  /// This method is called when multiple instances of the app are running on the device
+  /// This method is called when multiple instances of the app
+  /// are running on the device
   ///
   /// Android only
   multiInstance,
