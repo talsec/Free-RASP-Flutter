@@ -38,6 +38,7 @@ class ThreatCallback extends TalsecPigeonApi {
     this.onMalware,
     this.onScreenshot,
     this.onScreenRecording,
+    this.onMultiInstance,
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -94,6 +95,9 @@ class ThreatCallback extends TalsecPigeonApi {
 
   /// This method is called when screen recording detected
   final VoidCallback? onScreenRecording;
+
+  /// This method is called when screen recording detected
+  final VoidCallback? onMultiInstance;
 
   @override
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo) {
