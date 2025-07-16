@@ -24,6 +24,7 @@ class SpyThreatListener {
     onScreenshot: () => _log(Threat.screenshot),
     onScreenRecording: () => _log(Threat.screenRecording),
     onObfuscationIssues: () => _log(Threat.obfuscationIssues),
+    onMultiInstance: () => _log(Threat.multiInstance),
   );
 
   static void _log(Threat threat) {
@@ -64,6 +65,8 @@ class SpyThreatListener {
         callback.onScreenshot?.call();
       case Threat.screenRecording:
         callback.onScreenRecording?.call();
+      case Threat.multiInstance:
+        callback.onMultiInstance?.call();
     }
   }
 }
