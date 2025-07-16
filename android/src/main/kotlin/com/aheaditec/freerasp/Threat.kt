@@ -37,4 +37,6 @@ internal sealed class Threat(val value: Int) {
     object Screenshot : Threat(705651459)
 
     object ScreenRecording : Threat(64690214)
+
+    object MultiInstance : Threat(859307284)
 }
