@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added support for 16 KB memory page sizes
 - Added `onMultiInstance` callback
-  - We are introducing a new capability, detecting whether the application is running in various multi instancing environments
+  - Detecting whether the application is installed/running in various multi-instancing environments (e.g. Parallel Space)
 
 #### Changed
 
