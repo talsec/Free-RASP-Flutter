@@ -68,7 +68,7 @@ enum Threat {
   screenRecording,
 
   /// This method is called when multiple instances of the app
-  /// are running on the device
+  /// are detected on the device
   ///
   /// Android only
   multiInstance,
