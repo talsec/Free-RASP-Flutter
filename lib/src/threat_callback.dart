@@ -96,7 +96,7 @@ class ThreatCallback extends TalsecPigeonApi {
   /// This method is called when screen recording detected
   final VoidCallback? onScreenRecording;
 
-  /// This method is called when screen recording detected
+  /// This method is called when multi-instance is detected
   final VoidCallback? onMultiInstance;
 
   @override
