@@ -66,6 +66,12 @@ enum Threat {
 
   /// Screen recording was started active the application was in the foreground.
   screenRecording,
+
+  /// This method is called when multiple instances of the app
+  /// are detected on the device
+  ///
+  /// Android only
+  multiInstance,
 }
 
 /// An extension on the [Threat] enum to provide additional functionality.
@@ -99,6 +105,7 @@ extension ThreatX on Threat {
   /// * 379769839 - adbEnabled
   /// * 705651459 - screenshot
   /// * 64690214 - screenRecording
+  /// * 859307284 - multiInstance
   static Threat fromInt(int code) {
     switch (code) {
       case 1268968002:
@@ -133,6 +140,8 @@ extension ThreatX on Threat {
         return Threat.screenshot;
       case 64690214:
         return Threat.screenRecording;
+      case 859307284:
+        return Threat.multiInstance;
       default:
         // Unknown data came from native code. This shouldn't normally happen.
         exit(127);

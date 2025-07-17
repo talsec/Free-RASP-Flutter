@@ -30,6 +30,7 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
       onADBEnabled: () => _updateThreat(Threat.adbEnabled),
       onScreenshot: () => _updateThreat(Threat.screenshot),
       onScreenRecording: () => _updateThreat(Threat.screenRecording),
+      onMultiInstance: () => _updateThreat(Threat.multiInstance),
     );
 
     Talsec.instance.attachListener(threatCallback);

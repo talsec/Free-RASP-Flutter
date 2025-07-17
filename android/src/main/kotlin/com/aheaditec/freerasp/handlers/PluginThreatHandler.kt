@@ -92,6 +92,10 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
         notify(suspiciousApps)
     }
 
+    override fun onMultiInstanceDetected() {
+        notify(Threat.MultiInstance)
+    }
+
     private fun notify(threat: Threat) {
         listener?.threatDetected(threat) ?: detectedThreats.add(threat)
     }

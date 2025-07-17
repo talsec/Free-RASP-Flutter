@@ -253,6 +253,8 @@ class Talsec {
           callback.onScreenshot?.call();
         case Threat.screenRecording:
           callback.onScreenRecording?.call();
+        case Threat.multiInstance:
+          callback.onMultiInstance?.call();
       }
     });
   }
