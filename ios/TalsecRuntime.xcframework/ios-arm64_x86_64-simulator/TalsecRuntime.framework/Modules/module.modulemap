@@ -1,0 +1,17 @@
+framework module TalsecRuntime {
+    umbrella header "TalsecRuntime_iOS.h"
+
+    export *
+    module * { export * }
+
+    explicit module Private {
+        private header "CryptoBridgingHeader.h"
+        private header "CurlWrapper.h"
+        export *
+    }
+}
+
+module TalsecRuntime.Swift {
+  header "TalsecRuntime-Swift.h"
+  requires objc
+}
