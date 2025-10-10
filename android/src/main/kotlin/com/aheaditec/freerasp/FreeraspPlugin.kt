@@ -1,5 +1,6 @@
 package com.aheaditec.freerasp
 
+import android.app.Activity
 import android.content.Context
 import android.os.Build
 import androidx.lifecycle.Lifecycle
@@ -18,15 +19,15 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
     private var streamHandler: StreamHandler = StreamHandler()
     private var methodCallHandler: MethodCallHandler = MethodCallHandler()
     private var screenProtector: ScreenProtector? =
-        if (Build.VERSION.SDK_INT >= 34) ScreenProtector() else null
+        if (Build.VERSION.SDK_INT >= 34) ScreenProtector else null
 
     private var context: Context? = null
     private var lifecycle: Lifecycle? = null
+    private var activity: Activity? = null
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val messenger = flutterPluginBinding.binaryMessenger
         context = flutterPluginBinding.applicationContext
-        screenProtector?.enable()
         methodCallHandler.createMethodChannel(messenger, flutterPluginBinding.applicationContext)
         streamHandler.createEventChannel(messenger)
     }
@@ -41,32 +42,31 @@ class FreeraspPlugin : FlutterPlugin, ActivityAware, LifecycleEventObserver {
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding).also {
             it.addObserver(this)
         }
+        screenProtector?.register(binding.activity)
         methodCallHandler.activity = binding.activity
-        screenProtector?.activity = binding.activity
-        screenProtector?.let { lifecycle?.addObserver(it) }
+        activity = binding.activity
     }
 
     override fun onDetachedFromActivity() {
         lifecycle?.removeObserver(this)
+        screenProtector?.unregister(activity!!)
         methodCallHandler.activity = null
-        screenProtector?.let { lifecycle?.removeObserver(it) }
-        screenProtector?.activity = null
+        activity = null
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
         lifecycle?.removeObserver(this)
+        screenProtector?.unregister(activity!!)
         methodCallHandler.activity = null
-        screenProtector?.let { lifecycle?.removeObserver(it) }
-        screenProtector?.activity = null
+        activity = null
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding)
-        lifecycle?.addObserver(this)
+        activity = binding.activity
         methodCallHandler.activity = binding.activity
-        screenProtector?.activity = binding.activity
-        screenProtector?.let { lifecycle?.addObserver(it) }
-
+        lifecycle?.addObserver(this)
+        screenProtector?.register(binding.activity)
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
