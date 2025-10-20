@@ -67,6 +67,12 @@ class SpyThreatListener {
         callback.onScreenRecording?.call();
       case Threat.multiInstance:
         callback.onMultiInstance?.call();
+      case Threat.unsecureWiFi:
+        callback.onUnsecureWiFi?.call();
+      case Threat.timeSpoofing:
+        callback.onTimeSpoofing?.call();
+      case Threat.locationSpoofing:
+        callback.onLocationSpoofing?.call();
     }
   }
 }
