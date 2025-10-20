@@ -10,6 +10,7 @@ class TalsecConfig {
   TalsecConfig({
     required this.watcherMail,
     this.isProd = true,
+    this.killOnBypass = true,
     this.androidConfig,
     this.iosConfig,
   });
@@ -32,4 +33,9 @@ class TalsecConfig {
 
   /// Whether the SDK should be running in release mode.
   final bool isProd;
+
+  /// Whether the application should be killed when SDK is bypassed.
+  ///
+  /// When bypassed, application is killed without triggering callbacks.
+  final bool killOnBypass;
 }
