@@ -121,6 +121,10 @@ class HomePage extends ConsumerWidget {
                   },
                 ),
               ),
+              ListTile(
+                title: const Text('Check Rounds Completed'),
+                trailing: SafetyIcon(isDetected: !threatState.allChecksPassed),
+              ),
               Expanded(
                 child: ThreatListView(threats: threatState.detectedThreats),
               ),

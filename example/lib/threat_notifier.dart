@@ -31,6 +31,10 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
       onScreenshot: () => _updateThreat(Threat.screenshot),
       onScreenRecording: () => _updateThreat(Threat.screenRecording),
       onMultiInstance: () => _updateThreat(Threat.multiInstance),
+      onUnsecureWiFi: () => _updateThreat(Threat.unsecureWiFi),
+      onTimeSpoofing: () => _updateThreat(Threat.timeSpoofing),
+      onLocationSpoofing: () => _updateThreat(Threat.locationSpoofing),
+      onAllChecksFinished: _updateChecksStatus,
     );
 
     Talsec.instance.attachListener(threatCallback);
@@ -42,5 +46,9 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
 
   void _updateMalware(List<SuspiciousAppInfo?> malware) {
     state = state.copyWith(detectedMalware: malware.nonNulls.toList());
+  }
+
+  void _updateChecksStatus() {
+    state = state.copyWith(allChecksPassed: true);
   }
 }
