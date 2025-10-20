@@ -8,12 +8,13 @@ import android.os.Looper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.Utils
+import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.generated.TalsecPigeonApi
 import com.aheaditec.freerasp.toPigeon
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.Talsec
+import com.aheaditec.talsec_security.security.api.ThreatListener
 import io.flutter.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -51,10 +52,22 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
                 }
             }
         }
+
+        override fun onAllChecksFinished() {
+            pigeonApi?.onAllChecks { result ->
+                // Parse the result (which is Unit so we can ignore it) or throw an exception
+                // Exceptions are translated to Flutter errors automatically
+                result.getOrElse {
+                    Log.e("MethodCallHandlerSink", "Result ended with failure")
+                    throw it
+                }
+            }
+        }
     }
 
     internal interface MethodSink {
         fun onMalwareDetected(packageInfo: List<SuspiciousAppInfo>)
+        fun onAllChecksFinished()
     }
 
     /**
@@ -184,9 +197,13 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
      */
     private fun blockScreenCapture(call: MethodCall, result: MethodChannel.Result) {
         runResultCatching(result) {
-            val enable = call.argument<Boolean>("enable") ?: false
-            Talsec.blockScreenCapture(activity, enable)
-            result.success(null)
+            val enable = call.argument<Boolean>("enable") == true
+            context?.let {
+                Talsec.blockScreenCapture(it, enable)
+                result.success(null)
+                return@runResultCatching
+            }
+            throw IllegalStateException("Unable to block screen capture - context is null")
         }
     }
 
@@ -209,9 +226,16 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
      */
     private fun storeExternalId(call: MethodCall, result: MethodChannel.Result) {
         runResultCatching(result) {
-            val data = call.argument<String>("data")
-            Talsec.storeExternalId(context, data)
-            result.success(null)
+            context?.let {
+                val data = call.argument<String>("data")
+                if (data == null) {
+                    throw NullPointerException("External ID data cannot be null.")
+                }
+                Talsec.storeExternalId(it, data)
+                result.success(null)
+                return@runResultCatching
+            }
+            throw IllegalStateException("Unable to store external ID - context is null")
         }
     }
 }

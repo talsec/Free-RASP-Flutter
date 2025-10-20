@@ -216,9 +216,9 @@ class Talsec {
   ///
   /// When threat is detected, respective callback of [ThreatCallback] is
   /// invoked.
-  void attachListener(ThreatCallback callback) {
+  Future<void> attachListener(ThreatCallback callback) async {
     TalsecPigeonApi.setUp(callback);
-    detachListener();
+    await detachListener();
     _streamSubscription ??= onThreatDetected.listen((event) {
       switch (event) {
         case Threat.hooks:
@@ -255,6 +255,12 @@ class Talsec {
           callback.onScreenRecording?.call();
         case Threat.multiInstance:
           callback.onMultiInstance?.call();
+        case Threat.unsecureWiFi:
+          callback.onUnsecureWiFi?.call();
+        case Threat.timeSpoofing:
+          callback.onTimeSpoofing?.call();
+        case Threat.locationSpoofing:
+          callback.onLocationSpoofing?.call();
       }
     });
   }
@@ -263,8 +269,8 @@ class Talsec {
   /// [StreamSubscription] for that [ThreatCallback].
   ///
   /// If no callback was attached earlier, it has no effect.
-  void detachListener() {
-    _streamSubscription?.cancel();
+  Future<void> detachListener() async {
+    await _streamSubscription?.cancel();
     _streamSubscription = null;
   }
 
@@ -272,6 +278,7 @@ class Talsec {
     if (error is PlatformException) {
       throw TalsecException.fromPlatformException(error);
     }
+    // For any other type of error, rethrow it.
     // ignore: only_throw_errors
     throw error;
   }

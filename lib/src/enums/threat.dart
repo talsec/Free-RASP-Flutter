@@ -72,6 +72,20 @@ enum Threat {
   ///
   /// Android only
   multiInstance,
+
+  /// This method is called when the device is connected to a WiFi with a no
+  /// or weak security protocol.
+  ///
+  /// Android only
+  unsecureWiFi,
+
+  /// This method is called when the device time is manipulated
+  timeSpoofing,
+
+  /// This method is called when the device location is manipulated
+  ///
+  /// Android only
+  locationSpoofing,
 }
 
 /// An extension on the [Threat] enum to provide additional functionality.
@@ -142,6 +156,12 @@ extension ThreatX on Threat {
         return Threat.screenRecording;
       case 859307284:
         return Threat.multiInstance;
+      case 363588890:
+        return Threat.unsecureWiFi;
+      case 189105221:
+        return Threat.timeSpoofing;
+      case 653273273:
+        return Threat.locationSpoofing;
       default:
         // Unknown data came from native code. This shouldn't normally happen.
         exit(127);

@@ -1,7 +1,6 @@
 import 'package:pigeon/pigeon.dart';
 
-// ignore: flutter_style_todos
-// TODO: Migrate whole Talsec API to pigeon
+// TODO(future-you): Migrate whole Talsec API to pigeon
 @ConfigurePigeon(
   PigeonOptions(
     dartOut: 'lib/src/generated/talsec_pigeon_api.g.dart',
@@ -38,7 +37,8 @@ class SuspiciousAppInfo {
 }
 
 @FlutterApi()
-// ignore: one_member_abstracts
 abstract class TalsecPigeonApi {
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo);
+
+  void onAllChecks();
 }
