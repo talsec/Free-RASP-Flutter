@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
-import 'package:freerasp/src/callbacks/rasp_execution_state_callback.dart';
 import 'package:freerasp/src/errors/external_id_failure_exception.dart';
 import 'package:freerasp/src/errors/malware_failure_exception.dart';
 import 'package:freerasp/src/generated/rasp_execution_state.g.dart' as pigeon;
@@ -187,7 +186,6 @@ class Talsec {
   }
 
   void _checkConfig(TalsecConfig config) {
-    // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         if (config.androidConfig == null) {
@@ -286,10 +284,41 @@ class Talsec {
     throw error;
   }
 
+  /// Attaches a [RaspExecutionStateCallback] to listen for RASP execution state
+  /// events.
+  ///
+  /// This method allows you to be notified when all security checks have been
+  /// completed by the native security engine. The callback will be invoked
+  /// when the complete security validation process finishes.
+  ///
+  /// If a callback is already attached, it will be replaced with the new one.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final callback = RaspExecutionStateCallback(
+  ///   onAllChecksDone: () {
+  ///     print('All security checks completed');
+  ///     // Update UI state
+  ///   },
+  /// );
+  ///
+  /// Talsec.instance.attachExecutionStateListener(callback);
+  /// ```
+  ///
+  /// See also:
+  /// - [detachExecutionStateListener] to remove the callback
+  /// - [RaspExecutionStateCallback] for more details about the callback class
   void attachExecutionStateListener(RaspExecutionStateCallback callback) {
     pigeon.RaspExecutionState.setUp(callback);
   }
 
+  /// Detaches the currently attached [RaspExecutionStateCallback].
+  ///
+  /// This method removes any previously attached execution state callback.
+  /// After calling this method, no execution state events will be received
+  /// until a new callback is attached using [attachExecutionStateListener].
+  ///
+  /// If no callback was previously attached, this method has no effect.
   void detachExecutionStateListener() {
     pigeon.RaspExecutionState.setUp(null);
   }

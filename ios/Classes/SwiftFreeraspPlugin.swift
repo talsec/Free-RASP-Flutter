@@ -170,6 +170,14 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
         eventProcessor.processEvent(submittedEvent)
     }
     
+    /// Submits a finished event to notify Flutter that all security checks are complete.
+    ///
+    /// This method is called by the native security engine when all security
+    /// validation checks have been completed. It triggers the state processor
+    /// to send a completion notification to Flutter through the Pigeon protocol.
+    ///
+    /// This method should be called after the security engine has finished
+    /// executing all its validation routines.
     public func submitFinishedEvent() {
         SwiftFreeraspPlugin.stateProcessor.processState()
     }

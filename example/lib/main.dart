@@ -23,7 +23,7 @@ final screenCaptureProvider =
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final resultStatus = await Permission.locationWhenInUse.request();
+  await Permission.locationWhenInUse.request();
 
   /// Initialize Talsec config
   await _initializeTalsec();
