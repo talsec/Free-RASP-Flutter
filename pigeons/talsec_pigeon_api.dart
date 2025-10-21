@@ -1,13 +1,12 @@
 import 'package:pigeon/pigeon.dart';
 
-// TODO(future-you): Migrate whole Talsec API to pigeon
 @ConfigurePigeon(
   PigeonOptions(
     dartOut: 'lib/src/generated/talsec_pigeon_api.g.dart',
     kotlinOut:
         'android/src/main/kotlin/com/aheaditec/freerasp/generated/TalsecPigeonApi.kt',
     input: 'pigeons/talsec_pigeon_api.dart',
-    kotlinOptions: KotlinOptions(package: 'com.aheaditec.talsec.generated'),
+    kotlinOptions: KotlinOptions(package: 'com.aheaditec.freerasp.generated'),
   ),
 )
 class PackageInfo {
@@ -37,8 +36,8 @@ class SuspiciousAppInfo {
 }
 
 @FlutterApi()
+// Migrate whole Talsec API to pigeon
+// ignore: one_member_abstracts
 abstract class TalsecPigeonApi {
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo);
-
-  void onAllChecks();
 }
