@@ -1,10 +1,10 @@
 #!/bin/zsh
 
 # Exit on error
-set -e
+set -euo pipefail
 
 # Variables
-INPUT_FILE="talsec_pigeon_api.dart"
+INPUT_FILES=("talsec_pigeon_api.dart" "rasp_execution_state.dart")
 
 # Check current directory
 if [ "$(basename "$PWD")" != "pigeons" ]; then
@@ -16,5 +16,7 @@ fi
 
 # Generate Pigeon code
 cd ..
-dart run pigeon \
-  --input pigeons/$INPUT_FILE
+for file in "${INPUT_FILES[@]}"; do
+  echo "🚀 Generating Pigeon code for $file..."
+  dart run pigeon --input "./pigeons/$file"
+done
