@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0] - 2025-10-20
+- Android SDK version: 17.0.0
+- iOS SDK version: 6.13.0
+
+### Flutter
+
+#### Added
+- ❗️BREAKING API CHANGE: Added `killOnBypass` to `TalsecConfig` that configures if the app should be terminated when the threat callbacks are suppressed/hooked by an attacker [Issue 65](https://github.com/talsec/Free-RASP-Android/issues/65)
+- ❗️BREAKING API CHANGE: Added `onTimeSpoofing` callback to `ThreatCallback` for handling `Threat.timeSpoofing` threat (Android only)
+  - We are introducing a new capability, detecting whether the device time has been tampered with
+- ❗️BREAKING API CHANGE: Added `onLocationSpoofing` callback to `ThreatCallback` for handling `Threat.locationSpoofing` threat (Android only)
+  - We are introducing a new capability, detecting whether the location is being spoofed on the device.
+- ❗️BREAKING API CHANGE: Added `onUnsecureWifi` callback to `ThreatCallback` for handling `Threat.unsecureWifi` threat (Android only)
+  - We are introducing a new capability, detecting whether the device is connected to an unsecured Wi-Fi network.
+- ❗️BREAKING API CHANGE: Added `onAllChecksDone` callback to new `RaspExecutionStateCallback`
+  - We are introducing a new callback that notifies when all security checks have been completed.
+
+### Android
+
+#### Removed
+- Removed deprecated functionality `Pbkdf2Native` and both related native libraries (`libpbkdf2_native.so` and `libpolarssl.so`)
+
+#### Changed
+- Updated internal dependencies
+
+### iOS
+
+#### Changed
+- Updated internal dependencies
+
 ## [7.2.2] - 2025-10-09
 - iOS SDK version: 6.12.1
 - Android SDK version: 16.0.1
