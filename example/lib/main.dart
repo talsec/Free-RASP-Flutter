@@ -7,6 +7,7 @@ import 'package:freerasp_example/screen_capture_notifier.dart';
 import 'package:freerasp_example/threat_notifier.dart';
 import 'package:freerasp_example/threat_state.dart';
 import 'package:freerasp_example/widgets/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// Represents current state of the threats detectable by freeRASP
 final threatProvider =
@@ -21,6 +22,8 @@ final screenCaptureProvider =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final resultStatus = await Permission.locationWhenInUse.request();
 
   /// Initialize Talsec config
   await _initializeTalsec();
