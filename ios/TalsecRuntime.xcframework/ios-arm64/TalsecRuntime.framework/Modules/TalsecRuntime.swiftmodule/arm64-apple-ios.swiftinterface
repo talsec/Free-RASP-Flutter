@@ -16,6 +16,9 @@ import zlib
 public protocol SecurityThreatHandler {
   func threatDetected(_ securityThreat: TalsecRuntime.SecurityThreat)
 }
+public protocol RaspExecutionState {
+  func onAllChecksFinished()
+}
 @_hasMissingDesignatedInitializers public class SecurityThreatCenter {
   @objc deinit
 }
