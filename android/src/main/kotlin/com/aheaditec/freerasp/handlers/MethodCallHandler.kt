@@ -9,12 +9,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.aheaditec.freerasp.Utils
+import com.aheaditec.freerasp.generated.RaspExecutionState
 import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.generated.TalsecPigeonApi
 import com.aheaditec.freerasp.toPigeon
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.Talsec
-import com.aheaditec.talsec_security.security.api.ThreatListener
 import io.flutter.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -27,7 +27,8 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
     private var context: Context? = null
     private var methodChannel: MethodChannel? = null
-    private var pigeonApi: TalsecPigeonApi? = null
+    private var talsecPigeon: TalsecPigeonApi? = null
+    private var raspExecutionPigeon : RaspExecutionState? = null
     private val backgroundHandlerThread = HandlerThread("BackgroundThread").apply { start() }
     private val backgroundHandler = Handler(backgroundHandlerThread.looper)
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -42,7 +43,7 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
         override fun onMalwareDetected(packageInfo: List<SuspiciousAppInfo>) {
             context?.let { context ->
                 val pigeonPackageInfo = packageInfo.map { it.toPigeon(context) }
-                pigeonApi?.onMalwareDetected(pigeonPackageInfo) { result ->
+                talsecPigeon?.onMalwareDetected(pigeonPackageInfo) { result ->
                     // Parse the result (which is Unit so we can ignore it) or throw an exception
                     // Exceptions are translated to Flutter errors automatically
                     result.getOrElse {
@@ -54,7 +55,7 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
         }
 
         override fun onAllChecksFinished() {
-            pigeonApi?.onAllChecks { result ->
+            raspExecutionPigeon?.onAllChecksFinished { result ->
                 // Parse the result (which is Unit so we can ignore it) or throw an exception
                 // Exceptions are translated to Flutter errors automatically
                 result.getOrElse {
@@ -89,7 +90,8 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
         }
 
         this.context = context
-        this.pigeonApi = TalsecPigeonApi(messenger)
+        this.talsecPigeon = TalsecPigeonApi(messenger)
+        this.raspExecutionPigeon = RaspExecutionState(messenger)
 
         TalsecThreatHandler.attachMethodSink(sink)
     }
@@ -102,7 +104,8 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
         methodChannel = null
 
         this.context = null
-        this.pigeonApi = null
+        this.talsecPigeon = null
+        this.raspExecutionPigeon = null
 
         TalsecThreatHandler.detachMethodSink()
     }

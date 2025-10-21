@@ -5,9 +5,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
+import 'package:freerasp/src/callbacks/rasp_execution_state_callback.dart';
 import 'package:freerasp/src/errors/external_id_failure_exception.dart';
 import 'package:freerasp/src/errors/malware_failure_exception.dart';
-import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
+import 'package:freerasp/src/generated/rasp_execution_state.g.dart' as pigeon;
+import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 
 /// A class which maintains all security related operations.
 ///
@@ -217,7 +219,8 @@ class Talsec {
   /// When threat is detected, respective callback of [ThreatCallback] is
   /// invoked.
   Future<void> attachListener(ThreatCallback callback) async {
-    TalsecPigeonApi.setUp(callback);
+    pigeon.TalsecPigeonApi.setUp(callback);
+
     await detachListener();
     _streamSubscription ??= onThreatDetected.listen((event) {
       switch (event) {
@@ -281,6 +284,14 @@ class Talsec {
     // For any other type of error, rethrow it.
     // ignore: only_throw_errors
     throw error;
+  }
+
+  void attachExecutionStateListener(RaspExecutionStateCallback callback) {
+    pigeon.RaspExecutionState.setUp(callback);
+  }
+
+  void detachExecutionStateListener() {
+    pigeon.RaspExecutionState.setUp(null);
   }
 
   /// Retrieves the app icon for the given [packageName] as base64 string.
