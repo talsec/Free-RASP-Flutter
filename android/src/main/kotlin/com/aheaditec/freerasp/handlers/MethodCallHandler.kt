@@ -230,10 +230,7 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
     private fun storeExternalId(call: MethodCall, result: MethodChannel.Result) {
         runResultCatching(result) {
             context?.let {
-                val data = call.argument<String>("data")
-                if (data == null) {
-                    throw NullPointerException("External ID data cannot be null.")
-                }
+                val data = call.argument<String>("data") ?: throw NullPointerException("External ID data cannot be null.")
                 Talsec.storeExternalId(it, data)
                 result.success(null)
                 return@runResultCatching
