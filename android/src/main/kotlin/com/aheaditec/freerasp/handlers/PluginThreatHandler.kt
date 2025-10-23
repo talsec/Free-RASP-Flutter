@@ -116,7 +116,6 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState, RaspExecution
     }
 
     private fun notify(threat: Threat) {
-        Log.e("PluginThreatHandler", "$threat")
         listener?.threatDetected(threat) ?: detectedThreats.add(threat)
     }
 
