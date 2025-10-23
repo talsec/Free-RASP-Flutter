@@ -200,8 +200,8 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
      */
     private fun blockScreenCapture(call: MethodCall, result: MethodChannel.Result) {
         runResultCatching(result) {
-            val enable = call.argument<Boolean>("enable") == true
-            context?.let {
+            val enable = call.argument<Boolean>("enable") ?: throw NullPointerException("Enable flag cannot be null.")
+            activity?.let {
                 Talsec.blockScreenCapture(it, enable)
                 result.success(null)
                 return@runResultCatching
