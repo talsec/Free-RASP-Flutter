@@ -7,7 +7,6 @@ import com.aheaditec.talsec_security.security.api.ThreatListener
 import com.aheaditec.talsec_security.security.api.ThreatListener.DeviceState
 import com.aheaditec.talsec_security.security.api.ThreatListener.RaspExecutionState
 import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
-import io.flutter.Log
 
 /**
  * A Singleton object that implements the [ThreatDetected] and [DeviceState] interfaces to handle
@@ -18,7 +17,7 @@ import io.flutter.Log
 internal object PluginThreatHandler : ThreatDetected, DeviceState, RaspExecutionState() {
     internal val detectedThreats = mutableSetOf<Threat>()
     internal val detectedMalware = mutableListOf<SuspiciousAppInfo>()
-    internal var allChecksFinishedNotified = false
+    internal var shouldNotifyAllChecksFinished = false
 
     internal var listener: TalsecFlutter? = null
     private val internalListener = ThreatListener(this, this, this)
@@ -124,7 +123,7 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState, RaspExecution
     }
 
     private fun notifyAllChecksFinished() {
-        listener?.allChecksFinished() ?: run { allChecksFinishedNotified = true }
+        listener?.allChecksFinished() ?: run { shouldNotifyAllChecksFinished = true }
     }
 
     internal interface TalsecFlutter {

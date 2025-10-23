@@ -147,13 +147,13 @@ internal object TalsecThreatHandler {
             }
         }
 
-        if (PluginThreatHandler.allChecksFinishedNotified) {
+        if (PluginThreatHandler.shouldNotifyAllChecksFinished) {
             methodSink?.onAllChecksFinished()
         }
 
         PluginThreatHandler.detectedThreats.clear()
         PluginThreatHandler.detectedMalware.clear()
-        PluginThreatHandler.allChecksFinishedNotified = false
+        PluginThreatHandler.shouldNotifyAllChecksFinished = false
     }
 
     internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
