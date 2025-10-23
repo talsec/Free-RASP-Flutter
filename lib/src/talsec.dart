@@ -284,41 +284,10 @@ class Talsec {
     throw error;
   }
 
-  /// Attaches a [RaspExecutionStateCallback] to listen for RASP execution state
-  /// events.
-  ///
-  /// This method allows you to be notified when all security checks have been
-  /// completed by the native security engine. The callback will be invoked
-  /// when the complete security validation process finishes.
-  ///
-  /// If a callback is already attached, it will be replaced with the new one.
-  ///
-  /// Example usage:
-  /// ```dart
-  /// final callback = RaspExecutionStateCallback(
-  ///   onAllChecksDone: () {
-  ///     print('All security checks completed');
-  ///     // Update UI state
-  ///   },
-  /// );
-  ///
-  /// Talsec.instance.attachExecutionStateListener(callback);
-  /// ```
-  ///
-  /// See also:
-  /// - [detachExecutionStateListener] to remove the callback
-  /// - [RaspExecutionStateCallback] for more details about the callback class
   void attachExecutionStateListener(RaspExecutionStateCallback callback) {
     pigeon.RaspExecutionState.setUp(callback);
   }
 
-  /// Detaches the currently attached [RaspExecutionStateCallback].
-  ///
-  /// This method removes any previously attached execution state callback.
-  /// After calling this method, no execution state events will be received
-  /// until a new callback is attached using [attachExecutionStateListener].
-  ///
-  /// If no callback was previously attached, this method has no effect.
   void detachExecutionStateListener() {
     pigeon.RaspExecutionState.setUp(null);
   }

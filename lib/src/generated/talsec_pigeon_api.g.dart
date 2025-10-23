@@ -8,7 +8,8 @@ import 'dart:typed_data' show Float64List, Int32List, Int64List, Uint8List;
 import 'package:flutter/foundation.dart' show ReadBuffer, WriteBuffer;
 import 'package:flutter/services.dart';
 
-List<Object?> wrapResponse({Object? result, PlatformException? error, bool empty = false}) {
+List<Object?> wrapResponse(
+    {Object? result, PlatformException? error, bool empty = false}) {
   if (empty) {
     return <Object?>[];
   }
@@ -85,7 +86,6 @@ class SuspiciousAppInfo {
   }
 }
 
-
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
   @override
@@ -93,10 +93,10 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    }    else if (value is PackageInfo) {
+    } else if (value is PackageInfo) {
       buffer.putUint8(129);
       writeValue(buffer, value.encode());
-    }    else if (value is SuspiciousAppInfo) {
+    } else if (value is SuspiciousAppInfo) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
     } else {
@@ -107,9 +107,9 @@ class _PigeonCodec extends StandardMessageCodec {
   @override
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
-      case 129: 
+      case 129:
         return PackageInfo.decode(readValue(buffer)!);
-      case 130: 
+      case 130:
         return SuspiciousAppInfo.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
@@ -122,20 +122,29 @@ abstract class TalsecPigeonApi {
 
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo);
 
-  static void setUp(TalsecPigeonApi? api, {BinaryMessenger? binaryMessenger, String messageChannelSuffix = '',}) {
-    messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+  static void setUp(
+    TalsecPigeonApi? api, {
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) {
+    messageChannelSuffix =
+        messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
     {
-      final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected$messageChannelSuffix', pigeonChannelCodec,
+      final BasicMessageChannel<
+          Object?> pigeonVar_channel = BasicMessageChannel<
+              Object?>(
+          'dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected$messageChannelSuffix',
+          pigeonChannelCodec,
           binaryMessenger: binaryMessenger);
       if (api == null) {
         pigeonVar_channel.setMessageHandler(null);
       } else {
         pigeonVar_channel.setMessageHandler((Object? message) async {
           assert(message != null,
-          'Argument for dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected was null.');
+              'Argument for dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected was null.');
           final List<Object?> args = (message as List<Object?>?)!;
-          final List<SuspiciousAppInfo>? arg_packageInfo = (args[0] as List<Object?>?)?.cast<SuspiciousAppInfo>();
+          final List<SuspiciousAppInfo>? arg_packageInfo =
+              (args[0] as List<Object?>?)?.cast<SuspiciousAppInfo>();
           assert(arg_packageInfo != null,
               'Argument for dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected was null, expected non-null List<SuspiciousAppInfo>.');
           try {
@@ -143,8 +152,9 @@ abstract class TalsecPigeonApi {
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
           }
         });
       }

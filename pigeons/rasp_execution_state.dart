@@ -10,7 +10,7 @@ import 'package:pigeon/pigeon.dart';
       package: 'com.aheaditec.freerasp.generated',
       includeErrorClass: false,
     ),
-    swiftOut: 'ios/Classes/RaspExecutionState.swift',
+    swiftOut: 'ios/Classes/Generated/RaspExecutionState.swift',
     swiftOptions: SwiftOptions(
       fileSpecificClassNameComponent: 'Pigeon',
     ),
