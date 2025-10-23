@@ -7,6 +7,7 @@ import 'package:freerasp_example/screen_capture_notifier.dart';
 import 'package:freerasp_example/threat_notifier.dart';
 import 'package:freerasp_example/threat_state.dart';
 import 'package:freerasp_example/widgets/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// Represents current state of the threats detectable by freeRASP
 final threatProvider =
@@ -21,6 +22,8 @@ final screenCaptureProvider =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Permission.locationWhenInUse.request();
 
   /// Initialize Talsec config
   await _initializeTalsec();
@@ -120,6 +123,10 @@ class HomePage extends ConsumerWidget {
                     ref.read(screenCaptureProvider.notifier).toggle();
                   },
                 ),
+              ),
+              ListTile(
+                title: const Text('Check Rounds Completed'),
+                trailing: SafetyIcon(isDetected: !threatState.allChecksPassed),
               ),
               Expanded(
                 child: ThreatListView(threats: threatState.detectedThreats),

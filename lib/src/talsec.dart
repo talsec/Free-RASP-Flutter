@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
 import 'package:freerasp/src/errors/external_id_failure_exception.dart';
 import 'package:freerasp/src/errors/malware_failure_exception.dart';
-import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
+import 'package:freerasp/src/generated/rasp_execution_state.g.dart' as pigeon;
+import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 
 /// A class which maintains all security related operations.
 ///
@@ -185,7 +186,6 @@ class Talsec {
   }
 
   void _checkConfig(TalsecConfig config) {
-    // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         if (config.androidConfig == null) {
@@ -216,9 +216,10 @@ class Talsec {
   ///
   /// When threat is detected, respective callback of [ThreatCallback] is
   /// invoked.
-  void attachListener(ThreatCallback callback) {
-    TalsecPigeonApi.setUp(callback);
-    detachListener();
+  Future<void> attachListener(ThreatCallback callback) async {
+    pigeon.TalsecPigeonApi.setUp(callback);
+
+    await detachListener();
     _streamSubscription ??= onThreatDetected.listen((event) {
       switch (event) {
         case Threat.hooks:
@@ -255,6 +256,12 @@ class Talsec {
           callback.onScreenRecording?.call();
         case Threat.multiInstance:
           callback.onMultiInstance?.call();
+        case Threat.unsecureWiFi:
+          callback.onUnsecureWiFi?.call();
+        case Threat.timeSpoofing:
+          callback.onTimeSpoofing?.call();
+        case Threat.locationSpoofing:
+          callback.onLocationSpoofing?.call();
       }
     });
   }
@@ -263,8 +270,8 @@ class Talsec {
   /// [StreamSubscription] for that [ThreatCallback].
   ///
   /// If no callback was attached earlier, it has no effect.
-  void detachListener() {
-    _streamSubscription?.cancel();
+  Future<void> detachListener() async {
+    await _streamSubscription?.cancel();
     _streamSubscription = null;
   }
 
@@ -272,8 +279,19 @@ class Talsec {
     if (error is PlatformException) {
       throw TalsecException.fromPlatformException(error);
     }
+    // For any other type of error, rethrow it.
     // ignore: only_throw_errors
     throw error;
+  }
+
+  /// Attaches instance of [RaspExecutionStateCallback] to Talsec.
+  void attachExecutionStateListener(RaspExecutionStateCallback callback) {
+    pigeon.RaspExecutionState.setUp(callback);
+  }
+
+  /// Detaches instance of latest [RaspExecutionStateCallback].
+  void detachExecutionStateListener() {
+    pigeon.RaspExecutionState.setUp(null);
   }
 
   /// Retrieves the app icon for the given [packageName] as base64 string.

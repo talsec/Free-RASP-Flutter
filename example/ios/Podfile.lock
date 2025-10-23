@@ -2,21 +2,27 @@ PODS:
   - Flutter (1.0.0)
   - freerasp (1.0.0):
     - Flutter
+  - permission_handler_apple (9.3.0):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - freerasp (from `.symlinks/plugins/freerasp/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   freerasp:
     :path: ".symlinks/plugins/freerasp/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
 
 SPEC CHECKSUMS:
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  freerasp: bb827d80b926abcfb8f4ca4ff4557c2fe4a5ae21
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  freerasp: d77275f774facb901f52e9608e5bd34768728363
+  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
 
-PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011
+PODFILE CHECKSUM: 0dbd5a87e0ace00c9610d2037ac22083a01f861d
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
