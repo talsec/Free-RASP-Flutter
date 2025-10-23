@@ -10,7 +10,7 @@ class TalsecConfig {
   TalsecConfig({
     required this.watcherMail,
     this.isProd = true,
-    this.killOnBypass = true,
+    this.killOnBypass = false,
     this.androidConfig,
     this.iosConfig,
   });
