@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Flutter
 
 #### Added
-- ❗️BREAKING API CHANGE: Added `killOnBypass` to `TalsecConfig` that configures if the app should be terminated when the threat callbacks are suppressed/hooked by an attacker [Issue 65](https://github.com/talsec/Free-RASP-Android/issues/65)
+- ❗️BREAKING API CHANGE: Added `killOnBypass` to `TalsecConfig` that configures if the app should be terminated when the threat callbacks are suppressed/hooked by an attacker (Android only) ([Issue 65](https://github.com/talsec/Free-RASP-Android/issues/65))
 - ❗️BREAKING API CHANGE: Added `onTimeSpoofing` callback to `ThreatCallback` for handling `Threat.timeSpoofing` threat (Android only)
   - We are introducing a new capability, detecting whether the device time has been tampered with
 - ❗️BREAKING API CHANGE: Added `onLocationSpoofing` callback to `ThreatCallback` for handling `Threat.locationSpoofing` threat (Android only)
