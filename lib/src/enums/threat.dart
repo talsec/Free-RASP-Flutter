@@ -80,6 +80,8 @@ enum Threat {
   unsecureWiFi,
 
   /// This method is called when the device time is manipulated
+  ///
+  /// Android only
   timeSpoofing,
 
   /// This method is called when the device location is manipulated
