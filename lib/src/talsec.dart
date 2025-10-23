@@ -284,10 +284,12 @@ class Talsec {
     throw error;
   }
 
+  /// Attaches instance of [RaspExecutionStateCallback] to Talsec.
   void attachExecutionStateListener(RaspExecutionStateCallback callback) {
     pigeon.RaspExecutionState.setUp(callback);
   }
 
+  /// Detaches instance of latest [RaspExecutionStateCallback].
   void detachExecutionStateListener() {
     pigeon.RaspExecutionState.setUp(null);
   }
