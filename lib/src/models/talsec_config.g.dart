@@ -9,6 +9,7 @@ part of 'talsec_config.dart';
 TalsecConfig _$TalsecConfigFromJson(Map<String, dynamic> json) => TalsecConfig(
       watcherMail: json['watcherMail'] as String,
       isProd: json['isProd'] as bool? ?? true,
+      killOnBypass: json['killOnBypass'] as bool? ?? false,
       androidConfig: json['androidConfig'] == null
           ? null
           : AndroidConfig.fromJson(
@@ -31,5 +32,6 @@ Map<String, dynamic> _$TalsecConfigToJson(TalsecConfig instance) {
   writeNotNull('iosConfig', instance.iosConfig?.toJson());
   val['watcherMail'] = instance.watcherMail;
   val['isProd'] = instance.isProd;
+  val['killOnBypass'] = instance.killOnBypass;
   return val;
 }

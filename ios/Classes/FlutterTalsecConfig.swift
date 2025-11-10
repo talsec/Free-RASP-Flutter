@@ -5,9 +5,10 @@ struct FlutterTalsecConfig : Decodable {
     let watcherMail: String
     let iosConfig: IOSConfig
     let isProd: Bool
+    let killOnBypass: Bool
     
     func toNativeConfig() -> TalsecConfig {
-        return TalsecConfig(appBundleIds: iosConfig.bundleIds, appTeamId: iosConfig.teamId, watcherMailAddress: watcherMail, isProd: isProd)
+        return TalsecConfig(appBundleIds: iosConfig.bundleIds, appTeamId: iosConfig.teamId, watcherMailAddress: watcherMail, isProd: isProd, killOnBypass: killOnBypass)
     }
 }
 
