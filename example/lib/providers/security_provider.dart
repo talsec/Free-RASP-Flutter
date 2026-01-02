@@ -31,36 +31,35 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
       SecurityCheck(
         threat: Threat.appIntegrity,
         name: 'App Integrity',
-        secureDescription: 'Application signature verified and intact.',
-        insecureDescription: 'Signature verification failed.',
+        secureDescription: 'Application signature is verified and intact.',
+        insecureDescription: 'Application signature verification failed.',
         category: ThreatCategory.appIntegrity,
       ),
       SecurityCheck(
         threat: Threat.obfuscationIssues,
         name: 'Obfuscation',
         secureDescription: 'Application code is properly obfuscated.',
-        insecureDescription: 'Application code obfuscation disabled.',
+        insecureDescription: 'Application code is not obfuscated.',
         category: ThreatCategory.appIntegrity,
       ),
       SecurityCheck(
         threat: Threat.unofficialStore,
         name: 'Unofficial Store',
-        secureDescription: 'Application installed from official store.',
-        insecureDescription:
-            'Application installed from unknown or unofficial source.',
+        secureDescription: 'Application installed from an official store.',
+        insecureDescription: 'Application installed from an unknown source.',
         category: ThreatCategory.appIntegrity,
       ),
       SecurityCheck(
         threat: Threat.simulator,
         name: 'Simulator',
         secureDescription: 'Running on a real device.',
-        insecureDescription: 'Running on simulator or emulator.',
+        insecureDescription: 'Running on a simulator or emulator.',
         category: ThreatCategory.appIntegrity,
       ),
       SecurityCheck(
         threat: Threat.deviceBinding,
         name: 'Device Binding',
-        secureDescription: 'Application properly bound to device.',
+        secureDescription: 'Application properly bound to the device.',
         insecureDescription: 'Device binding compromised.',
         category: ThreatCategory.appIntegrity,
       ),
@@ -76,8 +75,8 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
       SecurityCheck(
         threat: Threat.privilegedAccess,
         name: 'Root / Jailbreak',
-        secureDescription: 'System is running securely (sandbox).',
-        insecureDescription: 'System security compromised.',
+        secureDescription: 'System is running securely (standard environment).',
+        insecureDescription: 'Privileged access (Root/Jailbreak) detected.',
         category: ThreatCategory.deviceSecurity,
       ),
       SecurityCheck(
@@ -90,7 +89,7 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
       SecurityCheck(
         threat: Threat.secureHardwareNotAvailable,
         name: 'Secure Hardware',
-        secureDescription: 'Secure hardware available and functioning.',
+        secureDescription: 'Secure hardware available.',
         insecureDescription: 'Secure hardware unavailable.',
         category: ThreatCategory.deviceSecurity,
       ),
@@ -98,7 +97,7 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
         threat: Threat.devMode,
         name: 'Developer Mode',
         secureDescription: 'Developer options are disabled.',
-        insecureDescription: 'Developer mode is enabled.',
+        insecureDescription: 'Developer options are enabled.',
         category: ThreatCategory.deviceSecurity,
       ),
       SecurityCheck(
@@ -112,14 +111,14 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
         threat: Threat.passcode,
         name: 'Passcode',
         secureDescription: 'Device is protected with a passcode.',
-        insecureDescription: 'Device is not password protected.',
+        insecureDescription: 'Device is not protected with a passcode.',
         category: ThreatCategory.deviceSecurity,
       ),
       SecurityCheck(
         threat: Threat.adbEnabled,
         name: 'ADB Enabled',
         secureDescription: 'USB debugging (ADB) is disabled.',
-        insecureDescription: 'USB debugging (ADB) enabled.',
+        insecureDescription: 'USB debugging (ADB) is enabled.',
         category: ThreatCategory.deviceSecurity,
       ),
 
@@ -127,7 +126,7 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
         threat: Threat.systemVPN,
         name: 'System VPN',
         secureDescription: 'No VPN active.',
-        insecureDescription: 'VPN is active.',
+        insecureDescription: 'Network traffic is routed via VPN.',
         category: ThreatCategory.deviceSecurity,
       ),
       SecurityCheck(
@@ -141,7 +140,28 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
         threat: Threat.screenRecording,
         name: 'Screen Recording',
         secureDescription: 'No screen recording detected.',
-        insecureDescription: 'Screen recording active.',
+        insecureDescription: 'Screen recording detected.',
+        category: ThreatCategory.runtimeStatus,
+      ),
+      SecurityCheck(
+        threat: Threat.locationSpoofing,
+        name: 'Location Spoofing',
+        secureDescription: 'Device location is valid.',
+        insecureDescription: 'Device location is being manipulated.',
+        category: ThreatCategory.runtimeStatus,
+      ),
+      SecurityCheck(
+        threat: Threat.timeSpoofing,
+        name: 'Time Spoofing',
+        secureDescription: 'Device time is correct.',
+        insecureDescription: 'Device time is out of sync.',
+        category: ThreatCategory.runtimeStatus,
+      ),
+      SecurityCheck(
+        threat: Threat.unsecureWiFi,
+        name: 'Unsecure Wi-Fi',
+        secureDescription: 'Connected to a secure Wi-Fi network.',
+        insecureDescription: 'Connected to an unsecure Wi-Fi network.',
         category: ThreatCategory.runtimeStatus,
       ),
     ];
@@ -167,10 +187,13 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
       onADBEnabled: () => _handleThreat(Threat.adbEnabled),
       onDevMode: () => _handleThreat(Threat.devMode),
       onMultiInstance: () => _handleThreat(Threat.multiInstance),
+      onUnsecureWiFi: () => _handleThreat(Threat.unsecureWiFi),
+      onTimeSpoofing: () => _handleThreat(Threat.timeSpoofing),
+      onLocationSpoofing: () => _handleThreat(Threat.locationSpoofing),
       onMalware: _handleMalware,
     );
 
-    Talsec.instance.attachListener(threatCallback);
+    await Talsec.instance.attachListener(threatCallback);
   }
 
   void _handleThreat(Threat type) {
