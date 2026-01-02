@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp_example
+package app.talsec.freerasp.demo
 
 import io.flutter.embedding.android.FlutterActivity
 

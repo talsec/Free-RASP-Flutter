@@ -7,11 +7,11 @@ import 'package:freerasp/freerasp.dart';
 TalsecConfig createTalsecConfig() {
   return TalsecConfig(
     androidConfig: AndroidConfig(
-      packageName: 'com.aheaditec.freeraspExample',
+      packageName: 'app.talsec.freerasp.app',
       signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       supportedStores: ['com.sec.android.app.samsungapps'],
       malwareConfig: MalwareConfig(
-        blacklistedPackageNames: ['com.aheaditec.freeraspExample'],
+        blacklistedPackageNames: ['com.google.android.youtube'],
         suspiciousPermissions: [
           ['android.permission.CAMERA'],
           ['android.permission.READ_SMS', 'android.permission.READ_CONTACTS'],

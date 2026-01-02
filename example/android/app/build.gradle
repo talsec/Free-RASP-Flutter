@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace 'com.aheaditec.freerasp_example'
+    namespace 'app.talsec.freerasp.demo'
     compileSdkVersion 35
     ndkVersion = "27.1.12297006"
 
@@ -42,7 +42,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.aheaditec.freerasp_example"
+        applicationId "app.talsec.freerasp.demo"
         // Talsec library needs higher version than default (16)
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
