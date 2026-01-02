@@ -71,7 +71,7 @@ jobs:
     
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2.16.0
@@ -84,13 +84,19 @@ jobs:
         working-directory: example
         run: flutter build apk --release
 
+      - name: 📤 Upload APK
+        uses: actions/upload-artifact@v6
+        with:
+          name: app-demo
+          path: example/build/app/outputs/flutter-apk/app-release.apk
+
   build-ios:
     runs-on: macos-latest
     needs: test
 
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2.16.0

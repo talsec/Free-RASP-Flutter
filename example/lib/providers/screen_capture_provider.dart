@@ -1,6 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
 
+/// Provider for screen capture blocking functionality
+final screenCaptureProvider =
+    AsyncNotifierProvider.autoDispose<ScreenCaptureNotifier, bool>(() {
+  return ScreenCaptureNotifier();
+});
+
 /// Class responsible for triggering screen capture blocking
 class ScreenCaptureNotifier extends AutoDisposeAsyncNotifier<bool> {
   @override

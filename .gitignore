@@ -32,3 +32,6 @@ example/pubspec.lock
 
 # FVM Version Cache
 .fvm/
+
+# AI stuff
+.gemini/
