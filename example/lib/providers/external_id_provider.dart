@@ -9,7 +9,6 @@ class ExternalIdNotifier extends StateNotifier<String?> {
       await Talsec.instance.storeExternalId(id);
       state = id;
     } catch (e) {
-      // Handle error - you might want to show a snackbar
       rethrow;
     }
   }
@@ -22,4 +21,3 @@ class ExternalIdNotifier extends StateNotifier<String?> {
 final externalIdProvider = StateNotifierProvider<ExternalIdNotifier, String?>(
   (ref) => ExternalIdNotifier(),
 );
-

@@ -1,26 +1,27 @@
 import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
-import 'package:freerasp_example/config/talsec_config.dart';
 import 'package:freerasp_example/models/security_check.dart';
 import 'package:freerasp_example/models/security_state.dart';
 
-class SecurityController extends AutoDisposeNotifier<SecurityState> {
-  StreamSubscription<Threat>? _threatSubscription;
-  ThreatCallback? _threatCallback;
+/// Provider for the security controller that manages all security checks.
+final securityControllerProvider =
+    NotifierProvider.autoDispose<SecurityController, SecurityState>(
+  SecurityController.new,
+);
 
+class SecurityController extends AutoDisposeNotifier<SecurityState> {
+  /// Initializes the security controller and starts monitoring.
   @override
   SecurityState build() {
     final checks = _initChecks();
-    // Start monitoring asynchronously
-    Future.microtask(() => _startMonitoring());
-    
-    // Handle cleanup when provider is disposed
+    Future.microtask(_startListening);
+
     ref.onDispose(() {
-      _threatSubscription?.cancel();
-      // ThreatCallback cleanup is handled automatically by Talsec
+      Talsec.instance.detachListener();
     });
-    
+
     return SecurityState.initial(checks);
   }
 
@@ -45,7 +46,8 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
         threat: Threat.unofficialStore,
         name: 'Unofficial Store',
         secureDescription: 'Application installed from official store.',
-        insecureDescription: 'Application installed from unknown or unofficial source.',
+        insecureDescription:
+            'Application installed from unknown or unofficial source.',
         category: ThreatCategory.appIntegrity,
       ),
       SecurityCheck(
@@ -145,33 +147,39 @@ class SecurityController extends AutoDisposeNotifier<SecurityState> {
     ];
   }
 
-  Future<void> _startMonitoring() async {
-    final config = createTalsecConfig();
-    await Talsec.instance.start(config);
-    _threatSubscription = Talsec.instance.onThreatDetected.listen(_handleThreat);
-    
-    // Setup ThreatCallback for malware detection
-    _threatCallback = ThreatCallback(
+  Future<void> _startListening() async {
+    final threatCallback = ThreatCallback(
+      onAppIntegrity: () => _handleThreat(Threat.appIntegrity),
+      onObfuscationIssues: () => _handleThreat(Threat.obfuscationIssues),
+      onUnofficialStore: () => _handleThreat(Threat.unofficialStore),
+      onPrivilegedAccess: () => _handleThreat(Threat.privilegedAccess),
+      onDeviceBinding: () => _handleThreat(Threat.deviceBinding),
+      onSimulator: () => _handleThreat(Threat.simulator),
+      onHooks: () => _handleThreat(Threat.hooks),
+      onDebug: () => _handleThreat(Threat.debug),
+      onScreenRecording: () => _handleThreat(Threat.screenRecording),
+      onScreenshot: () => _handleThreat(Threat.screenshot),
+      onSecureHardwareNotAvailable: () =>
+          _handleThreat(Threat.secureHardwareNotAvailable),
+      onSystemVPN: () => _handleThreat(Threat.systemVPN),
+      onDeviceID: () => _handleThreat(Threat.deviceId),
+      onPasscode: () => _handleThreat(Threat.passcode),
+      onADBEnabled: () => _handleThreat(Threat.adbEnabled),
+      onDevMode: () => _handleThreat(Threat.devMode),
+      onMultiInstance: () => _handleThreat(Threat.multiInstance),
       onMalware: _handleMalware,
     );
-    Talsec.instance.attachListener(_threatCallback!);
+
+    Talsec.instance.attachListener(threatCallback);
   }
 
   void _handleThreat(Threat type) {
     final currentState = state;
     final checks = List<SecurityCheck>.from(currentState.checks);
     final index = checks.indexWhere((c) => c.threat == type);
-    
+
     if (index != -1 && checks[index].isSecure) {
-      // Create new SecurityCheck with insecure status, preserving all other properties
-      checks[index] = SecurityCheck(
-        threat: checks[index].threat,
-        name: checks[index].name,
-        secureDescription: checks[index].secureDescription,
-        insecureDescription: checks[index].insecureDescription,
-        category: checks[index].category,
-        isSecure: false,
-      );
+      checks[index] = checks[index].copyWith(isSecure: false);
       state = currentState.copyWith(checks: checks);
     }
   }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Section extends StatelessWidget {
-  const Section({
-    required this.sectionTitle,
+class TitledSection extends StatelessWidget {
+  const TitledSection({
+    required this.title,
     required this.child,
     super.key,
   });
 
-  final String sectionTitle;
+  final String title;
   final Widget child;
 
   @override
@@ -22,13 +22,12 @@ class Section extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 8),
           child: Text(
-            sectionTitle,
+            title,
             style: textTheme.labelLarge?.copyWith(color: colors.primary),
           ),
         ),
-        child
+        child,
       ],
     );
   }
 }
-

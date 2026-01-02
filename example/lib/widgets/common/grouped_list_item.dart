@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ListItemCard extends StatelessWidget {
-  const ListItemCard({
+class GroupedListItem extends StatelessWidget {
+  const GroupedListItem({
     required this.title,
     required this.subtitle,
-    this.isFirst = false,
-    this.isLast = false,
     this.leading,
     this.trailing,
+    this.onTap,
     super.key,
   });
 
@@ -15,20 +14,12 @@ class ListItemCard extends StatelessWidget {
   final String subtitle;
   final Widget? leading;
   final Widget? trailing;
-  final bool isFirst;
-  final bool isLast;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    const radius = 16.0;
-
     return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: isFirst ? const Radius.circular(radius) : Radius.zero,
-          bottom: isLast ? const Radius.circular(radius) : Radius.zero,
-        ),
-      ),
+      shape: const RoundedRectangleBorder(),
       leading: leading != null
           ? Padding(
               padding: const EdgeInsets.all(8),
@@ -38,6 +29,7 @@ class ListItemCard extends StatelessWidget {
       title: Text(title),
       subtitle: Text(subtitle),
       trailing: trailing,
+      onTap: onTap,
     );
   }
 }

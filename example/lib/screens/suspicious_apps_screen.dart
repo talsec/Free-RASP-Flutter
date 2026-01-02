@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
-import 'package:freerasp_example/providers/security_controller_provider.dart';
+import 'package:freerasp_example/providers/security_provider.dart';
 
 class SuspiciousAppsScreen extends ConsumerWidget {
   const SuspiciousAppsScreen({super.key});
@@ -37,8 +37,12 @@ class SuspiciousAppsScreen extends ConsumerWidget {
                   return ListTile(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
-                        top: isFirst ? const Radius.circular(radius) : Radius.zero,
-                        bottom: isLast ? const Radius.circular(radius) : Radius.zero,
+                        top: isFirst
+                            ? const Radius.circular(radius)
+                            : Radius.zero,
+                        bottom: isLast
+                            ? const Radius.circular(radius)
+                            : Radius.zero,
                       ),
                     ),
                     leading: Padding(
