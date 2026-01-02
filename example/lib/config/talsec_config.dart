@@ -2,7 +2,8 @@ import 'package:freerasp/freerasp.dart';
 
 /// Creates and returns the Talsec configuration for the example app.
 ///
-/// This configuration is used to initialize Talsec with Android and iOS settings.
+/// This configuration is used to initialize Talsec with Android and iOS
+/// settings.
 TalsecConfig createTalsecConfig() {
   return TalsecConfig(
     androidConfig: AndroidConfig(
