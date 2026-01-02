@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp_example/providers/security_provider.dart';
 
-class StatusCard extends ConsumerWidget {
-  const StatusCard({super.key});
+class SecurityStatusCard extends ConsumerWidget {
+  const SecurityStatusCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

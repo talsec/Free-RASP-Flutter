@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:freerasp_example/models/security_check.dart';
 import 'package:freerasp_example/widgets/common/grouped_list_item.dart';
 
-class SecurityGroup extends StatelessWidget {
-  const SecurityGroup({
+class SecurityCheckList extends StatelessWidget {
+  const SecurityCheckList({
     required this.checks,
     super.key,
   });
