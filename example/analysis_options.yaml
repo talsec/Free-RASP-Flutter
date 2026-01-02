@@ -7,3 +7,5 @@ linter:
 analyzer:
   exclude:
     - '**/*.g.dart'
+  errors:
+    document_ignores: false

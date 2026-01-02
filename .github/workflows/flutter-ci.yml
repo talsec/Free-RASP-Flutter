@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
 
 env:
-  FLUTTER_VERSION: 3.19.0
+  FLUTTER_VERSION: 3.24.0
   PANA_VERSION: 0.22.8
 
 jobs:

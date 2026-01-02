@@ -20,6 +20,7 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
   google_fonts: ^6.3.3
+  permission_handler: ^12.0.1
 
 
 dev_dependencies:

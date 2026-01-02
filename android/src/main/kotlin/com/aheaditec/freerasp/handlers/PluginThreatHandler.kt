@@ -5,6 +5,7 @@ import com.aheaditec.freerasp.Threat
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.ThreatListener
 import com.aheaditec.talsec_security.security.api.ThreatListener.DeviceState
+import com.aheaditec.talsec_security.security.api.ThreatListener.RaspExecutionState
 import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
 
 /**
@@ -13,12 +14,13 @@ import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
  * The object provides methods to register a listener for threat notifications and notifies the
  * listener when a security threat is detected.
  */
-internal object PluginThreatHandler : ThreatDetected, DeviceState {
+internal object PluginThreatHandler : ThreatDetected, DeviceState, RaspExecutionState() {
     internal val detectedThreats = mutableSetOf<Threat>()
     internal val detectedMalware = mutableListOf<SuspiciousAppInfo>()
+    internal var shouldNotifyAllChecksFinished = false
 
     internal var listener: TalsecFlutter? = null
-    private val internalListener = ThreatListener(this, this)
+    private val internalListener = ThreatListener(this, this, this)
 
     internal fun registerListener(context: Context) {
         internalListener.registerListener(context)
@@ -26,6 +28,10 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
 
     internal fun unregisterListener(context: Context) {
         internalListener.unregisterListener(context)
+    }
+
+    override fun onAllChecksFinished() {
+        notifyAllChecksFinished()
     }
 
     override fun onRootDetected() {
@@ -96,6 +102,18 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
         notify(Threat.MultiInstance)
     }
 
+    override fun onUnsecureWifiDetected() {
+        notify(Threat.UnsecureWiFi)
+    }
+
+    override fun onTimeSpoofingDetected() {
+        notify(Threat.TimeSpoofing)
+    }
+
+    override fun onLocationSpoofingDetected() {
+        notify(Threat.LocationSpoofing)
+    }
+
     private fun notify(threat: Threat) {
         listener?.threatDetected(threat) ?: detectedThreats.add(threat)
     }
@@ -104,9 +122,15 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState {
         listener?.malwareDetected(suspiciousApps) ?: detectedMalware.addAll(suspiciousApps)
     }
 
+    private fun notifyAllChecksFinished() {
+        listener?.allChecksFinished() ?: run { shouldNotifyAllChecksFinished = true }
+    }
+
     internal interface TalsecFlutter {
         fun threatDetected(threatType: Threat)
 
         fun malwareDetected(suspiciousApps: List<SuspiciousAppInfo>)
+
+        fun allChecksFinished()
     }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: cascade_invocations, sdk_version_since
+// ignore_for_file: cascade_invocations
 
 import 'dart:async';
 
@@ -40,7 +40,5 @@ void main() {
 Future<void> consumeStream(
   Stream<Threat> stream,
 ) async {
-  await for (final event in stream) {
-    SpyThreatListener.addThreat(event);
-  }
+  await stream.forEach(SpyThreatListener.addThreat);
 }

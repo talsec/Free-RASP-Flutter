@@ -5,5 +5,7 @@ linter:
     public_member_api_docs: false
 
 analyzer:
+  errors:
+    document_ignores: false
   exclude:
     - '**/*.g.dart'

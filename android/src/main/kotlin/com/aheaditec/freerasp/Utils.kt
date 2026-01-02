@@ -31,6 +31,7 @@ internal object Utils {
 
         val watcherMail = json.getString("watcherMail")
         val isProd = json.getBoolean("isProd")
+        val killOnBypass = json.optBoolean("killOnBypass")
         val androidConfig = json.getJSONObject("androidConfig")
         val packageName = androidConfig.getString("packageName")
         val certificateHashes = androidConfig.extractArray<String>("signingCertHashes")
@@ -41,6 +42,7 @@ internal object Utils {
             .watcherMail(watcherMail)
             .supportedAlternativeStores(alternativeStores)
             .prod(isProd)
+            .killOnBypass(killOnBypass)
             .blacklistedPackageNames(malwareConfig.blacklistedPackageNames)
             .blacklistedHashes(malwareConfig.blacklistedHashes)
             .suspiciousPermissions(malwareConfig.suspiciousPermissions)
