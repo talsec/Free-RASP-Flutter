@@ -34,4 +34,4 @@ example/pubspec.lock
 .fvm/
 
 # AI stuff
-.gemini
+.gemini/
