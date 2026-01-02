@@ -22,7 +22,5 @@ TalsecConfig createTalsecConfig() {
       teamId: 'M8AK35...',
     ),
     watcherMail: 'your_mail@example.com',
-    isProd: true,
   );
 }
-

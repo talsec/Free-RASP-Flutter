@@ -7,7 +7,9 @@ class AppTheme {
   static const _fallbackSurface = Color(0xFF191B24);
 
   static ColorScheme getScheme(
-      ColorScheme? dynamicScheme, Brightness brightness) {
+    ColorScheme? dynamicScheme,
+    Brightness brightness,
+  ) {
     if (dynamicScheme != null) {
       return ColorScheme.fromSeed(
         seedColor: dynamicScheme.primary,
@@ -53,4 +55,3 @@ class AppTheme {
     );
   }
 }
-

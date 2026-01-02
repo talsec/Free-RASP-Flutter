@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
     return ProviderScope(
       child: DynamicColorBuilder(
         builder: (lightDynamic, darkDynamic) {
-          final lightScheme = AppTheme.getScheme(lightDynamic, Brightness.light);
+          final lightScheme =
+              AppTheme.getScheme(lightDynamic, Brightness.light);
           final darkScheme = AppTheme.getScheme(darkDynamic, Brightness.dark);
 
           return MaterialApp(
@@ -28,4 +29,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

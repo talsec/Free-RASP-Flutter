@@ -3,16 +3,16 @@ import 'package:freerasp_example/models/security_check.dart';
 
 /// State class for security checks managed by Riverpod.
 class SecurityState {
-
-  /// Creates an initial state with all checks initialized.
-  factory SecurityState.initial(List<SecurityCheck> checks) {
-    return SecurityState(checks: checks);
-  }
   /// Creates a [SecurityState].
   SecurityState({
     required this.checks,
     this.detectedMalware = const [],
   });
+
+  /// Creates an initial state with all checks initialized.
+  factory SecurityState.initial(List<SecurityCheck> checks) {
+    return SecurityState(checks: checks);
+  }
 
   /// List of all security checks.
   final List<SecurityCheck> checks;

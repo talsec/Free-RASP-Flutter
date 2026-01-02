@@ -44,4 +44,17 @@ class SecurityCheck {
 
   /// Returns the appropriate description based on security status.
   String get description => isSecure ? secureDescription : insecureDescription;
+
+  SecurityCheck copyWith({
+    bool? isSecure,
+  }) {
+    return SecurityCheck(
+      threat: threat,
+      name: name,
+      secureDescription: secureDescription,
+      insecureDescription: insecureDescription,
+      category: category,
+      isSecure: isSecure ?? this.isSecure,
+    );
+  }
 }
