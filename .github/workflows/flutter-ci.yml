@@ -84,6 +84,12 @@ jobs:
         working-directory: example
         run: flutter build apk --release
 
+      - name: 📤 Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: example/build/app/outputs/flutter-apk/app-release.apk
+
   build-ios:
     runs-on: macos-latest
     needs: test
