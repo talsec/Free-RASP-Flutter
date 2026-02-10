@@ -1,32 +1,23 @@
 class StateProcessor {
-    private var hasChecksFinished = false
+    private var cachedEvents: [Int] = []
     
-    private var raspStatePigeon: RaspExecutionStateProtocol?
+    private var sink: FlutterEventSink?
     
-    func attachPigeon(pigeon: RaspExecutionStateProtocol) {
-        self.raspStatePigeon = pigeon
-        if (hasChecksFinished) {
-            processState()
-        }
+    func attachSink(sink: @escaping FlutterEventSink) {
+        self.sink = sink
+        cachedEvents.forEach(processState)
+        cachedEvents.removeAll()
     }
     
-    func detachPigeon() {
-        self.raspStatePigeon = nil
+    func detachSink() {
+        self.sink = nil
     }
     
-    func processState() {
-        guard let pigeon = raspStatePigeon else {
-            hasChecksFinished = true
+    func processState(_ value: Int) {
+        guard let eventSink = sink else {
+            cachedEvents.append(value)
             return
         }
-        
-        pigeon.onAllChecksFinished{
-            result in
-               if case .failure(let error) = result {
-                   print("Error: \(error)")
-               } else {
-                   print("Success!")
-               }
-        }
+        eventSink(value)
     }
 }

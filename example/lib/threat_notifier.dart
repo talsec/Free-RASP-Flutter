@@ -34,6 +34,7 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
       onUnsecureWiFi: () => _updateThreat(Threat.unsecureWiFi),
       onTimeSpoofing: () => _updateThreat(Threat.timeSpoofing),
       onLocationSpoofing: () => _updateThreat(Threat.locationSpoofing),
+      onAutomation: () => _updateThreat(Threat.automation),
     );
 
     final raspExecutionStateCallback =

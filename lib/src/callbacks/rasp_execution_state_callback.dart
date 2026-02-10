@@ -1,4 +1,3 @@
-import 'package:freerasp/src/generated/rasp_execution_state.g.dart' as pigeon;
 import 'package:freerasp/src/typedefs.dart';
 
 /// A callback class that handles RASP (Runtime Application Self-Protection)
@@ -15,7 +14,7 @@ import 'package:freerasp/src/typedefs.dart';
 ///
 /// Talsec.instance.attachExecutionStateListener(callback);
 /// ```
-class RaspExecutionStateCallback extends pigeon.RaspExecutionState {
+class RaspExecutionStateCallback {
   /// Creates a new [RaspExecutionStateCallback] instance.
   ///
   /// The [onAllChecksDone] callback will be invoked when all security checks
@@ -27,8 +26,9 @@ class RaspExecutionStateCallback extends pigeon.RaspExecutionState {
   /// Callback invoked when all security checks are completed.
   final VoidCallback? onAllChecksDone;
 
-  @override
-  void onAllChecksFinished() {
-    onAllChecksDone?.call();
+  void onAllChecksFinished(int value) {
+    if (value == 187429) {
+      onAllChecksDone?.call();
+    }
   }
 }

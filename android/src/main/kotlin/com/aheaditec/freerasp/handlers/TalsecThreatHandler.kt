@@ -2,9 +2,10 @@ package com.aheaditec.freerasp.handlers
 
 import android.content.Context
 import android.os.Build
+import com.aheaditec.freerasp.RaspExecutionStateEvent
 import com.aheaditec.freerasp.ScreenProtector
-import com.aheaditec.freerasp.Threat
-import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
+import com.aheaditec.freerasp.dispatchers.ExecutionStateDispatcher
+import com.aheaditec.freerasp.dispatchers.ThreatDispatcher
 import com.aheaditec.talsec_security.security.api.Talsec
 import com.aheaditec.talsec_security.security.api.TalsecConfig
 import io.flutter.plugin.common.EventChannel.EventSink
@@ -14,8 +15,8 @@ import io.flutter.plugin.common.EventChannel.EventSink
  * security threats to Flutter.
  */
 internal object TalsecThreatHandler {
-    private var eventSink: EventSink? = null
-    private var methodSink: MethodCallHandler.MethodSink? = null
+    internal val threatDispatcher = ThreatDispatcher()
+    internal val executionStateDispatcher = ExecutionStateDispatcher()
     private var isListening = false
 
     /**
@@ -38,7 +39,6 @@ internal object TalsecThreatHandler {
      */
     internal fun stop(context: Context) {
         detachListener(context)
-        PluginThreatHandler.listener = null
         Talsec.stop()
     }
 
@@ -90,7 +90,7 @@ internal object TalsecThreatHandler {
      * [EventSink] is not destroyed but also is not able to send events.
      */
     internal fun suspendListener() {
-        PluginThreatHandler.listener = null
+        threatDispatcher.eventSink = null
     }
 
     /**
@@ -105,9 +105,47 @@ internal object TalsecThreatHandler {
      * also is not able to send events.
      */
     internal fun resumeListener() {
-        eventSink?.let {
-            PluginThreatHandler.listener = ThreatListener
-            flushThreatCache(it)
+        // Implementation note: The dispatcher logic handles flushing on set. 
+        // But here we need to restore the previous sink if we stored it? 
+        // Or does the StreamHandler re-attach it?
+        // StreamHandler doesn't seem to detach on pause.
+        // However, the original code set PluginThreatHandler.listener = null on suspend.
+        // And reset it on resume.
+        // With Dispatcher, setting sink to null effectively 'suspends' (caches) events.
+        // But we need to save the sink to restore it.
+        // Actually, StreamHandler manages the connection. 
+        // If the activity pauses, does StreamHandler detach? No.
+        // But we might want to stop sending events to Flutter when backgrounded?
+        // The original code: suspendListener -> PluginThreatHandler.listener = null
+        // resumeListener -> PluginThreatHandler.listener = ThreatListener (and flush)
+        
+        // In Dispatcher pattern:
+        // We can just set sink to null. But where do we get it back from?
+        // We need to store it temporarily?
+        // Or relies on StreamHandler re-attaching?
+        // StreamHandler.onCancel is called when stream is cancelled (e.g. Flutter side cancels).
+        // It's not called on Activity pause.
+        
+        // For now, I will assume the StreamHandler/MethodHandler keeps the reference.
+        // But if I set dispatcher.sink = null, I lose it.
+        // I should probably not set it to null if I want to keep it?
+        // But the requirement is to cache events while backgrounded.
+        // So I need to set sink to null in dispatcher.
+        // AND I need to save it here in TalsecThreatHandler to restore it.
+    }
+    
+    // Let's refine suspend/resume.
+    private var savedEventSink: EventSink? = null
+    
+    internal fun suspendListener() {
+         savedEventSink = threatDispatcher.eventSink
+         threatDispatcher.eventSink = null
+    }
+    
+    internal fun resumeListener() {
+        if (savedEventSink != null) {
+            threatDispatcher.eventSink = savedEventSink
+            savedEventSink = null
         }
     }
 
@@ -118,69 +156,32 @@ internal object TalsecThreatHandler {
      * @param eventSink The event sink of the new listener.
      */
     internal fun attachEventSink(eventSink: EventSink) {
-        this.eventSink = eventSink
-        PluginThreatHandler.listener = ThreatListener
-        flushThreatCache(eventSink)
+        threatDispatcher.eventSink = eventSink
     }
 
     /**
      * Called when a listener unsubscribes from the event channel.
      */
     internal fun detachEventSink() {
-        eventSink = null
-        PluginThreatHandler.listener = null
+        threatDispatcher.eventSink = null
+        savedEventSink = null
     }
 
-    /**
-     * Sends any cached detected threats to the listener.
-     *
-     * @param eventSink The event sink of the new listener.
-     */
-    private fun flushThreatCache(eventSink: EventSink?) {
-        PluginThreatHandler.detectedThreats.forEach {
-            eventSink?.success(it.value)
-        }
+    internal fun attachExecutionStateSink(eventSink: EventSink) {
+        executionStateDispatcher.eventSink = eventSink
+    }
 
-        PluginThreatHandler.detectedMalware.let {
-            if (it.isNotEmpty()) {
-                methodSink?.onMalwareDetected(it)
-            }
-        }
-
-        if (PluginThreatHandler.shouldNotifyAllChecksFinished) {
-            methodSink?.onAllChecksFinished()
-        }
-
-        PluginThreatHandler.detectedThreats.clear()
-        PluginThreatHandler.detectedMalware.clear()
-        PluginThreatHandler.shouldNotifyAllChecksFinished = false
+    internal fun detachExecutionStateSink() {
+        executionStateDispatcher.eventSink = null
     }
 
     internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
-        this.methodSink = sink
+        threatDispatcher.methodSink = sink
     }
 
     internal fun detachMethodSink() {
-        methodSink = null
-    }
-
-    /**
-     * Called when a security threat is detected. Sends the threat information to the current
-     * listener (if one exists) or adds it to the [PluginThreatHandler.detectedThreats] list to be
-     * sent to the next listener that subscribes to the event channel.
-     */
-    internal object ThreatListener : PluginThreatHandler.TalsecFlutter {
-        override fun threatDetected(threatType: Threat) {
-            eventSink?.success(threatType.value)
-        }
-
-        override fun malwareDetected(suspiciousApps: List<SuspiciousAppInfo>) {
-            methodSink?.onMalwareDetected(suspiciousApps)
-        }
-
-        override fun allChecksFinished() {
-            methodSink?.onAllChecksFinished()
-        }
+        threatDispatcher.methodSink = null
     }
 }
+
 

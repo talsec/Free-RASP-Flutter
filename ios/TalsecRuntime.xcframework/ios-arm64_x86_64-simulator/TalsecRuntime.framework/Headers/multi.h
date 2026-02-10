@@ -232,8 +232,8 @@ CURL_EXTERN CURLMcode curl_multi_cleanup(CURLM *multi_handle);
 /*
  * Name:    curl_multi_info_read()
  *
- * Desc:    Ask the multi handle if there is any messaJNx/informationals from
- *          the individual transfers. MessaJNx include informationals such as
+ * Desc:    Ask the multi handle if there is any messajxa/informationals from
+ *          the individual transfers. Messajxa include informationals such as
  *          error code from the transfer or just the fact that a transfer is
  *          completed. More details on these should be written down as well.
  *
@@ -253,7 +253,7 @@ CURL_EXTERN CURLMcode curl_multi_cleanup(CURLM *multi_handle);
  *          compatibility problems in the future.
  *
  * Returns: A pointer to a filled-in struct, or NULL if it failed or ran out
- *          of structs. It also writes the number of messaJNx left in the
+ *          of structs. It also writes the number of messajxa left in the
  *          queue (after this read) in the integer the second argument points
  *          to.
  */
@@ -265,7 +265,7 @@ CURL_EXTERN CURLMsg *curl_multi_info_read(CURLM *multi_handle,
  *
  * Desc:    The curl_multi_strerror function may be used to turn a CURLMcode
  *          value into the equivalent human readable error string. This is
- *          useful for printing meaningful error messaJNx.
+ *          useful for printing meaningful error messajxa.
  *
  * Returns: A pointer to a null-terminated error message.
  */

@@ -1,6 +1,7 @@
 package com.aheaditec.freerasp.handlers
 
 import android.content.Context
+import com.aheaditec.freerasp.RaspExecutionStateEvent
 import com.aheaditec.freerasp.Threat
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import com.aheaditec.talsec_security.security.api.ThreatListener
@@ -15,11 +16,7 @@ import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
  * listener when a security threat is detected.
  */
 internal object PluginThreatHandler : ThreatDetected, DeviceState, RaspExecutionState() {
-    internal val detectedThreats = mutableSetOf<Threat>()
-    internal val detectedMalware = mutableListOf<SuspiciousAppInfo>()
-    internal var shouldNotifyAllChecksFinished = false
 
-    internal var listener: TalsecFlutter? = null
     private val internalListener = ThreatListener(this, this, this)
 
     internal fun registerListener(context: Context) {
@@ -31,7 +28,7 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState, RaspExecution
     }
 
     override fun onAllChecksFinished() {
-        notifyAllChecksFinished()
+        TalsecThreatHandler.executionStateDispatcher.dispatch(RaspExecutionStateEvent.AllChecksFinished)
     }
 
     override fun onRootDetected() {
@@ -114,23 +111,15 @@ internal object PluginThreatHandler : ThreatDetected, DeviceState, RaspExecution
         notify(Threat.LocationSpoofing)
     }
 
+    override fun onAutomationDetected() {
+        notify(Threat.Automation)
+    }
+
     private fun notify(threat: Threat) {
-        listener?.threatDetected(threat) ?: detectedThreats.add(threat)
+        TalsecThreatHandler.threatDispatcher.dispatchThreat(threat)
     }
 
     private fun notify(suspiciousApps: List<SuspiciousAppInfo>) {
-        listener?.malwareDetected(suspiciousApps) ?: detectedMalware.addAll(suspiciousApps)
-    }
-
-    private fun notifyAllChecksFinished() {
-        listener?.allChecksFinished() ?: run { shouldNotifyAllChecksFinished = true }
-    }
-
-    internal interface TalsecFlutter {
-        fun threatDetected(threatType: Threat)
-
-        fun malwareDetected(suspiciousApps: List<SuspiciousAppInfo>)
-
-        fun allChecksFinished()
+        TalsecThreatHandler.threatDispatcher.dispatchMalware(suspiciousApps)
     }
 }
