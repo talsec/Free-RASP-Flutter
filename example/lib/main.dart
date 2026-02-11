@@ -128,10 +128,6 @@ class HomePage extends ConsumerWidget {
                 title: const Text('Check Rounds Completed'),
                 trailing: SafetyIcon(isDetected: !threatState.allChecksPassed),
               ),
-              ListTile(
-                title: const Text('Automation Detected'),
-                trailing: SafetyIcon(isDetected: threatState.detectedThreats.contains(Threat.automation)),
-              ),
               Expanded(
                 child: ThreatListView(threats: threatState.detectedThreats),
               ),
