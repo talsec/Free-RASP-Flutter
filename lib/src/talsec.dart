@@ -31,7 +31,8 @@ import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 class Talsec {
   /// Private constructor for internal and testing purposes.
   @visibleForTesting
-  Talsec.private(this.methodChannel, this.eventChannel, this.executionStateChannel);
+  Talsec.private(
+      this.methodChannel, this.eventChannel, this.executionStateChannel);
 
   /// Named channel used to communicate with platform plugins.
   ///
@@ -45,7 +46,7 @@ class Talsec {
   /// Transforms data and function calls such as [start].
   static const MethodChannel _methodChannel =
       MethodChannel('talsec.app/freerasp/methods');
-      
+
   /// Named channel used to communicate with platform plugins.
   ///
   /// Stream of execution state events.
@@ -53,7 +54,8 @@ class Talsec {
       EventChannel('talsec.app/freerasp/execution_state');
 
   /// Private [Talsec] variable which holds current instance of class.
-  static final _instance = Talsec.private(_methodChannel, _eventChannel, _executionStateChannel);
+  static final _instance =
+      Talsec.private(_methodChannel, _eventChannel, _executionStateChannel);
 
   /// Initialize Talsec lazily/obtain current instance of Talsec.
   static Talsec get instance => _instance;
@@ -65,7 +67,7 @@ class Talsec {
   /// [EventChannel] used to receive Threats from the native platform.
   @visibleForTesting
   late final EventChannel eventChannel;
-  
+
   /// [EventChannel] used to receive execution state events from the native platform.
   @visibleForTesting
   late final EventChannel executionStateChannel;
@@ -311,8 +313,10 @@ class Talsec {
   Future<void> attachExecutionStateListener(
       RaspExecutionStateCallback callback) async {
     await detachExecutionStateListener();
-    _executionStateSubscription ??=
-        executionStateChannel.receiveBroadcastStream().cast<int>().listen((event) {
+    _executionStateSubscription ??= executionStateChannel
+        .receiveBroadcastStream()
+        .cast<int>()
+        .listen((event) {
       callback.onAllChecksFinished(event);
     });
   }
