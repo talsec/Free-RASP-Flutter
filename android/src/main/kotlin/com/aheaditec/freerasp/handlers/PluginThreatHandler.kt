@@ -16,7 +16,7 @@ import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
  */
 internal object PluginThreatHandler {
 
-    private val threatDetected = object : ThreatDetected {
+    private val threatDetected = object : ThreatDetected() {
         override fun onRootDetected() {
             notify(Threat.PrivilegedAccess)
         }
@@ -82,7 +82,7 @@ internal object PluginThreatHandler {
         }
     }
 
-    private val deviceState = object : DeviceState {
+    private val deviceState = object : DeviceState() {
         override fun onUnlockedDeviceDetected() {
             notify(Threat.Passcode)
         }

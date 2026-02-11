@@ -90,6 +90,7 @@ internal object TalsecThreatHandler {
      * [EventSink] is not destroyed but also is not able to send events.
      */
     internal fun suspendListener() {
+        savedEventSink = threatDispatcher.eventSink
         threatDispatcher.eventSink = null
     }
 
@@ -105,49 +106,18 @@ internal object TalsecThreatHandler {
      * also is not able to send events.
      */
     internal fun resumeListener() {
-        // Implementation note: The dispatcher logic handles flushing on set. 
-        // But here we need to restore the previous sink if we stored it? 
-        // Or does the StreamHandler re-attach it?
-        // StreamHandler doesn't seem to detach on pause.
-        // However, the original code set PluginThreatHandler.listener = null on suspend.
-        // And reset it on resume.
-        // With Dispatcher, setting sink to null effectively 'suspends' (caches) events.
-        // But we need to save the sink to restore it.
-        // Actually, StreamHandler manages the connection. 
-        // If the activity pauses, does StreamHandler detach? No.
-        // But we might want to stop sending events to Flutter when backgrounded?
-        // The original code: suspendListener -> PluginThreatHandler.listener = null
-        // resumeListener -> PluginThreatHandler.listener = ThreatListener (and flush)
-        
-        // In Dispatcher pattern:
-        // We can just set sink to null. But where do we get it back from?
-        // We need to store it temporarily?
-        // Or relies on StreamHandler re-attaching?
-        // StreamHandler.onCancel is called when stream is cancelled (e.g. Flutter side cancels).
-        // It's not called on Activity pause.
-        
-        // For now, I will assume the StreamHandler/MethodHandler keeps the reference.
-        // But if I set dispatcher.sink = null, I lose it.
-        // I should probably not set it to null if I want to keep it?
-        // But the requirement is to cache events while backgrounded.
-        // So I need to set sink to null in dispatcher.
-        // AND I need to save it here in TalsecThreatHandler to restore it.
-    }
-    
-    // Let's refine suspend/resume.
-    private var savedEventSink: EventSink? = null
-    
-    internal fun suspendListener() {
-         savedEventSink = threatDispatcher.eventSink
-         threatDispatcher.eventSink = null
-    }
-    
-    internal fun resumeListener() {
         if (savedEventSink != null) {
             threatDispatcher.eventSink = savedEventSink
             savedEventSink = null
         }
     }
+    
+    // Let's refine suspend/resume.
+    private var savedEventSink: EventSink? = null
+    
+
+    
+
 
     /**
      * Called when a new listener subscribes to the event channel. Sends any previously detected
