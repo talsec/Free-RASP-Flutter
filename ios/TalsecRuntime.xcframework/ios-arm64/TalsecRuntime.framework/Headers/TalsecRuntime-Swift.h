@@ -298,7 +298,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 #if defined(__OBJC__)
 
-SWIFT_EXTERN void __hGWxcGGLriEICbmzmVReXyc(void);
+SWIFT_EXTERN void __owwROJztjggDwcrulfbQCLj(void);
 
 #endif
 #if __has_attribute(external_source_symbol)
