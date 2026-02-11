@@ -2,19 +2,16 @@ import Flutter
 
 class ExecutionStreamHandler: NSObject, FlutterStreamHandler {
     static let shared = ExecutionStreamHandler()
-    private let stateProcessor = StateProcessor()
 
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        stateProcessor.attachSink(sink: events)
+        ExecutionStateDispatcher.shared.listener = { state in
+            events(state.rawValue)
+        }
         return nil
     }
 
     func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        stateProcessor.detachSink()
+        ExecutionStateDispatcher.shared.listener = nil
         return nil
-    }
-    
-    func submitFinishedEvent() {
-        stateProcessor.processState(187429)
     }
 }

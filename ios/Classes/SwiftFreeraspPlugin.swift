@@ -4,8 +4,6 @@ import TalsecRuntime
 
 /// A Flutter plugin that interacts with the Talsec runtime library, handles method calls and provides event streams.
 public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
-    /// The event processor used to handle and dispatch events.
-    private let eventProcessor = EventProcessor()
     
     /// The singleton instance of `SwiftTalsecPlugin`.
     static let instance = SwiftFreeraspPlugin()
@@ -146,35 +144,26 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
         result(nil)
     }
     
-    /// Attaches a FlutterEventSink to the EventProcessor and processes any detectedThreats in the queue.
+    /// Attaches a FlutterEventSink to the ThreatDispatcher and processes any detectedThreats in the queue.
     ///
     /// - Parameters:
     /// - arguments: Unused
-    /// - events: The FlutterEventSink to be attached to the EventProcessor.
+    /// - events: The FlutterEventSink to be attached to the ThreatDispatcher.
     /// - Returns: Always returns nil.
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        eventProcessor.attachSink(sink: events)
+        ThreatDispatcher.shared.listener = { threat in
+            events(threat.callbackIdentifier)
+        }
         return nil
     }
     
-    // Detaches the current FlutterEventSink from the EventProcessor.
+    // Detaches the current FlutterEventSink from the ThreatDispatcher.
     ///
     /// - Parameters:
     /// - arguments: Unused
     /// - Returns: Always returns nil.
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        eventProcessor.detachSink()
+        ThreatDispatcher.shared.listener = nil
         return nil
-    }
-    
-    /// Processes a submitted SecurityThreat event.
-    ///
-    /// - Parameters:
-    /// - submittedEvent: The SecurityThreat event to be processed.
-    public func submitEvent(_ submittedEvent: SecurityThreat) {
-        if (submittedEvent == SecurityThreat.passcodeChange){
-            return
-        }
-        eventProcessor.processEvent(submittedEvent)
     }
 }

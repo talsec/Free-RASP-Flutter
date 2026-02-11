@@ -20,11 +20,14 @@ private let automationValue = 298453120
 extension SecurityThreatCenter: SecurityThreatHandler, TalsecRuntime.RaspExecutionState  {
     
     public func threatDetected(_ securityThreat: TalsecRuntime.SecurityThreat) {
-        SwiftFreeraspPlugin.instance.submitEvent(securityThreat)
+        if securityThreat == .passcodeChange {
+            return
+        }
+        ThreatDispatcher.shared.dispatch(threat: securityThreat)
     }
     
     public func onAllChecksFinished() {
-        ExecutionStreamHandler.shared.submitFinishedEvent()
+        ExecutionStateDispatcher.shared.dispatch(event: .allChecksFinished)
     }
 }
 
