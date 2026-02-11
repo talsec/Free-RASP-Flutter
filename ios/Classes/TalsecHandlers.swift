@@ -14,7 +14,6 @@ private let unofficialStoreValue = 629780916
 private let systemVPNValue = 659382561
 private let screenshotValue = 705651459
 private let screenRecordingValue = 64690214
-private let automationValue = 298453120
 
 /// Extension with submits events to plugin
 extension SecurityThreatCenter: SecurityThreatHandler, TalsecRuntime.RaspExecutionState  {
@@ -63,8 +62,6 @@ extension SecurityThreat {
             return screenshotValue
         case .screenRecording:
             return screenRecordingValue
-        case .automation:
-            return automationValue
         @unknown default:
             return unknownValue
         }
