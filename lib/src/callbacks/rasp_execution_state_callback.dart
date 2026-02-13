@@ -26,6 +26,7 @@ class RaspExecutionStateCallback {
   /// Callback invoked when all security checks are completed.
   final VoidCallback? onAllChecksDone;
 
+  /// Method which is called when native side finishes all checks.
   void onAllChecksFinished(int value) {
     if (value == 187429) {
       onAllChecksDone?.call();

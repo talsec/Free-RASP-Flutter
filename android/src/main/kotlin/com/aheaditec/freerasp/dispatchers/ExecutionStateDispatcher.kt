@@ -17,15 +17,11 @@ internal class ExecutionStateDispatcher {
     fun dispatch(event: RaspExecutionStateEvent) {
         val currentSink = eventSink
         if (currentSink != null) {
-            sendToSink(currentSink, event)
+            currentSink.success(event.value)
         } else {
             synchronized(eventCache) {
                 val checkedSink = eventSink
-                if (checkedSink != null) {
-                    sendToSink(checkedSink, event)
-                } else {
-                    eventCache.add(event)
-                }
+                checkedSink?.success(event.value) ?: eventCache.add(event)
             }
         }
     }
@@ -36,12 +32,6 @@ internal class ExecutionStateDispatcher {
             eventCache.clear()
             snapshot
         }
-        events.forEach { sendToSink(sink, it) }
-    }
-
-    private fun sendToSink(sink: EventSink, event: RaspExecutionStateEvent) {
-        when (event) {
-            is RaspExecutionStateEvent.AllChecksFinished -> sink.success(event.value)
-        }
+        events.forEach { sink.success(it.value) }
     }
 }

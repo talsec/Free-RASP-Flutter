@@ -32,7 +32,10 @@ class Talsec {
   /// Private constructor for internal and testing purposes.
   @visibleForTesting
   Talsec.private(
-      this.methodChannel, this.eventChannel, this.executionStateChannel);
+    this.methodChannel,
+    this.eventChannel,
+    this.executionStateChannel,
+  );
 
   /// Named channel used to communicate with platform plugins.
   ///
@@ -54,8 +57,11 @@ class Talsec {
       EventChannel('talsec.app/freerasp/execution_state');
 
   /// Private [Talsec] variable which holds current instance of class.
-  static final _instance =
-      Talsec.private(_methodChannel, _eventChannel, _executionStateChannel);
+  static final _instance = Talsec.private(
+    _methodChannel,
+    _eventChannel,
+    _executionStateChannel,
+  );
 
   /// Initialize Talsec lazily/obtain current instance of Talsec.
   static Talsec get instance => _instance;
@@ -68,7 +74,8 @@ class Talsec {
   @visibleForTesting
   late final EventChannel eventChannel;
 
-  /// [EventChannel] used to receive execution state events from the native platform.
+  /// [EventChannel] used to receive execution state events from the native
+  /// platform.
   @visibleForTesting
   late final EventChannel executionStateChannel;
 
@@ -311,7 +318,8 @@ class Talsec {
 
   /// Attaches instance of [RaspExecutionStateCallback] to Talsec.
   Future<void> attachExecutionStateListener(
-      RaspExecutionStateCallback callback) async {
+    RaspExecutionStateCallback callback,
+  ) async {
     await detachExecutionStateListener();
     _executionStateSubscription ??= executionStateChannel
         .receiveBroadcastStream()
@@ -347,7 +355,10 @@ class Talsec {
 
   Future<String> _getAppIcon(String packageName) async {
     final args = {'packageName': packageName};
-    final result = await methodChannel.invokeMethod<String>('getAppIcon', args);
+    final result = await methodChannel.invokeMethod<String>(
+      'getAppIcon',
+      args,
+    );
 
     if (result is! String) {
       throw const MalwareFailureException(message: 'Malware App icon is null.');

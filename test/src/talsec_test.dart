@@ -46,6 +46,7 @@ void main() {
         final talsec = Talsec.private(
           methodChannel.methodChannel,
           FakeEventChannel(),
+          FakeEventChannel(),
         );
 
         // Assert
@@ -72,6 +73,7 @@ void main() {
         final talsec = Talsec.private(
           methodChannel.methodChannel,
           FakeEventChannel(),
+          FakeEventChannel(),
         );
 
         // Assert
@@ -93,6 +95,7 @@ void main() {
         // Act
         final talsec = Talsec.private(
           methodChannel.methodChannel,
+          FakeEventChannel(),
           FakeEventChannel(),
         );
 
@@ -121,6 +124,7 @@ void main() {
         // Act
         final talsec = Talsec.private(
           methodChannel.methodChannel,
+          FakeEventChannel(),
           FakeEventChannel(),
         );
 
@@ -162,6 +166,7 @@ void main() {
       final talsec = Talsec.private(
         FakeMethodChannel(),
         eventChannel.eventChannel,
+        FakeEventChannel(),
       );
 
       // Act
@@ -187,6 +192,7 @@ void main() {
       final talsec = Talsec.private(
         FakeMethodChannel(),
         eventChannel.eventChannel,
+        FakeEventChannel(),
       );
 
       // Act
@@ -220,6 +226,7 @@ void main() {
       final talsec = Talsec.private(
         FakeMethodChannel(),
         eventChannel.eventChannel,
+        FakeEventChannel(),
       );
 
       // Act

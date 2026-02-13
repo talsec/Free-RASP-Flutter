@@ -5,7 +5,7 @@ void main() {
   test('Threat enum should contain 20 values', () {
     final threatValuesLength = Threat.values.length;
 
-    expect(threatValuesLength, 20);
+    expect(threatValuesLength, 21);
   });
 
   test('Threat enum should match its values index', () {
@@ -31,6 +31,7 @@ void main() {
     expect(threatValues[17], Threat.unsecureWiFi);
     expect(threatValues[18], Threat.timeSpoofing);
     expect(threatValues[19], Threat.locationSpoofing);
+    expect(threatValues[20], Threat.automation);
   });
 
   test(
@@ -57,6 +58,7 @@ void main() {
       expect(ThreatX.fromInt(363588890), Threat.unsecureWiFi);
       expect(ThreatX.fromInt(189105221), Threat.timeSpoofing);
       expect(ThreatX.fromInt(653273273), Threat.locationSpoofing);
+      expect(ThreatX.fromInt(298453120), Threat.automation);
     },
   );
 }

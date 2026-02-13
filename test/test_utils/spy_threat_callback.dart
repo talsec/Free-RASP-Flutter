@@ -25,6 +25,7 @@ class SpyThreatListener {
     onScreenRecording: () => _log(Threat.screenRecording),
     onObfuscationIssues: () => _log(Threat.obfuscationIssues),
     onMultiInstance: () => _log(Threat.multiInstance),
+    onAutomation: () => _log(Threat.automation),
   );
 
   static void _log(Threat threat) {
@@ -73,6 +74,8 @@ class SpyThreatListener {
         callback.onTimeSpoofing?.call();
       case Threat.locationSpoofing:
         callback.onLocationSpoofing?.call();
+      case Threat.automation:
+        callback.onAutomation?.call();
     }
   }
 }
