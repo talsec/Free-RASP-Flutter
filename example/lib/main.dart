@@ -57,8 +57,6 @@ Future<void> _initializeTalsec() async {
   await Talsec.instance.start(config);
 }
 
-
-
 /// The root widget of the application
 class App extends StatelessWidget {
   const App({super.key});
@@ -142,11 +140,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                           if (id.isNotEmpty) {
                             Talsec.instance.storeExternalId(id);
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Stored External ID: $id')),
+                              SnackBar(
+                                  content: Text('Stored External ID: $id')),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Please enter an External ID')),
+                              const SnackBar(
+                                  content: Text('Please enter an External ID')),
                             );
                           }
                         },
@@ -157,7 +157,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                           Talsec.instance.removeExternalId();
                           _externalIdController.clear();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Removed External ID')),
+                            const SnackBar(
+                                content: Text('Removed External ID')),
                           );
                         },
                         child: const Text('Remove External ID'),
