@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace 'com.aheaditec.freerasp_example'
-    compileSdkVersion 35
+    compileSdk 36
     ndkVersion = "27.1.12297006"
 
     compileOptions {

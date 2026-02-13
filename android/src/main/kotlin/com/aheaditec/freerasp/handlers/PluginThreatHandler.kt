@@ -111,7 +111,7 @@ internal object PluginThreatHandler {
 
     private val raspExecutionState = object : RaspExecutionState() {
         override fun onAllChecksFinished() {
-            TalsecThreatHandler.executionStateDispatcher.dispatch(RaspExecutionStateEvent.AllChecksFinished)
+            executionStateDispatcher.dispatch(RaspExecutionStateEvent.AllChecksFinished)
         }
     }
 
