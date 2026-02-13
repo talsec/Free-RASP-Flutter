@@ -13,7 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 - Added `onAutomation` callback to `ThreatCallback` for handling `Threat.automation` threat
-- Added cache for freeRASP callbacks when listener is not registered with the app
 
 ### Android
 
