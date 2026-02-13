@@ -15,8 +15,6 @@ import io.flutter.plugin.common.EventChannel.EventSink
  * security threats to Flutter.
  */
 internal object TalsecThreatHandler {
-    internal val threatDispatcher = ThreatDispatcher()
-    internal val executionStateDispatcher = ExecutionStateDispatcher()
     private var isListening = false
 
     /**
@@ -90,8 +88,8 @@ internal object TalsecThreatHandler {
      * [EventSink] is not destroyed but also is not able to send events.
      */
     internal fun suspendListener() {
-        savedEventSink = threatDispatcher.eventSink
-        threatDispatcher.eventSink = null
+        savedEventSink = PluginThreatHandler.threatDispatcher.eventSink
+        PluginThreatHandler.threatDispatcher.eventSink = null
     }
 
     /**
@@ -107,7 +105,7 @@ internal object TalsecThreatHandler {
      */
     internal fun resumeListener() {
         if (savedEventSink != null) {
-            threatDispatcher.eventSink = savedEventSink
+            PluginThreatHandler.threatDispatcher.eventSink = savedEventSink
             savedEventSink = null
         }
     }
@@ -126,31 +124,31 @@ internal object TalsecThreatHandler {
      * @param eventSink The event sink of the new listener.
      */
     internal fun attachEventSink(eventSink: EventSink) {
-        threatDispatcher.eventSink = eventSink
+        PluginThreatHandler.threatDispatcher.eventSink = eventSink
     }
 
     /**
      * Called when a listener unsubscribes from the event channel.
      */
     internal fun detachEventSink() {
-        threatDispatcher.eventSink = null
+        PluginThreatHandler.threatDispatcher.eventSink = null
         savedEventSink = null
     }
 
     internal fun attachExecutionStateSink(eventSink: EventSink) {
-        executionStateDispatcher.eventSink = eventSink
+        PluginThreatHandler.executionStateDispatcher.eventSink = eventSink
     }
 
     internal fun detachExecutionStateSink() {
-        executionStateDispatcher.eventSink = null
+        PluginThreatHandler.executionStateDispatcher.eventSink = null
     }
 
     internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
-        threatDispatcher.methodSink = sink
+        PluginThreatHandler.threatDispatcher.methodSink = sink
     }
 
     internal fun detachMethodSink() {
-        threatDispatcher.methodSink = null
+        PluginThreatHandler.threatDispatcher.methodSink = null
     }
 }
 
