@@ -80,9 +80,10 @@ class Talsec {
   late final EventChannel executionStateChannel;
 
   StreamSubscription<Threat>? _streamSubscription;
-  StreamSubscription<int>? _executionStateSubscription;
+  StreamSubscription<RaspExecutionState>? _executionStateSubscription;
 
   Stream<Threat>? _onThreatDetected;
+  Stream<RaspExecutionState>? _onRaspExecutionState;
 
   /// Returns a broadcast stream. When security is compromised
   /// [onThreatDetected] receives what type of Threat caused it.
@@ -119,6 +120,22 @@ class Talsec {
         .handleError(_handleStreamError);
 
     return _onThreatDetected!;
+  }
+
+  /// Returns a broadcast stream. When RASP execution state changes
+  /// [onRaspExecutionState] receives what state it is.
+  Stream<RaspExecutionState> get onRaspExecutionState {
+    if (_onRaspExecutionState != null) {
+      return _onRaspExecutionState!;
+    }
+
+    _onRaspExecutionState = executionStateChannel
+        .receiveBroadcastStream()
+        .cast<int>()
+        .map(RaspExecutionStateX.fromInt)
+        .handleError(_handleStreamError);
+
+    return _onRaspExecutionState!;
   }
 
   /// Starts freeRASP with configuration provided in [config].
@@ -321,11 +338,11 @@ class Talsec {
     RaspExecutionStateCallback callback,
   ) async {
     await detachExecutionStateListener();
-    _executionStateSubscription ??= executionStateChannel
-        .receiveBroadcastStream()
-        .cast<int>()
-        .listen((event) {
-      callback.onAllChecksFinished(event);
+    _executionStateSubscription ??= onRaspExecutionState.listen((event) {
+      switch (event) {
+        case RaspExecutionState.allChecksFinished:
+          callback.onAllChecksDone?.call();
+      }
     });
   }
 
