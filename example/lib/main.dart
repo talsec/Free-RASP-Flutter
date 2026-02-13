@@ -141,12 +141,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                             Talsec.instance.storeExternalId(id);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                  content: Text('Stored External ID: $id')),
+                                content: Text('Stored External ID: $id'),
+                              ),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text('Please enter an External ID')),
+                                content: Text('Please enter an External ID'),
+                              ),
                             );
                           }
                         },
@@ -158,7 +160,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                           _externalIdController.clear();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text('Removed External ID')),
+                              content: Text('Removed External ID'),
+                            ),
                           );
                         },
                         child: const Text('Remove External ID'),
