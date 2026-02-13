@@ -57,10 +57,7 @@ Future<void> _initializeTalsec() async {
   await Talsec.instance.start(config);
 }
 
-/// Example of how to use [Talsec.storeExternalId].
-Future<void> testStoreExternalId(String data) async {
-  await Talsec.instance.storeExternalId(data);
-}
+
 
 /// The root widget of the application
 class App extends StatelessWidget {
@@ -77,11 +74,30 @@ class App extends StatelessWidget {
 }
 
 /// The home page that displays the threats and results
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  late final TextEditingController _externalIdController;
+
+  @override
+  void initState() {
+    super.initState();
+    _externalIdController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _externalIdController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final threatState = ref.watch(threatProvider);
 
     // Listen for changes in the threatProvider and show the malware modal
@@ -103,14 +119,53 @@ class HomePage extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
-              ListTile(
-                title: const Text('Store External ID'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {
-                    testStoreExternalId('testData');
-                  },
-                ),
+              ExpansionTile(
+                title: const Text('Change External ID'),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      controller: _externalIdController,
+                      decoration: const InputDecoration(
+                        labelText: 'External ID',
+                        hintText: 'Enter external ID here',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          final id = _externalIdController.text;
+                          if (id.isNotEmpty) {
+                            Talsec.instance.storeExternalId(id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Stored External ID: $id')),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Please enter an External ID')),
+                            );
+                          }
+                        },
+                        child: const Text('Store External ID'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Talsec.instance.removeExternalId();
+                          _externalIdController.clear();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Removed External ID')),
+                          );
+                        },
+                        child: const Text('Remove External ID'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
               ),
               ListTile(
                 title: const Text('Change Screen Capture'),
