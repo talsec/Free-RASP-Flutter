@@ -88,8 +88,11 @@ internal object TalsecThreatHandler {
      * [EventSink] is not destroyed but also is not able to send events.
      */
     internal fun suspendListener() {
-        savedEventSink = PluginThreatHandler.threatDispatcher.eventSink
+        savedThreatEventSink = PluginThreatHandler.threatDispatcher.eventSink
         PluginThreatHandler.threatDispatcher.eventSink = null
+
+        savedExecutionStateSink = PluginThreatHandler.executionStateDispatcher.eventSink
+        PluginThreatHandler.executionStateDispatcher.eventSink = null
     }
 
     /**
@@ -104,17 +107,18 @@ internal object TalsecThreatHandler {
      * also is not able to send events.
      */
     internal fun resumeListener() {
-        if (savedEventSink != null) {
-            PluginThreatHandler.threatDispatcher.eventSink = savedEventSink
-            savedEventSink = null
+        if (savedThreatEventSink != null) {
+            PluginThreatHandler.threatDispatcher.eventSink = savedThreatEventSink
+            savedThreatEventSink = null
+        }
+        if (savedExecutionStateSink != null) {
+            PluginThreatHandler.executionStateDispatcher.eventSink = savedExecutionStateSink
+            savedExecutionStateSink = null
         }
     }
-    
-    // Let's refine suspend/resume.
-    private var savedEventSink: EventSink? = null
-    
 
-    
+    private var savedThreatEventSink: EventSink? = null
+    private var savedExecutionStateSink: EventSink? = null
 
 
     /**
@@ -132,7 +136,7 @@ internal object TalsecThreatHandler {
      */
     internal fun detachEventSink() {
         PluginThreatHandler.threatDispatcher.eventSink = null
-        savedEventSink = null
+        savedThreatEventSink = null
     }
 
     internal fun attachExecutionStateSink(eventSink: EventSink) {
@@ -141,6 +145,7 @@ internal object TalsecThreatHandler {
 
     internal fun detachExecutionStateSink() {
         PluginThreatHandler.executionStateDispatcher.eventSink = null
+        savedExecutionStateSink = null
     }
 
     internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
