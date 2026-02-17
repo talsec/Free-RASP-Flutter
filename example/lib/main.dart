@@ -52,6 +52,7 @@ Future<void> _initializeTalsec() async {
     ),
     watcherMail: 'your_mail@example.com',
     isProd: true,
+    killOnBypass: true,
   );
 
   await Talsec.instance.start(config);
