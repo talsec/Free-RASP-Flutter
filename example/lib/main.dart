@@ -171,16 +171,33 @@ class _HomePageState extends ConsumerState<HomePage> {
                   const SizedBox(height: 16),
                 ],
               ),
-              ListTile(
-                title: const Text('Change Screen Capture'),
-                leading: SafetyIcon(
-                  isDetected: !(ref.watch(screenCaptureProvider).value ?? true),
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {
-                    ref.read(screenCaptureProvider.notifier).toggle();
-                  },
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Screen Capture',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    ElevatedButton(
+                      onPressed: () =>
+                          ref.read(screenCaptureProvider.notifier).toggle(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            (ref.watch(screenCaptureProvider).value ?? false)
+                                ? Colors.green
+                                : Colors.red,
+                      ),
+                      child: Text(
+                        (ref.watch(screenCaptureProvider).value ?? false)
+                            ? 'Protected'
+                            : 'Unprotected',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               ListTile(
