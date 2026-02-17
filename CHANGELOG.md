@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.0] - 2026-02-10
+- Android SDK version: 18.0.2
+- iOS SDK version: 6.13.0
+
+### Flutter
+
+#### Added
+- Added `onAutomation` callback to `ThreatCallback` for handling `Threat.automation` threat
+
+### Android
+
+#### Added
+
+- Added support for `KernelSU` to the existing root detection capabilities
+- Added support for `HMA` to the existing root detection capabilities
+- Added new malware detection capabilities
+- Added `onAutomationDetected()` callback to `ThreatDetected` interface
+  - We are introducing a new capability, detecting whether the device is being automated using tools like Appium
+- Added value restrictions to `externalId`
+  - Method `storeExternalId()` now returns `ExternalIdResult`, which indicates `Success` or `Error` when `externalId` violates restrictions
+
+#### Fixed
+
+- Fixed exception handling for the KeyStore `getEntry` operation
+- Fixed issue in `ScreenProtector` concerning the `onScreenRecordingDetected` invocations
+- Merged internal shared libraries into a single one, reducing the final APK size
+- Fixed bug related to key storing in keystore type detection (hw-backed keystore check)
+- Fixed manifest queries merge
+
+#### Changed
+
+- Removed unused library `tmlib`
+- Refactoring of signature verification code
+- Updated compile and target API to 36
+- Improved root detection capabilities
+- Detection of wireless ADB added to ADB detections
+
 ## [7.3.0] - 2025-10-20
 - Android SDK version: 17.0.0
 - iOS SDK version: 6.13.0

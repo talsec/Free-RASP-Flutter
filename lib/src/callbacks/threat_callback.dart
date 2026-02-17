@@ -42,6 +42,7 @@ class ThreatCallback extends TalsecPigeonApi {
     this.onUnsecureWiFi,
     this.onTimeSpoofing,
     this.onLocationSpoofing,
+    this.onAutomation,
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -110,6 +111,9 @@ class ThreatCallback extends TalsecPigeonApi {
 
   /// This method is called when location manipulation is detected
   final VoidCallback? onLocationSpoofing;
+
+  /// This method is called when automation is detected
+  final VoidCallback? onAutomation;
 
   @override
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo) {

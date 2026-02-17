@@ -46,6 +46,7 @@ void main() {
         final talsec = Talsec.private(
           methodChannel.methodChannel,
           FakeEventChannel(),
+          FakeEventChannel(),
         );
 
         // Assert
@@ -72,6 +73,7 @@ void main() {
         final talsec = Talsec.private(
           methodChannel.methodChannel,
           FakeEventChannel(),
+          FakeEventChannel(),
         );
 
         // Assert
@@ -93,6 +95,7 @@ void main() {
         // Act
         final talsec = Talsec.private(
           methodChannel.methodChannel,
+          FakeEventChannel(),
           FakeEventChannel(),
         );
 
@@ -121,6 +124,7 @@ void main() {
         // Act
         final talsec = Talsec.private(
           methodChannel.methodChannel,
+          FakeEventChannel(),
           FakeEventChannel(),
         );
 
@@ -162,6 +166,7 @@ void main() {
       final talsec = Talsec.private(
         FakeMethodChannel(),
         eventChannel.eventChannel,
+        FakeEventChannel(),
       );
 
       // Act
@@ -187,6 +192,7 @@ void main() {
       final talsec = Talsec.private(
         FakeMethodChannel(),
         eventChannel.eventChannel,
+        FakeEventChannel(),
       );
 
       // Act
@@ -220,6 +226,7 @@ void main() {
       final talsec = Talsec.private(
         FakeMethodChannel(),
         eventChannel.eventChannel,
+        FakeEventChannel(),
       );
 
       // Act
@@ -242,6 +249,57 @@ void main() {
       final secondStream = Talsec.instance.onThreatDetected;
 
       expect(identical(firstStream, secondStream), isTrue);
+    });
+  });
+
+  group('RaspExecutionState', () {
+    test('Should receive stream of RaspExecutionState', () {
+      // Arrange
+      final eventChannel = MockEventChannel(
+        eventChannel: Talsec.instance.executionStateChannel,
+        data: [187429],
+      );
+      final talsec = Talsec.private(
+        FakeMethodChannel(),
+        FakeEventChannel(),
+        eventChannel.eventChannel,
+      );
+
+      // Act
+      final stream = talsec.onRaspExecutionState;
+
+      //Assert
+      expectLater(
+        stream,
+        emitsInOrder([
+          RaspExecutionState.allChecksFinished,
+          emitsDone,
+        ]),
+      );
+    });
+
+    test('attachExecutionStateListener should invoke callback', () async {
+      // Arrange
+      final eventChannel = MockEventChannel(
+        eventChannel: Talsec.instance.executionStateChannel,
+        data: [187429],
+      );
+      final talsec = Talsec.private(
+        FakeMethodChannel(),
+        FakeEventChannel(),
+        eventChannel.eventChannel,
+      );
+
+      final completer = Completer<void>();
+      final callback = RaspExecutionStateCallback(
+        onAllChecksDone: completer.complete,
+      );
+
+      // Act
+      await talsec.attachExecutionStateListener(callback);
+
+      // Assert
+      await expectLater(completer.future, completes);
     });
   });
 }

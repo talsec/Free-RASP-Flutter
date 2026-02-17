@@ -2,9 +2,10 @@ package com.aheaditec.freerasp.handlers
 
 import android.content.Context
 import android.os.Build
+import com.aheaditec.freerasp.RaspExecutionStateEvent
 import com.aheaditec.freerasp.ScreenProtector
-import com.aheaditec.freerasp.Threat
-import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
+import com.aheaditec.freerasp.dispatchers.ExecutionStateDispatcher
+import com.aheaditec.freerasp.dispatchers.ThreatDispatcher
 import com.aheaditec.talsec_security.security.api.Talsec
 import com.aheaditec.talsec_security.security.api.TalsecConfig
 import io.flutter.plugin.common.EventChannel.EventSink
@@ -14,8 +15,6 @@ import io.flutter.plugin.common.EventChannel.EventSink
  * security threats to Flutter.
  */
 internal object TalsecThreatHandler {
-    private var eventSink: EventSink? = null
-    private var methodSink: MethodCallHandler.MethodSink? = null
     private var isListening = false
 
     /**
@@ -38,7 +37,6 @@ internal object TalsecThreatHandler {
      */
     internal fun stop(context: Context) {
         detachListener(context)
-        PluginThreatHandler.listener = null
         Talsec.stop()
     }
 
@@ -90,7 +88,11 @@ internal object TalsecThreatHandler {
      * [EventSink] is not destroyed but also is not able to send events.
      */
     internal fun suspendListener() {
-        PluginThreatHandler.listener = null
+        savedThreatEventSink = PluginThreatHandler.threatDispatcher.eventSink
+        PluginThreatHandler.threatDispatcher.eventSink = null
+
+        savedExecutionStateSink = PluginThreatHandler.executionStateDispatcher.eventSink
+        PluginThreatHandler.executionStateDispatcher.eventSink = null
     }
 
     /**
@@ -105,11 +107,19 @@ internal object TalsecThreatHandler {
      * also is not able to send events.
      */
     internal fun resumeListener() {
-        eventSink?.let {
-            PluginThreatHandler.listener = ThreatListener
-            flushThreatCache(it)
+        if (savedThreatEventSink != null) {
+            PluginThreatHandler.threatDispatcher.eventSink = savedThreatEventSink
+            savedThreatEventSink = null
+        }
+        if (savedExecutionStateSink != null) {
+            PluginThreatHandler.executionStateDispatcher.eventSink = savedExecutionStateSink
+            savedExecutionStateSink = null
         }
     }
+
+    private var savedThreatEventSink: EventSink? = null
+    private var savedExecutionStateSink: EventSink? = null
+
 
     /**
      * Called when a new listener subscribes to the event channel. Sends any previously detected
@@ -118,69 +128,33 @@ internal object TalsecThreatHandler {
      * @param eventSink The event sink of the new listener.
      */
     internal fun attachEventSink(eventSink: EventSink) {
-        this.eventSink = eventSink
-        PluginThreatHandler.listener = ThreatListener
-        flushThreatCache(eventSink)
+        PluginThreatHandler.threatDispatcher.eventSink = eventSink
     }
 
     /**
      * Called when a listener unsubscribes from the event channel.
      */
     internal fun detachEventSink() {
-        eventSink = null
-        PluginThreatHandler.listener = null
+        PluginThreatHandler.threatDispatcher.eventSink = null
+        savedThreatEventSink = null
     }
 
-    /**
-     * Sends any cached detected threats to the listener.
-     *
-     * @param eventSink The event sink of the new listener.
-     */
-    private fun flushThreatCache(eventSink: EventSink?) {
-        PluginThreatHandler.detectedThreats.forEach {
-            eventSink?.success(it.value)
-        }
+    internal fun attachExecutionStateSink(eventSink: EventSink) {
+        PluginThreatHandler.executionStateDispatcher.eventSink = eventSink
+    }
 
-        PluginThreatHandler.detectedMalware.let {
-            if (it.isNotEmpty()) {
-                methodSink?.onMalwareDetected(it)
-            }
-        }
-
-        if (PluginThreatHandler.shouldNotifyAllChecksFinished) {
-            methodSink?.onAllChecksFinished()
-        }
-
-        PluginThreatHandler.detectedThreats.clear()
-        PluginThreatHandler.detectedMalware.clear()
-        PluginThreatHandler.shouldNotifyAllChecksFinished = false
+    internal fun detachExecutionStateSink() {
+        PluginThreatHandler.executionStateDispatcher.eventSink = null
+        savedExecutionStateSink = null
     }
 
     internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
-        this.methodSink = sink
+        PluginThreatHandler.threatDispatcher.methodSink = sink
     }
 
     internal fun detachMethodSink() {
-        methodSink = null
-    }
-
-    /**
-     * Called when a security threat is detected. Sends the threat information to the current
-     * listener (if one exists) or adds it to the [PluginThreatHandler.detectedThreats] list to be
-     * sent to the next listener that subscribes to the event channel.
-     */
-    internal object ThreatListener : PluginThreatHandler.TalsecFlutter {
-        override fun threatDetected(threatType: Threat) {
-            eventSink?.success(threatType.value)
-        }
-
-        override fun malwareDetected(suspiciousApps: List<SuspiciousAppInfo>) {
-            methodSink?.onMalwareDetected(suspiciousApps)
-        }
-
-        override fun allChecksFinished() {
-            methodSink?.onAllChecksFinished()
-        }
+        PluginThreatHandler.threatDispatcher.methodSink = null
     }
 }
+
 

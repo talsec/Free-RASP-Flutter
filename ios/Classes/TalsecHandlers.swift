@@ -19,11 +19,14 @@ private let screenRecordingValue = 64690214
 extension SecurityThreatCenter: SecurityThreatHandler, TalsecRuntime.RaspExecutionState  {
     
     public func threatDetected(_ securityThreat: TalsecRuntime.SecurityThreat) {
-        SwiftFreeraspPlugin.instance.submitEvent(securityThreat)
+        if securityThreat == .passcodeChange {
+            return
+        }
+        ThreatDispatcher.shared.dispatch(threat: securityThreat)
     }
     
     public func onAllChecksFinished() {
-        SwiftFreeraspPlugin.instance.submitFinishedEvent()
+        ExecutionStateDispatcher.shared.dispatch(event: .allChecksFinished)
     }
 }
 

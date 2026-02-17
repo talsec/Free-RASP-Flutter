@@ -1,0 +1,38 @@
+package com.aheaditec.freerasp.dispatchers
+
+import com.aheaditec.freerasp.RaspExecutionStateEvent
+import io.flutter.plugin.common.EventChannel.EventSink
+
+internal class ExecutionStateDispatcher {
+    private val eventCache = mutableSetOf<RaspExecutionStateEvent>()
+
+    var eventSink: EventSink? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                flushCache(value)
+            }
+        }
+
+    fun dispatch(event: RaspExecutionStateEvent) {
+        val sink = synchronized(eventCache) {
+            val currentSink = eventSink
+            if (currentSink != null) {
+                currentSink
+            } else {
+                eventCache.add(event)
+                null
+            }
+        }
+        sink?.success(event.value)
+    }
+
+    private fun flushCache(sink: EventSink) {
+        val events = synchronized(eventCache) {
+            val snapshot = eventCache.toSet()
+            eventCache.clear()
+            snapshot
+        }
+        events.forEach { sink.success(it.value) }
+    }
+}

@@ -4,15 +4,9 @@ import TalsecRuntime
 
 /// A Flutter plugin that interacts with the Talsec runtime library, handles method calls and provides event streams.
 public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
-    /// The event processor used to handle and dispatch events.
-    private let eventProcessor = EventProcessor()
-    
-    private static let stateProcessor = StateProcessor()
     
     /// The singleton instance of `SwiftTalsecPlugin`.
     static let instance = SwiftFreeraspPlugin()
-    
-    private var raspExecutionStatePigeon: RaspExecutionStateProtocol? = nil
     
     private override init() {}
     
@@ -22,12 +16,12 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
         let eventChannel = FlutterEventChannel(name: "talsec.app/freerasp/events", binaryMessenger: messenger)
         eventChannel.setStreamHandler(instance)
         
+        let executionStateChannel = FlutterEventChannel(name: "talsec.app/freerasp/execution_state", binaryMessenger: messenger)
+        executionStateChannel.setStreamHandler(ExecutionStreamHandler.shared)
+        
         //Channels init
         let methodChannel : FlutterMethodChannel = FlutterMethodChannel(name: "talsec.app/freerasp/methods", binaryMessenger: messenger)
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
-        
-        let pigeon = RaspExecutionState(binaryMessenger: messenger)
-        stateProcessor.attachPigeon(pigeon: pigeon)
     }
     
     /// Handles a method call from Flutter.
@@ -50,6 +44,9 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
             return
         case "storeExternalId":
             storeExternalId(data: args["data"] as? String, result: result)
+            return
+        case "removeExternalId":
+            removeExternalId(result: result)
             return
         default:
             result(FlutterMethodNotImplemented)
@@ -137,48 +134,36 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
         UserDefaults.standard.set(data, forKey: "app.talsec.externalid")
         result(nil)
     }
+
+    /// Removes the external ID from user defaults.
+    ///
+    /// - Parameters:
+    ///   - result: The `FlutterResult` object to be returned to the caller.
+    private func removeExternalId(result: @escaping FlutterResult){
+        UserDefaults.standard.removeObject(forKey: "app.talsec.externalid")
+        result(nil)
+    }
     
-    /// Attaches a FlutterEventSink to the EventProcessor and processes any detectedThreats in the queue.
+    /// Attaches a FlutterEventSink to the ThreatDispatcher and processes any detectedThreats in the queue.
     ///
     /// - Parameters:
     /// - arguments: Unused
-    /// - events: The FlutterEventSink to be attached to the EventProcessor.
+    /// - events: The FlutterEventSink to be attached to the ThreatDispatcher.
     /// - Returns: Always returns nil.
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        eventProcessor.attachSink(sink: events)
+        ThreatDispatcher.shared.listener = { threat in
+            events(threat.callbackIdentifier)
+        }
         return nil
     }
     
-    // Detaches the current FlutterEventSink from the EventProcessor.
+    // Detaches the current FlutterEventSink from the ThreatDispatcher.
     ///
     /// - Parameters:
     /// - arguments: Unused
     /// - Returns: Always returns nil.
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        eventProcessor.detachSink()
+        ThreatDispatcher.shared.listener = nil
         return nil
-    }
-    
-    /// Processes a submitted SecurityThreat event.
-    ///
-    /// - Parameters:
-    /// - submittedEvent: The SecurityThreat event to be processed.
-    public func submitEvent(_ submittedEvent: SecurityThreat) {
-        if (submittedEvent == SecurityThreat.passcodeChange){
-            return
-        }
-        eventProcessor.processEvent(submittedEvent)
-    }
-    
-    /// Submits a finished event to notify Flutter that all security checks are complete.
-    ///
-    /// This method is called by the native security engine when all security
-    /// validation checks have been completed. It triggers the state processor
-    /// to send a completion notification to Flutter through the Pigeon protocol.
-    ///
-    /// This method should be called after the security engine has finished
-    /// executing all its validation routines.
-    public func submitFinishedEvent() {
-        SwiftFreeraspPlugin.stateProcessor.processState()
     }
 }

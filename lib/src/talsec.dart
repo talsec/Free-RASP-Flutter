@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
 import 'package:freerasp/src/errors/external_id_failure_exception.dart';
 import 'package:freerasp/src/errors/malware_failure_exception.dart';
-import 'package:freerasp/src/generated/rasp_execution_state.g.dart' as pigeon;
 import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 
 /// A class which maintains all security related operations.
@@ -32,7 +31,11 @@ import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 class Talsec {
   /// Private constructor for internal and testing purposes.
   @visibleForTesting
-  Talsec.private(this.methodChannel, this.eventChannel);
+  Talsec.private(
+    this.methodChannel,
+    this.eventChannel,
+    this.executionStateChannel,
+  );
 
   /// Named channel used to communicate with platform plugins.
   ///
@@ -47,8 +50,18 @@ class Talsec {
   static const MethodChannel _methodChannel =
       MethodChannel('talsec.app/freerasp/methods');
 
+  /// Named channel used to communicate with platform plugins.
+  ///
+  /// Stream of execution state events.
+  static const EventChannel _executionStateChannel =
+      EventChannel('talsec.app/freerasp/execution_state');
+
   /// Private [Talsec] variable which holds current instance of class.
-  static final _instance = Talsec.private(_methodChannel, _eventChannel);
+  static final _instance = Talsec.private(
+    _methodChannel,
+    _eventChannel,
+    _executionStateChannel,
+  );
 
   /// Initialize Talsec lazily/obtain current instance of Talsec.
   static Talsec get instance => _instance;
@@ -61,9 +74,16 @@ class Talsec {
   @visibleForTesting
   late final EventChannel eventChannel;
 
+  /// [EventChannel] used to receive execution state events from the native
+  /// platform.
+  @visibleForTesting
+  late final EventChannel executionStateChannel;
+
   StreamSubscription<Threat>? _streamSubscription;
+  StreamSubscription<RaspExecutionState>? _executionStateSubscription;
 
   Stream<Threat>? _onThreatDetected;
+  Stream<RaspExecutionState>? _onRaspExecutionState;
 
   /// Returns a broadcast stream. When security is compromised
   /// [onThreatDetected] receives what type of Threat caused it.
@@ -100,6 +120,22 @@ class Talsec {
         .handleError(_handleStreamError);
 
     return _onThreatDetected!;
+  }
+
+  /// Returns a broadcast stream. When RASP execution state changes
+  /// [onRaspExecutionState] receives what state it is.
+  Stream<RaspExecutionState> get onRaspExecutionState {
+    if (_onRaspExecutionState != null) {
+      return _onRaspExecutionState!;
+    }
+
+    _onRaspExecutionState = executionStateChannel
+        .receiveBroadcastStream()
+        .cast<int>()
+        .map(RaspExecutionStateX.fromInt)
+        .handleError(_handleStreamError);
+
+    return _onRaspExecutionState!;
   }
 
   /// Starts freeRASP with configuration provided in [config].
@@ -185,6 +221,17 @@ class Talsec {
     }
   }
 
+  /// Removes the external ID.
+  ///
+  /// Throws a [ExternalIdFailureException] when removing failed.
+  Future<void> removeExternalId() async {
+    try {
+      await methodChannel.invokeMethod<void>('removeExternalId');
+    } on PlatformException catch (e) {
+      throw ExternalIdFailureException.fromPlatformException(e);
+    }
+  }
+
   void _checkConfig(TalsecConfig config) {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -262,6 +309,8 @@ class Talsec {
           callback.onTimeSpoofing?.call();
         case Threat.locationSpoofing:
           callback.onLocationSpoofing?.call();
+        case Threat.automation:
+          callback.onAutomation?.call();
       }
     });
   }
@@ -285,13 +334,22 @@ class Talsec {
   }
 
   /// Attaches instance of [RaspExecutionStateCallback] to Talsec.
-  void attachExecutionStateListener(RaspExecutionStateCallback callback) {
-    pigeon.RaspExecutionState.setUp(callback);
+  Future<void> attachExecutionStateListener(
+    RaspExecutionStateCallback callback,
+  ) async {
+    await detachExecutionStateListener();
+    _executionStateSubscription ??= onRaspExecutionState.listen((event) {
+      switch (event) {
+        case RaspExecutionState.allChecksFinished:
+          callback.onAllChecksDone?.call();
+      }
+    });
   }
 
   /// Detaches instance of latest [RaspExecutionStateCallback].
-  void detachExecutionStateListener() {
-    pigeon.RaspExecutionState.setUp(null);
+  Future<void> detachExecutionStateListener() async {
+    await _executionStateSubscription?.cancel();
+    _executionStateSubscription = null;
   }
 
   /// Retrieves the app icon for the given [packageName] as base64 string.
@@ -314,7 +372,10 @@ class Talsec {
 
   Future<String> _getAppIcon(String packageName) async {
     final args = {'packageName': packageName};
-    final result = await methodChannel.invokeMethod<String>('getAppIcon', args);
+    final result = await methodChannel.invokeMethod<String>(
+      'getAppIcon',
+      args,
+    );
 
     if (result is! String) {
       throw const MalwareFailureException(message: 'Malware App icon is null.');

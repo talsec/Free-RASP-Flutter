@@ -3,7 +3,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '2.1.0'
-    ext.talsec_version = '17.0.0'
+    ext.talsec_version = '18.0.2'
     repositories {
         google()
         mavenCentral()
@@ -32,7 +32,7 @@ android {
         namespace("com.aheaditec.freerasp")
     }
 
-    compileSdk 35
+    compileSdk 36
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
