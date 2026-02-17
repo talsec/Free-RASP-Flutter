@@ -15,15 +15,16 @@ internal class ExecutionStateDispatcher {
         }
 
     fun dispatch(event: RaspExecutionStateEvent) {
-        val currentSink = eventSink
-        if (currentSink != null) {
-            currentSink.success(event.value)
-        } else {
-            synchronized(eventCache) {
-                val checkedSink = eventSink
-                checkedSink?.success(event.value) ?: eventCache.add(event)
+        val sink = synchronized(eventCache) {
+            val currentSink = eventSink
+            if (currentSink != null) {
+                currentSink
+            } else {
+                eventCache.add(event)
+                null
             }
         }
+        sink?.success(event.value)
     }
 
     private fun flushCache(sink: EventSink) {

@@ -90,6 +90,8 @@ enum Threat {
   locationSpoofing,
 
   /// This method is called when automation is detected
+  ///
+  /// Android only
   automation,
 }
 

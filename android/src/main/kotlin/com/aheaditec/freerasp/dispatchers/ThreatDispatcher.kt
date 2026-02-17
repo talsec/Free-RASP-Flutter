@@ -26,27 +26,29 @@ internal class ThreatDispatcher {
         }
 
     fun dispatchThreat(threat: Threat) {
-        val currentSink = eventSink
-        if (currentSink != null) {
-            currentSink.success(threat.value)
-        } else {
-            synchronized(threatCache) {
-                val checkedSink = eventSink
-                checkedSink?.success(threat.value) ?: threatCache.add(threat)
+        val sink = synchronized(threatCache) {
+            val currentSink = eventSink
+            if (currentSink != null) {
+                currentSink
+            } else {
+                threatCache.add(threat)
+                null
             }
         }
+        sink?.success(threat.value)
     }
 
     fun dispatchMalware(apps: List<SuspiciousAppInfo>) {
-        val currentSink = methodSink
-        if (currentSink != null) {
-            currentSink.onMalwareDetected(apps)
-        } else {
-            synchronized(malwareCache) {
-                val checkedSink = methodSink
-                checkedSink?.onMalwareDetected(apps) ?: malwareCache.addAll(apps)
+        val sink = synchronized(malwareCache) {
+            val currentSink = methodSink
+            if (currentSink != null) {
+                currentSink
+            } else {
+                malwareCache.addAll(apps)
+                null
             }
         }
+        sink?.onMalwareDetected(apps)
     }
 
     private fun flushThreatCache(sink: EventSink) {
