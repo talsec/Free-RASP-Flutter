@@ -3,6 +3,7 @@ package com.aheaditec.freerasp
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.os.Build
+import com.aheaditec.talsec_security.security.api.ExternalIdResult
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import io.flutter.plugin.common.MethodChannel
 import com.aheaditec.freerasp.generated.PackageInfo as FlutterPackageInfo
@@ -67,4 +68,18 @@ internal fun PackageInfo.getVersionString(): String {
     }
     @Suppress("DEPRECATION")
     return versionCode.toString()
+}
+
+/**
+ * Resolves the result of a storeExternalId operation and sends it back to the Flutter side.
+ * If the [ExternalIdResult] is [ExternalIdResult.Success], it sends the result using success.
+ * If the [ExternalIdResult] is [ExternalIdResult.Error], it sends the result using error.
+ *
+ * @param result The [MethodChannel.Result] handler to send the result/error to.
+ */
+internal fun ExternalIdResult.resolve(result: MethodChannel.Result) {
+    when (this) {
+        is ExternalIdResult.Success -> result.success(null)
+        is ExternalIdResult.Error -> result.error("external-id-failure", this.errorMsg, null)
+    }
 }
