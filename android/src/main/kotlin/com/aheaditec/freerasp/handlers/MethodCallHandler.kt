@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.aheaditec.freerasp.Utils
 import com.aheaditec.freerasp.generated.TalsecPigeonApi
+import com.aheaditec.freerasp.resolve
 import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.toPigeon
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
@@ -216,8 +217,7 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
         runResultCatching(result) {
             context?.let {
                 val data = call.argument<String>("data") ?: throw NullPointerException("External ID data cannot be null.")
-                Talsec.storeExternalId(it, data)
-                result.success(null)
+                Talsec.storeExternalId(it, data).resolve(result)
                 return@runResultCatching
             }
             throw IllegalStateException("Unable to store external ID - context is null")
