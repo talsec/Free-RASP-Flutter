@@ -1,9 +1,11 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
-// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name TalsecRuntime
+// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name TalsecRuntime
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -interface-compiler-version 6.1.2
 import CryptoKit
 import Foundation
 import LocalAuthentication
+import Network
 import TalsecRuntime.Private
 import Security
 import Swift
@@ -51,10 +53,11 @@ public enum SecurityThreat : Swift.String, Swift.Codable, Swift.CaseIterable, Sw
   case unofficialStore
   case screenshot
   case screenRecording
+  case timeSpoofing
   public init?(rawValue: Swift.String)
   public typealias AllCases = [TalsecRuntime.SecurityThreat]
   public typealias RawValue = Swift.String
-  public static var allCases: [TalsecRuntime.SecurityThreat] {
+  nonisolated public static var allCases: [TalsecRuntime.SecurityThreat] {
     get
   }
   public var rawValue: Swift.String {
