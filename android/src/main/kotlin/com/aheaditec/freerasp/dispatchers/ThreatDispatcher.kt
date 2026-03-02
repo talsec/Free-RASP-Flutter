@@ -8,12 +8,14 @@ import io.flutter.plugin.common.EventChannel.EventSink
 internal class ThreatDispatcher {
     private val threatCache = mutableSetOf<Threat>()
     private val malwareCache = mutableListOf<SuspiciousAppInfo>()
+    private var isAppInForeground = false
 
     var eventSink: EventSink? = null
         set(value) {
             field = value
             if (value != null) {
-                flushThreatCache(value)
+                isAppInForeground = true
+                flushThreatCache()
             }
         }
 
@@ -21,53 +23,62 @@ internal class ThreatDispatcher {
         set(value) {
             field = value
             if (value != null) {
-                flushMalwareCache(value)
+                isAppInForeground = true
+                flushMalwareCache()
             }
         }
 
+    fun onResume() {
+        isAppInForeground = true
+        if (eventSink != null) {
+            flushThreatCache()
+        }
+        if (methodSink != null) {
+            flushMalwareCache()
+        }
+    }
+
+    fun onPause() {
+        isAppInForeground = false
+    }
+
     fun dispatchThreat(threat: Threat) {
-        val sink = synchronized(threatCache) {
-            val currentSink = eventSink
-            if (currentSink != null) {
-                currentSink
-            } else {
+        if (isAppInForeground && eventSink != null) {
+            eventSink?.success(threat.value)
+        } else {
+            synchronized(threatCache) {
                 threatCache.add(threat)
-                null
             }
         }
-        sink?.success(threat.value)
     }
 
     fun dispatchMalware(apps: List<SuspiciousAppInfo>) {
-        val sink = synchronized(malwareCache) {
-            val currentSink = methodSink
-            if (currentSink != null) {
-                currentSink
-            } else {
+        if (isAppInForeground && methodSink != null) {
+            methodSink?.onMalwareDetected(apps)
+        } else {
+            synchronized(malwareCache) {
                 malwareCache.addAll(apps)
-                null
             }
         }
-        sink?.onMalwareDetected(apps)
     }
 
-    private fun flushThreatCache(sink: EventSink) {
+    private fun flushThreatCache() {
         val threats = synchronized(threatCache) {
             val snapshot = threatCache.toSet()
             threatCache.clear()
             snapshot
         }
-        threats.forEach { sink.success(it.value) }
+        threats.forEach { eventSink?.success(it.value) }
     }
 
-    private fun flushMalwareCache(sink: MethodCallHandler.MethodSink) {
+    private fun flushMalwareCache() {
         val malware = synchronized(malwareCache) {
             val snapshot = malwareCache.toMutableList()
             malwareCache.clear()
             snapshot
         }
         if (malware.isNotEmpty()) {
-            sink.onMalwareDetected(malware)
+            methodSink?.onMalwareDetected(malware)
         }
     }
 }

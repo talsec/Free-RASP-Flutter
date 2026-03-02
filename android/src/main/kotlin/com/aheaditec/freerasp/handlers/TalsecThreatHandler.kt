@@ -88,11 +88,8 @@ internal object TalsecThreatHandler {
      * [EventSink] is not destroyed but also is not able to send events.
      */
     internal fun suspendListener() {
-        savedThreatEventSink = PluginThreatHandler.threatDispatcher.eventSink
-        PluginThreatHandler.threatDispatcher.eventSink = null
-
-        savedExecutionStateSink = PluginThreatHandler.executionStateDispatcher.eventSink
-        PluginThreatHandler.executionStateDispatcher.eventSink = null
+        PluginThreatHandler.threatDispatcher.onPause()
+        PluginThreatHandler.executionStateDispatcher.onPause()
     }
 
     /**
@@ -107,19 +104,9 @@ internal object TalsecThreatHandler {
      * also is not able to send events.
      */
     internal fun resumeListener() {
-        if (savedThreatEventSink != null) {
-            PluginThreatHandler.threatDispatcher.eventSink = savedThreatEventSink
-            savedThreatEventSink = null
-        }
-        if (savedExecutionStateSink != null) {
-            PluginThreatHandler.executionStateDispatcher.eventSink = savedExecutionStateSink
-            savedExecutionStateSink = null
-        }
+        PluginThreatHandler.threatDispatcher.onResume()
+        PluginThreatHandler.executionStateDispatcher.onResume()
     }
-
-    private var savedThreatEventSink: EventSink? = null
-    private var savedExecutionStateSink: EventSink? = null
-
 
     /**
      * Called when a new listener subscribes to the event channel. Sends any previously detected
@@ -136,7 +123,6 @@ internal object TalsecThreatHandler {
      */
     internal fun detachEventSink() {
         PluginThreatHandler.threatDispatcher.eventSink = null
-        savedThreatEventSink = null
     }
 
     internal fun attachExecutionStateSink(eventSink: EventSink) {
@@ -145,7 +131,6 @@ internal object TalsecThreatHandler {
 
     internal fun detachExecutionStateSink() {
         PluginThreatHandler.executionStateDispatcher.eventSink = null
-        savedExecutionStateSink = null
     }
 
     internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
