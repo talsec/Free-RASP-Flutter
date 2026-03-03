@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.5.0] - 2026-03-02
 
 - Android SDK version: 18.0.4
-- iOS SDK version: 6.13.0
+- iOS SDK version: 6.14.1
 
 ### Flutter
 
