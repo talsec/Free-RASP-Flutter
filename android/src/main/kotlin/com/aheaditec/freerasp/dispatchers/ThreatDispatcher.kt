@@ -5,7 +5,7 @@ import com.aheaditec.freerasp.handlers.MethodCallHandler
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import io.flutter.plugin.common.EventChannel.EventSink
 
-internal class ThreatDispatcher {
+internal object ThreatDispatcher {
     private val threatCache = mutableSetOf<Threat>()
     private val malwareCache = mutableListOf<SuspiciousAppInfo>()
     private var isAppInForeground = false

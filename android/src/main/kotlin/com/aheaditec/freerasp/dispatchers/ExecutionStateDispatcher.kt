@@ -3,7 +3,7 @@ package com.aheaditec.freerasp.dispatchers
 import com.aheaditec.freerasp.RaspExecutionStateEvent
 import io.flutter.plugin.common.EventChannel.EventSink
 
-internal class ExecutionStateDispatcher {
+internal object ExecutionStateDispatcher {
     private val eventCache = mutableSetOf<RaspExecutionStateEvent>()
     private var isAppInForeground = false
 

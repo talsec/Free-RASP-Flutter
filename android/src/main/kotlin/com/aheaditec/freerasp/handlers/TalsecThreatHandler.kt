@@ -88,8 +88,8 @@ internal object TalsecThreatHandler {
      * [EventSink] is not destroyed but also is not able to send events.
      */
     internal fun suspendListener() {
-        PluginThreatHandler.threatDispatcher.onPause()
-        PluginThreatHandler.executionStateDispatcher.onPause()
+        ThreatDispatcher.onPause()
+        ExecutionStateDispatcher.onPause()
     }
 
     /**
@@ -104,8 +104,8 @@ internal object TalsecThreatHandler {
      * also is not able to send events.
      */
     internal fun resumeListener() {
-        PluginThreatHandler.threatDispatcher.onResume()
-        PluginThreatHandler.executionStateDispatcher.onResume()
+        ThreatDispatcher.onResume()
+        ExecutionStateDispatcher.onResume()
     }
 
     /**
@@ -115,30 +115,30 @@ internal object TalsecThreatHandler {
      * @param eventSink The event sink of the new listener.
      */
     internal fun attachEventSink(eventSink: EventSink) {
-        PluginThreatHandler.threatDispatcher.eventSink = eventSink
+        ThreatDispatcher.eventSink = eventSink
     }
 
     /**
      * Called when a listener unsubscribes from the event channel.
      */
     internal fun detachEventSink() {
-        PluginThreatHandler.threatDispatcher.eventSink = null
+        ThreatDispatcher.eventSink = null
     }
 
     internal fun attachExecutionStateSink(eventSink: EventSink) {
-        PluginThreatHandler.executionStateDispatcher.eventSink = eventSink
+        ExecutionStateDispatcher.eventSink = eventSink
     }
 
     internal fun detachExecutionStateSink() {
-        PluginThreatHandler.executionStateDispatcher.eventSink = null
+        ExecutionStateDispatcher.eventSink = null
     }
 
     internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
-        PluginThreatHandler.threatDispatcher.methodSink = sink
+        ThreatDispatcher.methodSink = sink
     }
 
     internal fun detachMethodSink() {
-        PluginThreatHandler.threatDispatcher.methodSink = null
+        ThreatDispatcher.methodSink = null
     }
 }
 
