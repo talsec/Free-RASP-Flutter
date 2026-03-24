@@ -5,14 +5,14 @@ on:
     branches:
       - master
     paths-ignore:
-      - '**/*.md'
-      - '.github/**'
+      - "**/*.md"
+      - ".github/**"
   pull_request:
     branches:
       - master
     paths-ignore:
-      - '**/*.md'
-      - '.github/**'
+      - "**/*.md"
+      - ".github/**"
 
   workflow_dispatch:
 
@@ -25,10 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2.16.0
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -53,10 +53,10 @@ jobs:
     needs: lint
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2.16.0
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -68,13 +68,13 @@ jobs:
   build-android:
     runs-on: ubuntu-latest
     needs: test
-    
+
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2.16.0
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -90,10 +90,10 @@ jobs:
 
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2.16.0
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}

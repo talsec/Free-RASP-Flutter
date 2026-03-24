@@ -12,6 +12,9 @@
 - [ ] 📋 Changelog updated
 - [ ] ➡️ `pubspec.yaml` version updated
 
+# dSYMs:
+- [ ] attached
+
 <!-- Check all tasks. Can be done after merge. -->
 ## Post-release checklist
 - [ ] 🐦 Release to pub.dev
