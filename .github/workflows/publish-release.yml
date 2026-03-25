@@ -1,0 +1,80 @@
+name: Publish release
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release_gh:
+    name: GitHub Release
+    if: github.event_name == 'push' || (github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v6
+
+      - name: Get latest version
+        run: |
+          echo "PACKAGE_VERSION=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')" >> $GITHUB_ENV
+
+      - name: Download dSYMs
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          url=$(echo "$PR_BODY" | grep -oE 'https://[^ )]*dSYMs\.zip' | head -n 1)
+          if [ -n "$url" ]; then
+            echo "Found dSYMs URL: $url"
+            curl -L -o dSYMs.zip "$url"
+          else
+            echo "No dSYMs.zip URL found in PR body."
+          fi
+
+      - name: Generate Changelog
+        run: awk '/^## \[/{if (f) exit; f=1; next} f' CHANGELOG.md > RELEASE_NOTES.md
+
+      - name: GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FILES=""
+          if [ -f dSYMs.zip ]; then
+            FILES="dSYMs.zip"
+          fi
+          gh release create v${{ env.PACKAGE_VERSION }} \
+            --title "freeRASP ${{ env.PACKAGE_VERSION }}" \
+            --notes-file RELEASE_NOTES.md \
+            $FILES
+
+  publish_pub_dev:
+    name: Publish release to pub.dev
+    needs: release_gh
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v6
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.24.0
+          cache: true
+
+      - name: 🎯 Setup Pub Credentials
+        uses: dart-lang/setup-dart@v1
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      - name: 🚀 Publish to pub.dev
+        run: flutter pub publish -f
