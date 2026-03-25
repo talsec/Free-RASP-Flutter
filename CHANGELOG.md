@@ -8,13 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.5.1] - 2026-03-24
 
 - Android SDK version: 18.0.4
-- iOS SDK version: 6.14.1
+- iOS SDK version: 6.14.4
 
 ### Android
 
 #### Changed
 
 - Made dispatchers singletons
+
+### iOS
+
+#### Fixed
+
+- Fixed new jailbreak checks false positives on iOS 14 and 13.
+- Fixed false positives with jailbreak on iOS 15 and 16.
+- Fixed issue with app crashing on screenshot/screen recording.
+- Fixed retrigger jailbreak issue on iOS 15 and 16.
 
 ## [7.5.0] - 2026-03-02
 
