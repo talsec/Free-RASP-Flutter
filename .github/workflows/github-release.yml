@@ -14,7 +14,7 @@ permissions:
 jobs:
   release_gh:
     name: GitHub Release
-    if: github.event_name == 'push' || (github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release'))
+    if: contains(github.event.pull_request.labels.*.name, 'release')
     runs-on: ubuntu-latest
     steps:
       - name: 📚 Git Checkout
@@ -37,7 +37,7 @@ jobs:
             echo "No dSYMs.zip URL found in PR body."
           fi
 
-      - name: Generate Changelog
+      - name: Generate Changelogs
         run: awk '/^## \[/{if (f) exit; f=1; next} f' CHANGELOG.md > RELEASE_NOTES.md
 
       - name: GitHub Release
