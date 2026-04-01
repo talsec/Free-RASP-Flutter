@@ -37,7 +37,7 @@ jobs:
             echo "No dSYMs.zip URL found in PR body."
           fi
 
-      - name: Generate Changelogs
+      - name: Generate Changelog
         run: awk '/^## \[/{if (f) exit; f=1; next} f' CHANGELOG.md > RELEASE_NOTES.md
 
       - name: GitHub Release
