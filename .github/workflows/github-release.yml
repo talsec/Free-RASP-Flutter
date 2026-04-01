@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   release_gh:
-    name: GitHub Releases
+    name: GitHub Release
     if: contains(github.event.pull_request.labels.*.name, 'release')
     runs-on: ubuntu-latest
     steps:
