@@ -1,9 +1,11 @@
 name: Publish release
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
-      - master
+      - "master"
+  push:
     tags:
       - "v*"
 
@@ -13,7 +15,7 @@ permissions:
 
 jobs:
   release_gh:
-    name: GitHub Release
+    name: GitHub Releases
     if: contains(github.event.pull_request.labels.*.name, 'release')
     runs-on: ubuntu-latest
     steps:
