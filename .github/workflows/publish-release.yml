@@ -1,94 +1,14 @@
 name: Publish release
 
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - "v*"
+  workflow_dispatch:
 
 permissions:
-  contents: write
   id-token: write
 
 jobs:
-  check_release:
-    name: Check release conditions
-    runs-on: ubuntu-latest
-    outputs:
-      should_release: ${{ steps.check.outputs.should_release }}
-    steps:
-      - name: 📚 Git Checkout
-        uses: actions/checkout@v6
-
-      - name: Check conditions
-        id: check
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
-            echo "Proceeding with tag release"
-            echo "should_release=true" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref }}" == refs/heads/master ]]; then
-            # Find the PR associated with the merge commit that has 'release' label
-            PR_COUNT=$(gh pr list --search "${{ github.sha }}" --state merged --label release --json number --jq 'length')
-            if [[ "$PR_COUNT" -gt 0 ]]; then
-              echo "Proceeding with release labeled PR"
-              echo "should_release=true" >> $GITHUB_OUTPUT
-            else
-              echo "No release label found on merged PR, skipping."
-              echo "should_release=false" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "should_release=false" >> $GITHUB_OUTPUT
-          fi
-
-  release_gh:
-    name: GitHub Release
-    needs: check_release
-    if: needs.check_release.outputs.should_release == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📚 Git Checkout
-        uses: actions/checkout@v6
-
-      - name: Get latest version
-        run: |
-          echo "PACKAGE_VERSION=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')" >> $GITHUB_ENV
-
-      - name: Download dSYMs
-        if: github.ref == 'refs/heads/master'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_BODY=$(gh pr list --search "${{ github.sha }}" --state merged --json body --jq '.[0].body')
-          url=$(echo "$PR_BODY" | grep -oE 'https://[^ )]*dSYMs\.zip' | head -n 1)
-          if [ -n "$url" ]; then
-            echo "Found dSYMs URL: $url"
-            curl -L -o dSYMs.zip "$url"
-          else
-            echo "No dSYMs.zip URL found in PR body."
-          fi
-
-      - name: Generate Changelog
-        run: awk '/^## \[/{if (f) exit; f=1; next} f' CHANGELOG.md > RELEASE_NOTES.md
-
-      - name: GitHub Release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          FILES=""
-          if [ -f dSYMs.zip ]; then
-            FILES="dSYMs.zip"
-          fi
-          gh release create v${{ env.PACKAGE_VERSION }} \
-            --title "freeRASP ${{ env.PACKAGE_VERSION }}" \
-            --notes-file RELEASE_NOTES.md \
-            $FILES || echo ""
-
   publish_pub_dev:
     name: Publish release to pub.dev
-    needs: release_gh
     runs-on: ubuntu-latest
     steps:
       - name: 📚 Git Checkout
