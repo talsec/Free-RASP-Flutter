@@ -6,6 +6,7 @@ part of 'android_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore: deprecated_member_use_from_same_package
 AndroidConfig _$AndroidConfigFromJson(Map<String, dynamic> json) =>
     AndroidConfig(
       packageName: json['packageName'] as String,
@@ -20,6 +21,10 @@ AndroidConfig _$AndroidConfigFromJson(Map<String, dynamic> json) =>
           ? null
           : MalwareConfig.fromJson(
               json['malwareConfig'] as Map<String, dynamic>),
+      suspiciousAppDetectionConfig: json['suspiciousAppDetectionConfig'] == null
+          ? null
+          : SuspiciousAppDetectionConfig.fromJson(
+              json['suspiciousAppDetectionConfig'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) {
@@ -35,6 +40,9 @@ Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) {
     }
   }
 
-  writeNotNull('malwareConfig', instance.malwareConfig);
+  // ignore: deprecated_member_use_from_same_package
+  writeNotNull('malwareConfig', instance.malwareConfig?.toJson());
+  writeNotNull('suspiciousAppDetectionConfig',
+      instance.suspiciousAppDetectionConfig?.toJson());
   return val;
 }
