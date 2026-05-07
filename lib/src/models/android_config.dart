@@ -13,6 +13,7 @@ class AndroidConfig {
     required this.signingCertHashes,
     this.supportedStores = const [],
     this.malwareConfig,
+    this.suspiciousAppDetectionConfig,
   }) {
     ConfigVerifier.verifyAndroid(this);
   }
@@ -34,5 +35,9 @@ class AndroidConfig {
   final List<String> supportedStores;
 
   /// Malware configuration for Android.
+  @Deprecated('Use suspiciousAppDetectionConfig instead')
   final MalwareConfig? malwareConfig;
+
+  /// Suspicious app detection configuration for Android.
+  final SuspiciousAppDetectionConfig? suspiciousAppDetectionConfig;
 }
