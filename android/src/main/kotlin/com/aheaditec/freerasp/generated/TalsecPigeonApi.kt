@@ -62,20 +62,20 @@ data class PackageInfo (
 /** Generated class from Pigeon that represents data sent in messages. */
 data class SuspiciousAppInfo (
   val packageInfo: PackageInfo,
-  val reason: String
+  val reasons: List<String>
 )
  {
   companion object {
     fun fromList(pigeonVar_list: List<Any?>): SuspiciousAppInfo {
       val packageInfo = pigeonVar_list[0] as PackageInfo
-      val reason = pigeonVar_list[1] as String
-      return SuspiciousAppInfo(packageInfo, reason)
+      val reasons = pigeonVar_list[1] as List<String>
+      return SuspiciousAppInfo(packageInfo, reasons)
     }
   }
   fun toList(): List<Any?> {
     return listOf(
       packageInfo,
-      reason,
+      reasons,
     )
   }
 }

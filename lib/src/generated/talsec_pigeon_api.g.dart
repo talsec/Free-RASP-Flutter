@@ -63,17 +63,17 @@ class PackageInfo {
 class SuspiciousAppInfo {
   SuspiciousAppInfo({
     required this.packageInfo,
-    required this.reason,
+    required this.reasons,
   });
 
   PackageInfo packageInfo;
 
-  String reason;
+  List<String> reasons;
 
   Object encode() {
     return <Object?>[
       packageInfo,
-      reason,
+      reasons,
     ];
   }
 
@@ -81,7 +81,7 @@ class SuspiciousAppInfo {
     result as List<Object?>;
     return SuspiciousAppInfo(
       packageInfo: result[0]! as PackageInfo,
-      reason: result[1]! as String,
+      reasons: (result[1] as List<Object?>?)!.cast<String>(),
     );
   }
 }

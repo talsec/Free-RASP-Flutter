@@ -28,11 +28,11 @@ class PackageInfo {
 class SuspiciousAppInfo {
   const SuspiciousAppInfo({
     required this.packageInfo,
-    required this.reason,
+    required this.reasons,
   });
 
   final PackageInfo packageInfo;
-  final String reason;
+  final List<String> reasons;
 }
 
 @FlutterApi()
