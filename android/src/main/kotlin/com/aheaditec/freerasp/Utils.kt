@@ -38,7 +38,7 @@ internal object Utils {
         val alternativeStores = androidConfig.extractArray<String>("supportedStores")
         val malwareConfig = parseMalwareConfig(androidConfig)
 
-        return TalsecConfig.Builder(packageName, certificateHashes)
+        val builder = TalsecConfig.Builder(packageName, certificateHashes)
             .watcherMail(watcherMail)
             .supportedAlternativeStores(alternativeStores)
             .prod(isProd)
@@ -47,7 +47,12 @@ internal object Utils {
             .blacklistedHashes(malwareConfig.blacklistedHashes)
             .suspiciousPermissions(malwareConfig.suspiciousPermissions)
             .whitelistedInstallationSources(malwareConfig.whitelistedInstallationSources)
-            .build()
+
+        androidConfig.optJSONObject("suspiciousAppDetectionConfig")?.let {
+            builder.suspiciousAppDetection(it.toSuspiciousAppDetectionConfig())
+        }
+
+        return builder.build()
     }
 
     private fun parseMalwareConfig(androidConfig: JSONObject): MalwareConfig {
