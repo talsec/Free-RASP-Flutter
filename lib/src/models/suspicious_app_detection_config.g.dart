@@ -48,9 +48,8 @@ SuspiciousAppDetectionConfig _$SuspiciousAppDetectionConfigFromJson(
       packageNames: (json['packageNames'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      hashes: (json['hashes'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      hashes:
+          (json['hashes'] as List<dynamic>?)?.map((e) => e as String).toList(),
       requestedPermissions: (json['requestedPermissions'] as List<dynamic>?)
           ?.map(
             (e) => (e as List<dynamic>).map((e) => e as String).toList(),
