@@ -12,6 +12,7 @@ class AndroidConfig {
     required this.packageName,
     required this.signingCertHashes,
     this.supportedStores = const [],
+    @Deprecated('Use suspiciousAppDetectionConfig instead')
     this.malwareConfig,
     this.suspiciousAppDetectionConfig,
   }) {
