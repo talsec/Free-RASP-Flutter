@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.6.0] - 2026-05-07
+## [8.0.0] - 2026-05-13
 
 - Android SDK version: 18.3.0
 - iOS SDK version: 6.14.4
@@ -14,12 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `SuspiciousAppInfo.reason` (String) renamed to `reasons` (List\<String\>)
 - Value `"blacklist"` in `reasons` renamed to `"blocklist"`
+- Removed `MalwareConfig` and `AndroidConfig.malwareConfig` — use `SuspiciousAppDetectionConfig` instead
+- Default `reasonMode` is now `ReasonMode.highestConfidence` — set `ReasonMode.all` to keep the previous behavior
 
 ### Flutter
 
-#### Deprecated
+#### Removed
 
-- `blacklistedPackageNames`, `blacklistedHashes`, `suspiciousPermissions`, `whitelistedInstallationSources` are deprecated but remain functional — use `SuspiciousAppDetectionConfig` instead
+- `MalwareConfig` class and `AndroidConfig.malwareConfig` field — use `SuspiciousAppDetectionConfig` instead
 
 ### Android
 
