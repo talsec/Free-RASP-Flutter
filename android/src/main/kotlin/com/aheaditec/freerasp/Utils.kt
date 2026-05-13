@@ -121,11 +121,11 @@ internal object Utils {
     }
 }
 
-private inline fun <reified T> JSONObject.extractArray(key: String): Array<T> {
+internal inline fun <reified T> JSONObject.extractArray(key: String): Array<T> {
     return this.optJSONArray(key)?.let { processArray(it) } ?: emptyArray()
 }
 
-private inline fun <reified T> processArray(jsonArray: JSONArray): Array<T> {
+internal inline fun <reified T> processArray(jsonArray: JSONArray): Array<T> {
     val list = mutableListOf<T>()
 
     for (i in 0 until jsonArray.length()) {

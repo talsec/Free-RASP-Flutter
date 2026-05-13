@@ -61,8 +61,9 @@ class SuspiciousAppDetectionConfig {
     this.hashes,
     this.requestedPermissions,
     this.grantedPermissions,
-    this.malwareScanScope,
-    this.reasonMode,
+    this.malwareScanScope =
+        const MalwareScanScope(scanScope: ScopeType.sideloadedOnly),
+    this.reasonMode = ReasonMode.highestConfidence,
   });
 
   /// Converts from json
@@ -85,8 +86,8 @@ class SuspiciousAppDetectionConfig {
   final List<List<String>>? grantedPermissions;
 
   /// Configuration for the malware scan scope.
-  final MalwareScanScope? malwareScanScope;
+  final MalwareScanScope malwareScanScope;
 
   /// The mode for reporting detection reasons.
-  final ReasonMode? reasonMode;
+  final ReasonMode reasonMode;
 }

@@ -61,10 +61,12 @@ SuspiciousAppDetectionConfig _$SuspiciousAppDetectionConfigFromJson(
           )
           .toList(),
       malwareScanScope: json['malwareScanScope'] == null
-          ? null
+          ? const MalwareScanScope(scanScope: ScopeType.sideloadedOnly)
           : MalwareScanScope.fromJson(
               json['malwareScanScope'] as Map<String, dynamic>),
-      reasonMode: $enumDecodeNullable(_$ReasonModeEnumMap, json['reasonMode']),
+      reasonMode:
+          $enumDecodeNullable(_$ReasonModeEnumMap, json['reasonMode']) ??
+              ReasonMode.highestConfidence,
     );
 
 Map<String, dynamic> _$SuspiciousAppDetectionConfigToJson(
@@ -81,11 +83,7 @@ Map<String, dynamic> _$SuspiciousAppDetectionConfigToJson(
   writeNotNull('hashes', instance.hashes);
   writeNotNull('requestedPermissions', instance.requestedPermissions);
   writeNotNull('grantedPermissions', instance.grantedPermissions);
-  writeNotNull('malwareScanScope', instance.malwareScanScope?.toJson());
-  writeNotNull(
-      'reasonMode',
-      instance.reasonMode == null
-          ? null
-          : _$ReasonModeEnumMap[instance.reasonMode!]);
+  val['malwareScanScope'] = instance.malwareScanScope.toJson();
+  val['reasonMode'] = _$ReasonModeEnumMap[instance.reasonMode]!;
   return val;
 }
