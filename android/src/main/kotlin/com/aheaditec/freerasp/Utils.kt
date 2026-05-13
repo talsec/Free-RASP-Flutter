@@ -14,14 +14,6 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
 internal object Utils {
-    @Suppress("ArrayInDataClass")
-    data class MalwareConfig(
-        val blacklistedPackageNames: Array<String>,
-        val blacklistedHashes: Array<String>,
-        val suspiciousPermissions: Array<Array<String>>,
-        val whitelistedInstallationSources: Array<String>
-    )
-
     fun toTalsecConfigThrowing(configJson: String?): TalsecConfig {
         if (configJson == null) {
             throw JSONException("Configuration is null")
@@ -36,17 +28,12 @@ internal object Utils {
         val packageName = androidConfig.getString("packageName")
         val certificateHashes = androidConfig.extractArray<String>("signingCertHashes")
         val alternativeStores = androidConfig.extractArray<String>("supportedStores")
-        val malwareConfig = parseMalwareConfig(androidConfig)
 
         val builder = TalsecConfig.Builder(packageName, certificateHashes)
             .watcherMail(watcherMail)
             .supportedAlternativeStores(alternativeStores)
             .prod(isProd)
             .killOnBypass(killOnBypass)
-            .blacklistedPackageNames(malwareConfig.blacklistedPackageNames)
-            .blacklistedHashes(malwareConfig.blacklistedHashes)
-            .suspiciousPermissions(malwareConfig.suspiciousPermissions)
-            .whitelistedInstallationSources(malwareConfig.whitelistedInstallationSources)
 
         androidConfig.optJSONObject("suspiciousAppDetectionConfig")?.let {
             builder.suspiciousAppDetection(it.toSuspiciousAppDetectionConfig())
@@ -54,22 +41,6 @@ internal object Utils {
 
         return builder.build()
     }
-
-    private fun parseMalwareConfig(androidConfig: JSONObject): MalwareConfig {
-        if (!androidConfig.has("malwareConfig")) {
-            return MalwareConfig(emptyArray(), emptyArray(), emptyArray(), emptyArray())
-        }
-
-        val malwareConfig = androidConfig.getJSONObject("malwareConfig")
-
-        return MalwareConfig(
-            malwareConfig.extractArray("blacklistedPackageNames"),
-            malwareConfig.extractArray("blacklistedHashes"),
-            malwareConfig.extractArray<Array<String>>("suspiciousPermissions"),
-            malwareConfig.extractArray("whitelistedInstallationSources")
-        )
-    }
-
 
     /**
      * Retrieves the package name of the installer for a given app package.
