@@ -232,12 +232,10 @@ void main() {
       };
 
       for (final entry in expected.entries) {
-        final json =
-            MalwareScanScope(scanScope: entry.key).toJson();
+        final json = MalwareScanScope(scanScope: entry.key).toJson();
         expect(json['scanScope'], entry.value);
 
-        final restored =
-            MalwareScanScope.fromJson({'scanScope': entry.value});
+        final restored = MalwareScanScope.fromJson({'scanScope': entry.value});
         expect(restored.scanScope, entry.key);
       }
     });
