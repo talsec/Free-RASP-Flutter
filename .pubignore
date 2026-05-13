@@ -1,7 +1,3 @@
-# Agent skill definitions and other repo-only tooling that must not ship in
-# the published pub package. `.pubignore` is combined with `.gitignore`, so
-# only entries that are tracked in git but should still be excluded from
-# `pub publish` belong here.
-
 .agents/
 .cursor/
+example/
