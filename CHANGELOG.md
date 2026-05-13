@@ -49,7 +49,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fine-tuned hook detection
 - Fine-tuned location spoofing detection
 - Modified malware incident log structure for better aggregation
-- Old malware configuration API methods in `TalsecConfig.Builder` tagged as deprecated (but remain functional): `blacklistedPackageNames`, `blacklistedHashes`, `suspiciousPermissions`, `whitelistedInstallationSources`
 
 ## [7.5.1] - 2026-03-24
 
