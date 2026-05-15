@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `SuspiciousAppInfo.reason` (String) renamed to `reasons` (List\<String\>)
 - Value `"blacklist"` in `reasons` renamed to `"blocklist"`
 - Removed `MalwareConfig` and `AndroidConfig.malwareConfig` — use `SuspiciousAppDetectionConfig` instead
+- Default `reasonMode` is now `ReasonMode.highestConfidence` — set `ReasonMode.all` to keep the previous behavior
 
 ### Flutter
 
