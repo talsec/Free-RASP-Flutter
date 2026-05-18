@@ -90,7 +90,7 @@ internal fun ExternalIdResult.resolve(result: MethodChannel.Result) {
     }
 }
 
-internal fun JSONObject.toMalwareScanScope(): MalwareScanScope {
+internal fun JSONObject.toScanScope(): MalwareScanScope {
     val scanScope = ScopeType.valueOf(getString("scanScope"))
     val trustedInstallSources = optJSONArray("trustedInstallSources")
         ?.let { processArray<String>(it).asList() }
@@ -106,14 +106,14 @@ internal fun JSONObject.toSuspiciousAppDetectionConfig(): SuspiciousAppDetection
         ?.let { processArray<Array<String>>(it).mapTo(mutableSetOf()) { it.toMutableSet() } }
     val grantedPermissions = optJSONArray("grantedPermissions")
         ?.let { processArray<Array<String>>(it).mapTo(mutableSetOf()) { it.toMutableSet() } }
-    val malwareScanScope = getJSONObject("malwareScanScope").toMalwareScanScope()
+    val scanScope = getJSONObject("scanScope").toScanScope()
     val reasonMode = ReasonMode.valueOf(getString("reasonMode"))
     return SuspiciousAppDetectionConfig(
         packageNames,
         hashes,
         requestedPermissions,
         grantedPermissions,
-        malwareScanScope,
+        scanScope,
         reasonMode,
     )
 }

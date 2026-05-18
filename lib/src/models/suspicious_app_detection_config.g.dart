@@ -19,15 +19,14 @@ const _$ReasonModeEnumMap = {
   ReasonMode.highestConfidence: 'HIGHEST_CONFIDENCE',
 };
 
-MalwareScanScope _$MalwareScanScopeFromJson(Map<String, dynamic> json) =>
-    MalwareScanScope(
+ScanScope _$ScanScopeFromJson(Map<String, dynamic> json) => ScanScope(
       scanScope: $enumDecode(_$ScopeTypeEnumMap, json['scanScope']),
       trustedInstallSources: (json['trustedInstallSources'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
     );
 
-Map<String, dynamic> _$MalwareScanScopeToJson(MalwareScanScope instance) {
+Map<String, dynamic> _$ScanScopeToJson(ScanScope instance) {
   final val = <String, dynamic>{
     'scanScope': _$ScopeTypeEnumMap[instance.scanScope]!,
   };
@@ -60,10 +59,9 @@ SuspiciousAppDetectionConfig _$SuspiciousAppDetectionConfigFromJson(
             (e) => (e as List<dynamic>).map((e) => e as String).toList(),
           )
           .toList(),
-      malwareScanScope: json['malwareScanScope'] == null
-          ? const MalwareScanScope(scanScope: ScopeType.sideloadedOnly)
-          : MalwareScanScope.fromJson(
-              json['malwareScanScope'] as Map<String, dynamic>),
+      scanScope: json['scanScope'] == null
+          ? const ScanScope(scanScope: ScopeType.sideloadedOnly)
+          : ScanScope.fromJson(json['scanScope'] as Map<String, dynamic>),
       reasonMode:
           $enumDecodeNullable(_$ReasonModeEnumMap, json['reasonMode']) ??
               ReasonMode.highestConfidence,
@@ -83,7 +81,7 @@ Map<String, dynamic> _$SuspiciousAppDetectionConfigToJson(
   writeNotNull('hashes', instance.hashes);
   writeNotNull('requestedPermissions', instance.requestedPermissions);
   writeNotNull('grantedPermissions', instance.grantedPermissions);
-  val['malwareScanScope'] = instance.malwareScanScope.toJson();
+  val['scanScope'] = instance.scanScope.toJson();
   val['reasonMode'] = _$ReasonModeEnumMap[instance.reasonMode]!;
   return val;
 }

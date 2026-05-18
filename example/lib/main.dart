@@ -44,7 +44,7 @@ Future<void> _initializeTalsec() async {
           ['android.permission.CAMERA'],
           ['android.permission.READ_SMS', 'android.permission.READ_CONTACTS'],
         ],
-        malwareScanScope: MalwareScanScope(
+        scanScope: ScanScope(
           scanScope: ScopeType.sideloadedOnly,
         ),
         reasonMode: ReasonMode.highestConfidence,

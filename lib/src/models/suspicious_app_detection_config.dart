@@ -31,19 +31,19 @@ enum ReasonMode {
 
 /// Configuration for malware scan scope and trusted install sources.
 @JsonSerializable(includeIfNull: false)
-class MalwareScanScope {
-  /// Creates a new instance of [MalwareScanScope].
-  const MalwareScanScope({
+class ScanScope {
+  /// Creates a new instance of [ScanScope].
+  const ScanScope({
     required this.scanScope,
     this.trustedInstallSources,
   });
 
   /// Converts from json
-  factory MalwareScanScope.fromJson(Map<String, dynamic> json) =>
-      _$MalwareScanScopeFromJson(json);
+  factory ScanScope.fromJson(Map<String, dynamic> json) =>
+      _$ScanScopeFromJson(json);
 
   /// Converts to json
-  Map<String, dynamic> toJson() => _$MalwareScanScopeToJson(this);
+  Map<String, dynamic> toJson() => _$ScanScopeToJson(this);
 
   /// The scope of apps to be scanned.
   final ScopeType scanScope;
@@ -61,8 +61,7 @@ class SuspiciousAppDetectionConfig {
     this.hashes,
     this.requestedPermissions,
     this.grantedPermissions,
-    this.malwareScanScope =
-        const MalwareScanScope(scanScope: ScopeType.sideloadedOnly),
+    this.scanScope = const ScanScope(scanScope: ScopeType.sideloadedOnly),
     this.reasonMode = ReasonMode.highestConfidence,
   });
 
@@ -86,7 +85,7 @@ class SuspiciousAppDetectionConfig {
   final List<List<String>>? grantedPermissions;
 
   /// Configuration for the malware scan scope.
-  final MalwareScanScope malwareScanScope;
+  final ScanScope scanScope;
 
   /// The mode for reporting detection reasons.
   final ReasonMode reasonMode;
