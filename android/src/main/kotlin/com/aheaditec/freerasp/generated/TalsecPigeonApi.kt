@@ -35,7 +35,7 @@ data class PackageInfo (
   val appIcon: String? = null,
   val appName: String? = null,
   val version: String? = null,
-  val installationSource: String? = null
+  val installerStore: String? = null
 )
  {
   companion object {
@@ -44,8 +44,8 @@ data class PackageInfo (
       val appIcon = pigeonVar_list[1] as String?
       val appName = pigeonVar_list[2] as String?
       val version = pigeonVar_list[3] as String?
-      val installationSource = pigeonVar_list[4] as String?
-      return PackageInfo(packageName, appIcon, appName, version, installationSource)
+      val installerStore = pigeonVar_list[4] as String?
+      return PackageInfo(packageName, appIcon, appName, version, installerStore)
     }
   }
   fun toList(): List<Any?> {
@@ -54,7 +54,7 @@ data class PackageInfo (
       appIcon,
       appName,
       version,
-      installationSource,
+      installerStore,
     )
   }
 }
@@ -62,20 +62,24 @@ data class PackageInfo (
 /** Generated class from Pigeon that represents data sent in messages. */
 data class SuspiciousAppInfo (
   val packageInfo: PackageInfo,
-  val reasons: List<String>
+  val reasons: List<String>,
+  val permissions: List<String>? = null
 )
  {
   companion object {
     fun fromList(pigeonVar_list: List<Any?>): SuspiciousAppInfo {
       val packageInfo = pigeonVar_list[0] as PackageInfo
       val reasons = pigeonVar_list[1] as List<String>
-      return SuspiciousAppInfo(packageInfo, reasons)
+      @Suppress("UNCHECKED_CAST")
+      val permissions = pigeonVar_list[2] as List<String>?
+      return SuspiciousAppInfo(packageInfo, reasons, permissions)
     }
   }
   fun toList(): List<Any?> {
     return listOf(
       packageInfo,
       reasons,
+      permissions,
     )
   }
 }

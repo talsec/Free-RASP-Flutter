@@ -10,26 +10,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Android SDK version: 18.3.0
 - iOS SDK version: 6.14.4
 
-### Breaking
+### Flutter
 
+#### Breaking
+
+- `RaspExecutionStateCallback.onAllChecksDone` renamed to `onAllChecksFinished`
+- `PackageInfo.installationSource` renamed to `installerStore`
 - `SuspiciousAppInfo.reason` (String) renamed to `reasons` (List\<String\>)
 - Value `"blacklist"` in `reasons` renamed to `"blocklist"`
 - Removed `MalwareConfig` and `AndroidConfig.malwareConfig` — use `SuspiciousAppDetectionConfig` instead
 
-### Flutter
+#### Added
 
-#### Removed
-
-- `MalwareConfig` class and `AndroidConfig.malwareConfig` field — use `SuspiciousAppDetectionConfig` instead
+- `SuspiciousAppInfo.permissions` field (`List<String>?`) — list of suspicious permissions detected on the app
 
 ### Android
 
 #### Added
 
-- Added a new sub-check for `HMA` detection to the root detector
-- Added a new sub-check for `KernelSU` detection to the root detector
-- Added a new sub-check for `Frida Server` detection to the hook detector
-- Added Huawei App Market provider to HMA detection queries
 - New API class `SuspiciousAppDetectionConfig` that can be used to configure malware detection
 - New API for malware detection configuration in `TalsecConfig`, see `TalsecConfig.Builder#suspiciousAppDetection`
 
@@ -37,15 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed `VerifyError` caused by `JaCoCo` bytecode instrumentation
 - Fixed a potential cause of crash in the multi-instance detector
-- Fixed crash caused by unhandled `SecurityException` thrown by `UsageStatsManager` in root detection
-- Fixed manifest merge conflicts in HMA detection providers
 - Fixed Java interoperability of `ScreenProtector` methods
 - Fixed Kotlin classpath conflicts in SDK dependency resolution (Kotlin 2.0.0)
 
 #### Changed
 
-- Fine-tuned `KernelSU` detection
-- Fine-tuned hook detection
 - Fine-tuned location spoofing detection
 - Modified malware incident log structure for better aggregation
 

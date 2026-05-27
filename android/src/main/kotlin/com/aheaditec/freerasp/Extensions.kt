@@ -39,7 +39,7 @@ internal inline fun runResultCatching(result: MethodChannel.Result, block: () ->
  * this [SuspiciousAppInfo].
  */
 internal fun SuspiciousAppInfo.toPigeon(context: Context): FlutterSuspiciousAppInfo {
-    return FlutterSuspiciousAppInfo(this.packageInfo.toPigeon(context), this.reasons.toList())
+    return FlutterSuspiciousAppInfo(this.packageInfo.toPigeon(context), this.reasons.toList(), this.permissions?.toList())
 }
 
 /**
@@ -56,7 +56,7 @@ private fun PackageInfo.toPigeon(context: Context): FlutterPackageInfo {
             context.packageManager.getApplicationLabel(it) as String
         },
         version = getVersionString(),
-        installationSource = Utils.getInstallerPackageName(context, packageName),
+        installerStore = Utils.getInstallerPackageName(context, packageName),
     )
 }
 

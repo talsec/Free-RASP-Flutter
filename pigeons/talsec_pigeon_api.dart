@@ -15,24 +15,26 @@ class PackageInfo {
     this.appIcon,
     this.version,
     this.appName,
-    this.installationSource,
+    this.installerStore,
   });
 
   final String packageName;
   final String? appIcon;
   final String? appName;
   final String? version;
-  final String? installationSource;
+  final String? installerStore;
 }
 
 class SuspiciousAppInfo {
   const SuspiciousAppInfo({
     required this.packageInfo,
     required this.reasons,
+    this.permissions,
   });
 
   final PackageInfo packageInfo;
   final List<String> reasons;
+  final List<String>? permissions;
 }
 
 @FlutterApi()
