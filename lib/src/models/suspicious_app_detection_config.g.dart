@@ -20,7 +20,7 @@ const _$ReasonModeEnumMap = {
 };
 
 ScanScope _$ScanScopeFromJson(Map<String, dynamic> json) => ScanScope(
-      scanScope: $enumDecode(_$ScopeTypeEnumMap, json['scanScope']),
+      scopeType: $enumDecode(_$ScopeTypeEnumMap, json['scopeType']),
       trustedInstallSources: (json['trustedInstallSources'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -28,7 +28,7 @@ ScanScope _$ScanScopeFromJson(Map<String, dynamic> json) => ScanScope(
 
 Map<String, dynamic> _$ScanScopeToJson(ScanScope instance) {
   final val = <String, dynamic>{
-    'scanScope': _$ScopeTypeEnumMap[instance.scanScope]!,
+    'scopeType': _$ScopeTypeEnumMap[instance.scopeType]!,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -60,7 +60,7 @@ SuspiciousAppDetectionConfig _$SuspiciousAppDetectionConfigFromJson(
           )
           .toList(),
       scanScope: json['scanScope'] == null
-          ? const ScanScope(scanScope: ScopeType.sideloadedOnly)
+          ? const ScanScope(scopeType: ScopeType.sideloadedOnly)
           : ScanScope.fromJson(json['scanScope'] as Map<String, dynamic>),
       reasonMode:
           $enumDecodeNullable(_$ReasonModeEnumMap, json['reasonMode']) ??

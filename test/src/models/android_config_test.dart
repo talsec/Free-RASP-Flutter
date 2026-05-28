@@ -133,7 +133,7 @@ void main() {
         signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
         suspiciousAppDetectionConfig: const SuspiciousAppDetectionConfig(
           packageNames: ['com.malware.app'],
-          scanScope: ScanScope(scanScope: ScopeType.all),
+          scanScope: ScanScope(scopeType: ScopeType.all),
           reasonMode: ReasonMode.all,
         ),
       );
@@ -144,7 +144,7 @@ void main() {
 
       expect(detection['packageNames'], ['com.malware.app']);
       expect(
-        (detection['scanScope'] as Map<String, dynamic>)['scanScope'],
+        (detection['scanScope'] as Map<String, dynamic>)['scopeType'],
         'ALL',
       );
       expect(detection['reasonMode'], 'ALL');
@@ -162,7 +162,7 @@ void main() {
         'signingCertHashes': ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
         'suspiciousAppDetectionConfig': {
           'packageNames': ['com.malware.app'],
-          'scanScope': {'scanScope': 'SIDELOADED_AND_OEM'},
+          'scanScope': {'scopeType': 'SIDELOADED_AND_OEM'},
           'reasonMode': 'ALL',
         },
       };
@@ -171,7 +171,7 @@ void main() {
       final detection = config.suspiciousAppDetectionConfig!;
 
       expect(detection.packageNames, ['com.malware.app']);
-      expect(detection.scanScope.scanScope, ScopeType.sideloadedAndOem);
+      expect(detection.scanScope.scopeType, ScopeType.sideloadedAndOem);
       expect(detection.reasonMode, ReasonMode.all);
     });
   });

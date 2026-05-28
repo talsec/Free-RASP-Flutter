@@ -45,7 +45,7 @@ Future<void> _initializeTalsec() async {
           ['android.permission.READ_SMS', 'android.permission.READ_CONTACTS'],
         ],
         scanScope: ScanScope(
-          scanScope: ScopeType.sideloadedOnly,
+          scopeType: ScopeType.sideloadedOnly,
         ),
         reasonMode: ReasonMode.highestConfidence,
       ),

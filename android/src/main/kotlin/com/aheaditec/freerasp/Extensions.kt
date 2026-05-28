@@ -91,10 +91,10 @@ internal fun ExternalIdResult.resolve(result: MethodChannel.Result) {
 }
 
 internal fun JSONObject.toScanScope(): MalwareScanScope {
-    val scanScope = ScopeType.valueOf(getString("scanScope"))
+    val scopeType = ScopeType.valueOf(getString("scopeType"))
     val trustedInstallSources = optJSONArray("trustedInstallSources")
         ?.let { processArray<String>(it).asList() }
-    return MalwareScanScope(scanScope, trustedInstallSources)
+    return MalwareScanScope(scopeType, trustedInstallSources)
 }
 
 internal fun JSONObject.toSuspiciousAppDetectionConfig(): SuspiciousAppDetectionConfig {

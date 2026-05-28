@@ -34,7 +34,7 @@ enum ReasonMode {
 class ScanScope {
   /// Creates a new instance of [ScanScope].
   const ScanScope({
-    required this.scanScope,
+    required this.scopeType,
     this.trustedInstallSources,
   });
 
@@ -46,7 +46,7 @@ class ScanScope {
   Map<String, dynamic> toJson() => _$ScanScopeToJson(this);
 
   /// The scope of apps to be scanned.
-  final ScopeType scanScope;
+  final ScopeType scopeType;
 
   /// List of trusted install sources.
   final List<String>? trustedInstallSources;
@@ -61,7 +61,7 @@ class SuspiciousAppDetectionConfig {
     this.hashes,
     this.requestedPermissions,
     this.grantedPermissions,
-    this.scanScope = const ScanScope(scanScope: ScopeType.sideloadedOnly),
+    this.scanScope = const ScanScope(scopeType: ScopeType.sideloadedOnly),
     this.reasonMode = ReasonMode.highestConfidence,
   });
 

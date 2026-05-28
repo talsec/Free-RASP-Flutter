@@ -4,37 +4,37 @@ import 'package:freerasp/freerasp.dart';
 void main() {
   group('ScanScope', () {
     test('Should create ScanScope instance with required field only', () {
-      const scope = ScanScope(scanScope: ScopeType.sideloadedOnly);
+      const scope = ScanScope(scopeType: ScopeType.sideloadedOnly);
 
       expect(scope, isA<ScanScope>());
-      expect(scope.scanScope, ScopeType.sideloadedOnly);
+      expect(scope.scopeType, ScopeType.sideloadedOnly);
       expect(scope.trustedInstallSources, isNull);
     });
 
     test('Should create ScanScope instance with all fields', () {
       const scope = ScanScope(
-        scanScope: ScopeType.all,
+        scopeType: ScopeType.all,
         trustedInstallSources: ['com.android.vending'],
       );
 
-      expect(scope.scanScope, ScopeType.all);
+      expect(scope.scopeType, ScopeType.all);
       expect(scope.trustedInstallSources, ['com.android.vending']);
     });
 
     test('Should convert ScanScope to JSON', () {
       const scope = ScanScope(
-        scanScope: ScopeType.sideloadedAndOem,
+        scopeType: ScopeType.sideloadedAndOem,
         trustedInstallSources: ['com.android.vending'],
       );
 
       final json = scope.toJson();
 
-      expect(json['scanScope'], 'SIDELOADED_AND_OEM');
+      expect(json['scopeType'], 'SIDELOADED_AND_OEM');
       expect(json['trustedInstallSources'], ['com.android.vending']);
     });
 
     test('Should omit trustedInstallSources from JSON when null', () {
-      const scope = ScanScope(scanScope: ScopeType.sideloadedOnly);
+      const scope = ScanScope(scopeType: ScopeType.sideloadedOnly);
 
       final json = scope.toJson();
 
@@ -43,22 +43,22 @@ void main() {
 
     test('Should create ScanScope instance from JSON', () {
       final json = {
-        'scanScope': 'SIDELOADED_AND_SYSTEM_EXCLUDE_OEM',
+        'scopeType': 'SIDELOADED_AND_SYSTEM_EXCLUDE_OEM',
         'trustedInstallSources': ['com.android.vending'],
       };
 
       final scope = ScanScope.fromJson(json);
 
-      expect(scope.scanScope, ScopeType.sideloadedAndSystemExcludeOem);
+      expect(scope.scopeType, ScopeType.sideloadedAndSystemExcludeOem);
       expect(scope.trustedInstallSources, ['com.android.vending']);
     });
 
     test('Should create ScanScope instance from JSON without optional', () {
-      final json = {'scanScope': 'ALL'};
+      final json = {'scopeType': 'ALL'};
 
       final scope = ScanScope.fromJson(json);
 
-      expect(scope.scanScope, ScopeType.all);
+      expect(scope.scopeType, ScopeType.all);
       expect(scope.trustedInstallSources, isNull);
     });
   });
@@ -71,7 +71,7 @@ void main() {
       expect(config.hashes, isNull);
       expect(config.requestedPermissions, isNull);
       expect(config.grantedPermissions, isNull);
-      expect(config.scanScope.scanScope, ScopeType.sideloadedOnly);
+      expect(config.scanScope.scopeType, ScopeType.sideloadedOnly);
       expect(config.scanScope.trustedInstallSources, isNull);
       expect(config.reasonMode, ReasonMode.highestConfidence);
     });
@@ -86,7 +86,7 @@ void main() {
         grantedPermissions: [
           ['android.permission.READ_SMS'],
         ],
-        scanScope: ScanScope(scanScope: ScopeType.all),
+        scanScope: ScanScope(scopeType: ScopeType.all),
         reasonMode: ReasonMode.all,
       );
 
@@ -98,7 +98,7 @@ void main() {
       expect(config.grantedPermissions, [
         ['android.permission.READ_SMS'],
       ]);
-      expect(config.scanScope.scanScope, ScopeType.all);
+      expect(config.scanScope.scopeType, ScopeType.all);
       expect(config.reasonMode, ReasonMode.all);
     });
 
@@ -109,7 +109,7 @@ void main() {
 
       expect(json['scanScope'], isA<Map<String, dynamic>>());
       expect(
-        (json['scanScope'] as Map<String, dynamic>)['scanScope'],
+        (json['scanScope'] as Map<String, dynamic>)['scopeType'],
         'SIDELOADED_ONLY',
       );
       expect(json['reasonMode'], 'HIGHEST_CONFIDENCE');
@@ -130,7 +130,7 @@ void main() {
           ['android.permission.READ_SMS', 'android.permission.READ_CONTACTS'],
         ],
         scanScope: ScanScope(
-          scanScope: ScopeType.sideloadedAndSystemAndOem,
+          scopeType: ScopeType.sideloadedAndSystemAndOem,
           trustedInstallSources: ['com.android.vending'],
         ),
         reasonMode: ReasonMode.all,
@@ -147,7 +147,7 @@ void main() {
         ['android.permission.READ_SMS', 'android.permission.READ_CONTACTS'],
       ]);
       expect(
-        (json['scanScope'] as Map<String, dynamic>)['scanScope'],
+        (json['scanScope'] as Map<String, dynamic>)['scopeType'],
         'SIDELOADED_AND_SYSTEM_AND_OEM',
       );
       expect(json['reasonMode'], 'ALL');
@@ -157,7 +157,7 @@ void main() {
       final config = SuspiciousAppDetectionConfig.fromJson({});
 
       expect(config.packageNames, isNull);
-      expect(config.scanScope.scanScope, ScopeType.sideloadedOnly);
+      expect(config.scanScope.scopeType, ScopeType.sideloadedOnly);
       expect(config.reasonMode, ReasonMode.highestConfidence);
     });
 
@@ -172,7 +172,7 @@ void main() {
           ['android.permission.READ_SMS'],
         ],
         'scanScope': {
-          'scanScope': 'SIDELOADED_AND_OEM',
+          'scopeType': 'SIDELOADED_AND_OEM',
           'trustedInstallSources': ['com.android.vending'],
         },
         'reasonMode': 'ALL',
@@ -188,7 +188,7 @@ void main() {
       expect(config.grantedPermissions, [
         ['android.permission.READ_SMS'],
       ]);
-      expect(config.scanScope.scanScope, ScopeType.sideloadedAndOem);
+      expect(config.scanScope.scopeType, ScopeType.sideloadedAndOem);
       expect(
         config.scanScope.trustedInstallSources,
         ['com.android.vending'],
@@ -201,7 +201,7 @@ void main() {
         packageNames: ['com.malware.app'],
         hashes: ['abc123'],
         scanScope: ScanScope(
-          scanScope: ScopeType.sideloadedAndSystemExcludeOem,
+          scopeType: ScopeType.sideloadedAndSystemExcludeOem,
         ),
         reasonMode: ReasonMode.all,
       );
@@ -211,8 +211,8 @@ void main() {
       expect(restored.packageNames, original.packageNames);
       expect(restored.hashes, original.hashes);
       expect(
-        restored.scanScope.scanScope,
-        original.scanScope.scanScope,
+        restored.scanScope.scopeType,
+        original.scanScope.scopeType,
       );
       expect(restored.reasonMode, original.reasonMode);
     });
@@ -230,11 +230,11 @@ void main() {
       };
 
       for (final entry in expected.entries) {
-        final json = ScanScope(scanScope: entry.key).toJson();
-        expect(json['scanScope'], entry.value);
+        final json = ScanScope(scopeType: entry.key).toJson();
+        expect(json['scopeType'], entry.value);
 
-        final restored = ScanScope.fromJson({'scanScope': entry.value});
-        expect(restored.scanScope, entry.key);
+        final restored = ScanScope.fromJson({'scopeType': entry.value});
+        expect(restored.scopeType, entry.key);
       }
     });
   });
@@ -252,7 +252,7 @@ void main() {
         expect(json['reasonMode'], entry.value);
 
         final restored = SuspiciousAppDetectionConfig.fromJson({
-          'scanScope': {'scanScope': 'SIDELOADED_ONLY'},
+          'scanScope': {'scopeType': 'SIDELOADED_ONLY'},
           'reasonMode': entry.value,
         });
         expect(restored.reasonMode, entry.key);
