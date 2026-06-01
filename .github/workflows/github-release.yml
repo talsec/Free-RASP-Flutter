@@ -43,9 +43,12 @@ jobs:
         run: awk '/^## \[/{if (f) exit; f=1; next} f' CHANGELOG.md > RELEASE_NOTES.md
 
       - name: 🏷️ Push Release Tag
+        env:
+          GH_PAT: ${{ secrets.PAT_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
           git tag v${{ env.PACKAGE_VERSION }}
           git push origin v${{ env.PACKAGE_VERSION }}
 
