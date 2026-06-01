@@ -16,10 +16,10 @@ AndroidConfig _$AndroidConfigFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      malwareConfig: json['malwareConfig'] == null
+      suspiciousAppDetectionConfig: json['suspiciousAppDetectionConfig'] == null
           ? null
-          : MalwareConfig.fromJson(
-              json['malwareConfig'] as Map<String, dynamic>),
+          : SuspiciousAppDetectionConfig.fromJson(
+              json['suspiciousAppDetectionConfig'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) {
@@ -35,6 +35,7 @@ Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) {
     }
   }
 
-  writeNotNull('malwareConfig', instance.malwareConfig);
+  writeNotNull('suspiciousAppDetectionConfig',
+      instance.suspiciousAppDetectionConfig?.toJson());
   return val;
 }

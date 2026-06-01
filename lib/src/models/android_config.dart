@@ -12,7 +12,7 @@ class AndroidConfig {
     required this.packageName,
     required this.signingCertHashes,
     this.supportedStores = const [],
-    this.malwareConfig,
+    this.suspiciousAppDetectionConfig,
   }) {
     ConfigVerifier.verifyAndroid(this);
   }
@@ -33,6 +33,6 @@ class AndroidConfig {
   /// List of supported sources where application can be installed from.
   final List<String> supportedStores;
 
-  /// Malware configuration for Android.
-  final MalwareConfig? malwareConfig;
+  /// Suspicious app detection configuration for Android.
+  final SuspiciousAppDetectionConfig? suspiciousAppDetectionConfig;
 }

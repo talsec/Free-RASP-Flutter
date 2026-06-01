@@ -25,7 +25,7 @@ class PackageInfo {
     this.appIcon,
     this.appName,
     this.version,
-    this.installationSource,
+    this.installerStore,
   });
 
   String packageName;
@@ -36,7 +36,7 @@ class PackageInfo {
 
   String? version;
 
-  String? installationSource;
+  String? installerStore;
 
   Object encode() {
     return <Object?>[
@@ -44,7 +44,7 @@ class PackageInfo {
       appIcon,
       appName,
       version,
-      installationSource,
+      installerStore,
     ];
   }
 
@@ -55,7 +55,7 @@ class PackageInfo {
       appIcon: result[1] as String?,
       appName: result[2] as String?,
       version: result[3] as String?,
-      installationSource: result[4] as String?,
+      installerStore: result[4] as String?,
     );
   }
 }
@@ -63,17 +63,21 @@ class PackageInfo {
 class SuspiciousAppInfo {
   SuspiciousAppInfo({
     required this.packageInfo,
-    required this.reason,
+    required this.reasons,
+    this.permissions,
   });
 
   PackageInfo packageInfo;
 
-  String reason;
+  List<String> reasons;
+
+  List<String>? permissions;
 
   Object encode() {
     return <Object?>[
       packageInfo,
-      reason,
+      reasons,
+      permissions,
     ];
   }
 
@@ -81,7 +85,8 @@ class SuspiciousAppInfo {
     result as List<Object?>;
     return SuspiciousAppInfo(
       packageInfo: result[0]! as PackageInfo,
-      reason: result[1]! as String,
+      reasons: (result[1] as List<Object?>?)!.cast<String>(),
+      permissions: (result[2] as List<Object?>?)?.cast<String>(),
     );
   }
 }

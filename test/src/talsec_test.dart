@@ -292,7 +292,7 @@ void main() {
 
       final completer = Completer<void>();
       final callback = RaspExecutionStateCallback(
-        onAllChecksDone: completer.complete,
+        onAllChecksFinished: completer.complete,
       );
 
       // Act

@@ -38,7 +38,7 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
     );
 
     final raspExecutionStateCallback =
-        RaspExecutionStateCallback(onAllChecksDone: _updateChecksStatus);
+        RaspExecutionStateCallback(onAllChecksFinished: _updateChecksStatus);
 
     Talsec.instance.attachListener(threatCallback);
     Talsec.instance.attachExecutionStateListener(raspExecutionStateCallback);

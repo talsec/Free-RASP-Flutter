@@ -14,14 +14,6 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
 internal object Utils {
-    @Suppress("ArrayInDataClass")
-    data class MalwareConfig(
-        val blacklistedPackageNames: Array<String>,
-        val blacklistedHashes: Array<String>,
-        val suspiciousPermissions: Array<Array<String>>,
-        val whitelistedInstallationSources: Array<String>
-    )
-
     fun toTalsecConfigThrowing(configJson: String?): TalsecConfig {
         if (configJson == null) {
             throw JSONException("Configuration is null")
@@ -36,35 +28,19 @@ internal object Utils {
         val packageName = androidConfig.getString("packageName")
         val certificateHashes = androidConfig.extractArray<String>("signingCertHashes")
         val alternativeStores = androidConfig.extractArray<String>("supportedStores")
-        val malwareConfig = parseMalwareConfig(androidConfig)
 
-        return TalsecConfig.Builder(packageName, certificateHashes)
+        val builder = TalsecConfig.Builder(packageName, certificateHashes)
             .watcherMail(watcherMail)
             .supportedAlternativeStores(alternativeStores)
             .prod(isProd)
             .killOnBypass(killOnBypass)
-            .blacklistedPackageNames(malwareConfig.blacklistedPackageNames)
-            .blacklistedHashes(malwareConfig.blacklistedHashes)
-            .suspiciousPermissions(malwareConfig.suspiciousPermissions)
-            .whitelistedInstallationSources(malwareConfig.whitelistedInstallationSources)
-            .build()
-    }
 
-    private fun parseMalwareConfig(androidConfig: JSONObject): MalwareConfig {
-        if (!androidConfig.has("malwareConfig")) {
-            return MalwareConfig(emptyArray(), emptyArray(), emptyArray(), emptyArray())
+        androidConfig.optJSONObject("suspiciousAppDetectionConfig")?.let {
+            builder.suspiciousAppDetection(it.toSuspiciousAppDetectionConfig())
         }
 
-        val malwareConfig = androidConfig.getJSONObject("malwareConfig")
-
-        return MalwareConfig(
-            malwareConfig.extractArray("blacklistedPackageNames"),
-            malwareConfig.extractArray("blacklistedHashes"),
-            malwareConfig.extractArray<Array<String>>("suspiciousPermissions"),
-            malwareConfig.extractArray("whitelistedInstallationSources")
-        )
+        return builder.build()
     }
-
 
     /**
      * Retrieves the package name of the installer for a given app package.
@@ -145,11 +121,11 @@ internal object Utils {
     }
 }
 
-private inline fun <reified T> JSONObject.extractArray(key: String): Array<T> {
+internal inline fun <reified T> JSONObject.extractArray(key: String): Array<T> {
     return this.optJSONArray(key)?.let { processArray(it) } ?: emptyArray()
 }
 
-private inline fun <reified T> processArray(jsonArray: JSONArray): Array<T> {
+internal inline fun <reified T> processArray(jsonArray: JSONArray): Array<T> {
     val list = mutableListOf<T>()
 
     for (i in 0 until jsonArray.length()) {

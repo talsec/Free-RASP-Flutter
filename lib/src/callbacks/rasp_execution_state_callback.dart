@@ -6,7 +6,7 @@ import 'package:freerasp/src/typedefs.dart';
 /// Example usage:
 /// ```dart
 /// final callback = RaspExecutionStateCallback(
-///   onAllChecksDone: () {
+///   onAllChecksFinished: () {
 ///     print('All security checks have been completed');
 ///     // Update UI or perform additional actions
 ///   },
@@ -17,12 +17,12 @@ import 'package:freerasp/src/typedefs.dart';
 class RaspExecutionStateCallback {
   /// Creates a new [RaspExecutionStateCallback] instance.
   ///
-  /// The [onAllChecksDone] callback will be invoked when all security checks
-  /// have been completed by the native security engine.
+  /// The [onAllChecksFinished] callback will be invoked when all security
+  /// checks have been completed by the native security engine.
   RaspExecutionStateCallback({
-    this.onAllChecksDone,
+    this.onAllChecksFinished,
   });
 
   /// Callback invoked when all security checks are completed.
-  final VoidCallback? onAllChecksDone;
+  final VoidCallback? onAllChecksFinished;
 }

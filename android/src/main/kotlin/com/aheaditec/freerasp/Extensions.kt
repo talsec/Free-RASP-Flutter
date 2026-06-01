@@ -4,8 +4,14 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.os.Build
 import com.aheaditec.talsec_security.security.api.ExternalIdResult
+import com.aheaditec.talsec_security.security.api.MalwareScanScope
+import com.aheaditec.talsec_security.security.api.ReasonMode
+import com.aheaditec.talsec_security.security.api.ScopeType
+import com.aheaditec.talsec_security.security.api.SuspiciousAppDetectionConfig
 import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
 import io.flutter.plugin.common.MethodChannel
+import org.json.JSONArray
+import org.json.JSONObject
 import com.aheaditec.freerasp.generated.PackageInfo as FlutterPackageInfo
 import com.aheaditec.freerasp.generated.SuspiciousAppInfo as FlutterSuspiciousAppInfo
 
@@ -33,7 +39,7 @@ internal inline fun runResultCatching(result: MethodChannel.Result, block: () ->
  * this [SuspiciousAppInfo].
  */
 internal fun SuspiciousAppInfo.toPigeon(context: Context): FlutterSuspiciousAppInfo {
-    return FlutterSuspiciousAppInfo(this.packageInfo.toPigeon(context), this.reason)
+    return FlutterSuspiciousAppInfo(this.packageInfo.toPigeon(context), this.reasons.toList(), this.permissions?.toList())
 }
 
 /**
@@ -50,7 +56,7 @@ private fun PackageInfo.toPigeon(context: Context): FlutterPackageInfo {
             context.packageManager.getApplicationLabel(it) as String
         },
         version = getVersionString(),
-        installationSource = Utils.getInstallerPackageName(context, packageName),
+        installerStore = Utils.getInstallerPackageName(context, packageName),
     )
 }
 
@@ -82,4 +88,32 @@ internal fun ExternalIdResult.resolve(result: MethodChannel.Result) {
         is ExternalIdResult.Success -> result.success(null)
         is ExternalIdResult.Error -> result.error("external-id-failure", this.errorMsg, null)
     }
+}
+
+internal fun JSONObject.toScanScope(): MalwareScanScope {
+    val scopeType = ScopeType.valueOf(getString("scopeType"))
+    val trustedInstallSources = optJSONArray("trustedInstallSources")
+        ?.let { processArray<String>(it).asList() }
+    return MalwareScanScope(scopeType, trustedInstallSources)
+}
+
+internal fun JSONObject.toSuspiciousAppDetectionConfig(): SuspiciousAppDetectionConfig {
+    val packageNames = optJSONArray("packageNames")
+        ?.let { processArray<String>(it).toMutableSet() }
+    val hashes = optJSONArray("hashes")
+        ?.let { processArray<String>(it).toMutableSet() }
+    val requestedPermissions = optJSONArray("requestedPermissions")
+        ?.let { processArray<Array<String>>(it).mapTo(mutableSetOf()) { it.toMutableSet() } }
+    val grantedPermissions = optJSONArray("grantedPermissions")
+        ?.let { processArray<Array<String>>(it).mapTo(mutableSetOf()) { it.toMutableSet() } }
+    val scanScope = getJSONObject("scanScope").toScanScope()
+    val reasonMode = ReasonMode.valueOf(getString("reasonMode"))
+    return SuspiciousAppDetectionConfig(
+        packageNames,
+        hashes,
+        requestedPermissions,
+        grantedPermissions,
+        scanScope,
+        reasonMode,
+    )
 }

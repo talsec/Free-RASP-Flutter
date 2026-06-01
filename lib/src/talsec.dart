@@ -341,7 +341,7 @@ class Talsec {
     _executionStateSubscription ??= onRaspExecutionState.listen((event) {
       switch (event) {
         case RaspExecutionState.allChecksFinished:
-          callback.onAllChecksDone?.call();
+          callback.onAllChecksFinished?.call();
       }
     });
   }
