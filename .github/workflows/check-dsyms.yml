@@ -1,0 +1,22 @@
+name: Check dSYMs attachment
+
+on:
+  pull_request:
+    types: [labeled, edited]
+
+jobs:
+  check-dsyms:
+    name: Verify dSYMs.zip is attached
+    if: contains(github.event.pull_request.labels.*.name, 'release')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check dSYMs.zip in PR description
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if echo "$PR_BODY" | grep -qE 'https://[^ )]*dSYMs\.zip'; then
+            echo "dSYMs.zip found in PR description."
+          else
+            echo "::error::dSYMs.zip is not attached in the PR description. Please attach the dSYMs.zip file before merging."
+            exit 1
+          fi
