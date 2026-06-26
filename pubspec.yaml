@@ -39,4 +39,4 @@ flutter:
         package: com.aheaditec.freerasp
         pluginClass: FreeraspPlugin
       ios:
-        pluginClass: FreeraspPlugin
+        pluginClass: SwiftFreeraspPlugin
