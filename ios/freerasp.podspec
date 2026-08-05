@@ -13,7 +13,7 @@ FreeRASP for iOS is a lightweight and easy-to-use mobile app protection and secu
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Talsec' => 'talsec.app' }
   s.source           = { :path => '.' }
-  s.source_files = 'freerasp/Sources/freerasp/**/*.swift'
+  s.source_files = 'freerasp/Sources/**/*.swift'
   s.dependency 'Flutter'
   s.platform = :ios, '13.0'
 

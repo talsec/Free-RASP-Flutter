@@ -24,7 +24,7 @@ let package = Package(
                 .product(name: "FlutterFramework", package: "FlutterFramework"),
                 "TalsecRuntime"
             ],
-            path: "Sources/freerasp"
+            path: "Sources"
         )
     ]
 )
