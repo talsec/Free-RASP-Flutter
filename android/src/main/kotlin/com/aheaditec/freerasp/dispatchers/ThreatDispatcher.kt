@@ -2,7 +2,7 @@ package com.aheaditec.freerasp.dispatchers
 
 import com.aheaditec.freerasp.Threat
 import com.aheaditec.freerasp.handlers.MethodCallHandler
-import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
+import app.talsec.rasp.security.api.SuspiciousAppInfo
 import io.flutter.plugin.common.EventChannel.EventSink
 
 internal object ThreatDispatcher {

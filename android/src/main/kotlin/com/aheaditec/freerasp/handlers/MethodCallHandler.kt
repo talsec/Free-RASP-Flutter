@@ -13,8 +13,8 @@ import com.aheaditec.freerasp.generated.TalsecPigeonApi
 import com.aheaditec.freerasp.resolve
 import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.toPigeon
-import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
-import com.aheaditec.talsec_security.security.api.Talsec
+import app.talsec.rasp.security.api.SuspiciousAppInfo
+import app.talsec.rasp.security.api.Talsec
 import io.flutter.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall

@@ -5,11 +5,11 @@ import com.aheaditec.freerasp.RaspExecutionStateEvent
 import com.aheaditec.freerasp.Threat
 import com.aheaditec.freerasp.dispatchers.ExecutionStateDispatcher
 import com.aheaditec.freerasp.dispatchers.ThreatDispatcher
-import com.aheaditec.talsec_security.security.api.SuspiciousAppInfo
-import com.aheaditec.talsec_security.security.api.ThreatListener
-import com.aheaditec.talsec_security.security.api.ThreatListener.DeviceState
-import com.aheaditec.talsec_security.security.api.ThreatListener.RaspExecutionState
-import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
+import app.talsec.rasp.security.api.SuspiciousAppInfo
+import app.talsec.rasp.security.api.ThreatListener
+import app.talsec.rasp.security.api.ThreatListener.DeviceState
+import app.talsec.rasp.security.api.ThreatListener.RaspExecutionState
+import app.talsec.rasp.security.api.ThreatListener.ThreatDetected
 
 /**
  * A Singleton object that manages the [ThreatListener] to handle detected security threats in the application.
@@ -19,89 +19,89 @@ import com.aheaditec.talsec_security.security.api.ThreatListener.ThreatDetected
 internal object PluginThreatHandler {
 
     private val threatDetected = object : ThreatDetected() {
-        override fun onRootDetected() {
+        override fun onPrivilegedAccess() {
             ThreatDispatcher.dispatchThreat(Threat.PrivilegedAccess)
         }
 
-        override fun onDebuggerDetected() {
+        override fun onDebug() {
             ThreatDispatcher.dispatchThreat(Threat.Debug)
         }
 
-        override fun onEmulatorDetected() {
+        override fun onSimulator() {
             ThreatDispatcher.dispatchThreat(Threat.Simulator)
         }
 
-        override fun onTamperDetected() {
+        override fun onAppIntegrity() {
             ThreatDispatcher.dispatchThreat(Threat.AppIntegrity)
         }
 
-        override fun onUntrustedInstallationSourceDetected() {
+        override fun onUnofficialStore() {
             ThreatDispatcher.dispatchThreat(Threat.UnofficialStore)
         }
 
-        override fun onHookDetected() {
+        override fun onHooks() {
             ThreatDispatcher.dispatchThreat(Threat.Hooks)
         }
 
-        override fun onDeviceBindingDetected() {
+        override fun onDeviceBinding() {
             ThreatDispatcher.dispatchThreat(Threat.DeviceBinding)
         }
 
-        override fun onObfuscationIssuesDetected() {
+        override fun onObfuscationIssues() {
             ThreatDispatcher.dispatchThreat(Threat.ObfuscationIssues)
         }
 
-        override fun onMalwareDetected(suspiciousApps: List<SuspiciousAppInfo>) {
+        override fun onMalware(suspiciousApps: List<SuspiciousAppInfo>) {
             ThreatDispatcher.dispatchMalware(suspiciousApps)
         }
 
-        override fun onScreenshotDetected() {
+        override fun onScreenshot() {
             ThreatDispatcher.dispatchThreat(Threat.Screenshot)
         }
 
-        override fun onScreenRecordingDetected() {
+        override fun onScreenRecording() {
             ThreatDispatcher.dispatchThreat(Threat.ScreenRecording)
         }
 
-        override fun onMultiInstanceDetected() {
+        override fun onMultiInstance() {
             ThreatDispatcher.dispatchThreat(Threat.MultiInstance)
         }
 
-        override fun onUnsecureWifiDetected() {
+        override fun onUnsecureWifi() {
             ThreatDispatcher.dispatchThreat(Threat.UnsecureWiFi)
         }
 
-        override fun onTimeSpoofingDetected() {
+        override fun onTimeSpoofing() {
             ThreatDispatcher.dispatchThreat(Threat.TimeSpoofing)
         }
 
-        override fun onLocationSpoofingDetected() {
+        override fun onLocationSpoofing() {
             ThreatDispatcher.dispatchThreat(Threat.LocationSpoofing)
         }
 
-        override fun onAutomationDetected() {
+        override fun onAutomation() {
             ThreatDispatcher.dispatchThreat(Threat.Automation)
         }
     }
 
     private val deviceState = object : DeviceState() {
-        override fun onUnlockedDeviceDetected() {
+        override fun onPasscode() {
             ThreatDispatcher.dispatchThreat(Threat.Passcode)
         }
 
-        override fun onHardwareBackedKeystoreNotAvailableDetected() {
+        override fun onSecureHardwareNotAvailable() {
             ThreatDispatcher.dispatchThreat(Threat.SecureHardwareNotAvailable)
         }
 
-        override fun onSystemVPNDetected() {
+        override fun onSystemVpn() {
             ThreatDispatcher.dispatchThreat(Threat.SystemVPN)
         }
 
-        override fun onDeveloperModeDetected() {
+        override fun onDevMode() {
             ThreatDispatcher.dispatchThreat(Threat.DevMode)
         }
 
-        override fun onADBEnabledDetected() {
+        override fun onAdbEnabled() {
             ThreatDispatcher.dispatchThreat(Threat.ADBEnabled)
         }
     }
