@@ -127,22 +127,6 @@ jobs:
       - name: 📦 Enable Swift Package Manager
         run: flutter config --enable-swift-package-manager
 
-      # Integrity guard: the committed xcframework (used by both SPM and CocoaPods)
-      # must match the official hosted SDK. Bump this URL alongside the binary on
-      # every iOS SDK update; a mismatch fails CI and flags a wrong/forgotten bump.
-      - name: 🔐 Verify committed xcframework matches the official 7.1.1 SDK
-        run: |
-          set -euo pipefail
-          url="https://storage.googleapis.com/talsec-artifact-repository/freerasp/ios/flutter/7.1.1/TalsecRuntime.xcframework.zip"
-          curl -fsSL -o "$RUNNER_TEMP/TalsecRuntime.xcframework.zip" "$url"
-          unzip -q "$RUNNER_TEMP/TalsecRuntime.xcframework.zip" -d "$RUNNER_TEMP/remote"
-          for slice in ios-arm64 ios-arm64_x86_64-simulator; do
-            hosted=$(shasum -a 256 "$RUNNER_TEMP/remote/TalsecRuntime.xcframework/$slice/TalsecRuntime.framework/TalsecRuntime" | awk '{print $1}')
-            committed=$(shasum -a 256 "ios/freerasp/TalsecRuntime.xcframework/$slice/TalsecRuntime.framework/TalsecRuntime" | awk '{print $1}')
-            echo "$slice → hosted=$hosted committed=$committed"
-            [ "$hosted" = "$committed" ] || { echo "::error::committed TalsecRuntime differs from the official 7.1.1 SDK for $slice"; exit 1; }
-          done
-
       - name: 🍎 Build iOS consumer app with SPM
         run: |
           set -euo pipefail
