@@ -102,3 +102,35 @@ jobs:
       - name: 🍎 Build iOS app
         working-directory: example
         run: flutter build ios --release --no-codesign
+
+  # Exercises the Swift Package Manager integration path, which the CocoaPods
+  # `build-ios` job never reads (SPM is opt-in behind a feature flag). Uses a
+  # throwaway consumer app instead of the example app: a plain consumer never
+  # gets Flutter's example-only local package override, so it builds regardless
+  # of the checkout directory name (the example app would require the checkout
+  # dir to be named `freerasp`). FlutterFramework SwiftPM package requires 3.41.0+.
+  build-ios-spm:
+    runs-on: macos-latest
+    needs: test
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v6
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.0
+          cache: true
+
+      - name: 📦 Enable Swift Package Manager
+        run: flutter config --enable-swift-package-manager
+
+      - name: 🍎 Build iOS consumer app with SPM
+        run: |
+          set -euo pipefail
+          flutter create --platforms=ios "$RUNNER_TEMP/spm_consumer"
+          cd "$RUNNER_TEMP/spm_consumer"
+          flutter pub add freerasp --path "$GITHUB_WORKSPACE"
+          flutter build ios --release --no-codesign

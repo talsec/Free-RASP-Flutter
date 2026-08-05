@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.0] - 2026-07-23
+
+- Android SDK version: 18.3.0
+- iOS SDK version: 7.1.1
+
+### Flutter
+
+#### Added
+
+- Swift Package Manager (SPM) support for iOS. Requires Flutter 3.41.0 or newer; CocoaPods remains supported on older versions.
+
+### iOS
+
+#### Added
+
+- Added support for postponed checks, therefore, due to slower execution, some subchecks are run after initial startup checks.
+- Improved hook detection.
+
+#### Fixed
+
+- Fixed issue with app's color scheme initialization.
+- Fixed bad memory access in jailbreak check.
+
+#### Changed
+
+- Raised the minimum iOS deployment target to 13.0, as required by the iOS SDK.
+
 ## [8.0.0] - 2026-05-13
 
 - Android SDK version: 18.3.0
