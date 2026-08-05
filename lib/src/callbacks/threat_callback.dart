@@ -43,6 +43,7 @@ class ThreatCallback extends TalsecPigeonApi {
     this.onTimeSpoofing,
     this.onLocationSpoofing,
     this.onAutomation,
+    this.onBootloader,
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -114,6 +115,12 @@ class ThreatCallback extends TalsecPigeonApi {
 
   /// This method is called when automation is detected
   final VoidCallback? onAutomation;
+
+  /// This method is called when an unlocked or compromised bootloader is
+  /// detected.
+  ///
+  /// Android only
+  final VoidCallback? onBootloader;
 
   @override
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo) {

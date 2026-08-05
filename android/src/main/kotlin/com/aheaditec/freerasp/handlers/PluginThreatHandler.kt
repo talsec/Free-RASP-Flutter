@@ -82,6 +82,10 @@ internal object PluginThreatHandler {
         override fun onAutomation() {
             ThreatDispatcher.dispatchThreat(Threat.Automation)
         }
+
+        override fun onBootloader() {
+            ThreatDispatcher.dispatchThreat(Threat.Bootloader)
+        }
     }
 
     private val deviceState = object : DeviceState() {
