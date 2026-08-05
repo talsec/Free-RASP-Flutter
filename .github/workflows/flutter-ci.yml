@@ -127,23 +127,20 @@ jobs:
       - name: 📦 Enable Swift Package Manager
         run: flutter config --enable-swift-package-manager
 
-      - name: 🔐 Verify SPM binary matches committed xcframework
+      # Integrity guard: the committed xcframework (used by both SPM and CocoaPods)
+      # must match the official hosted SDK. Bump this URL alongside the binary on
+      # every iOS SDK update; a mismatch fails CI and flags a wrong/forgotten bump.
+      - name: 🔐 Verify committed xcframework matches the official 7.1.1 SDK
         run: |
           set -euo pipefail
-          url=$(grep -oE 'https://[^"]+TalsecRuntime\.xcframework\.zip' ios/freerasp/Package.swift)
-          declared=$(grep -oE '[a-f0-9]{64}' ios/freerasp/Package.swift | head -n1)
-          echo "binaryTarget url: $url"
+          url="https://storage.googleapis.com/talsec-artifact-repository/freerasp/ios/flutter/7.1.1/TalsecRuntime.xcframework.zip"
           curl -fsSL -o "$RUNNER_TEMP/TalsecRuntime.xcframework.zip" "$url"
-          actual=$(shasum -a 256 "$RUNNER_TEMP/TalsecRuntime.xcframework.zip" | awk '{print $1}')
-          echo "declared checksum: $declared"
-          echo "actual   checksum: $actual"
-          [ "$declared" = "$actual" ] || { echo "::error::binaryTarget checksum does not match the hosted zip"; exit 1; }
           unzip -q "$RUNNER_TEMP/TalsecRuntime.xcframework.zip" -d "$RUNNER_TEMP/remote"
           for slice in ios-arm64 ios-arm64_x86_64-simulator; do
-            r=$(shasum -a 256 "$RUNNER_TEMP/remote/TalsecRuntime.xcframework/$slice/TalsecRuntime.framework/TalsecRuntime" | awk '{print $1}')
-            c=$(shasum -a 256 "ios/freerasp/TalsecRuntime.xcframework/$slice/TalsecRuntime.framework/TalsecRuntime" | awk '{print $1}')
-            echo "$slice → remote=$r committed=$c"
-            [ "$r" = "$c" ] || { echo "::error::SDK drift: SPM (remote) and CocoaPods (committed) binaries differ for $slice"; exit 1; }
+            hosted=$(shasum -a 256 "$RUNNER_TEMP/remote/TalsecRuntime.xcframework/$slice/TalsecRuntime.framework/TalsecRuntime" | awk '{print $1}')
+            committed=$(shasum -a 256 "ios/freerasp/TalsecRuntime.xcframework/$slice/TalsecRuntime.framework/TalsecRuntime" | awk '{print $1}')
+            echo "$slice → hosted=$hosted committed=$committed"
+            [ "$hosted" = "$committed" ] || { echo "::error::committed TalsecRuntime differs from the official 7.1.1 SDK for $slice"; exit 1; }
           done
 
       - name: 🍎 Build iOS consumer app with SPM
