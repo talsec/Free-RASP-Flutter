@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 
-- Swift Package Manager (SPM) support for iOS.
+- Swift Package Manager (SPM) support for iOS. Requires Flutter 3.41.0 or newer; CocoaPods remains supported on older versions.
 
 ### iOS
 
