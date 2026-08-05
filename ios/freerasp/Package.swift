@@ -15,8 +15,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "TalsecRuntime",
-            url: "https://storage.googleapis.com/talsec-artifact-repository/freerasp/ios/flutter/7.1.1/TalsecRuntime.xcframework.zip",
-            checksum: "7074650ba823de4f11e97aadb2c41671b686fdde5479db9f4f49eb90d537aa1d"
+            path: "TalsecRuntime.xcframework"
         ),
         .target(
             name: "freerasp",
