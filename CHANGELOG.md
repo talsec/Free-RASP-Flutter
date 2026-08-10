@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.1] - 2026-08-10
+
+- Android SDK version: 19.2.1
+- iOS SDK version: 7.1.2
+
+### Flutter
+
+#### Fixed
+
+- Fixed published package contents so required iOS framework artifacts are included
+- Included the example entrypoint for pub.dev; the full demo app remains in the repository only
+- Excluded non-essential development files (tests, codegen inputs, build outputs) from the published package
+
+### Android
+
+#### Fixed
+
+- Moved `-flattenpackagehierarchy` out of consumer ProGuard rules to restore AGP 8+ compatibility
+
 ## [8.2.0] - 2026-08-05
 
 - Android SDK version: 19.2.1

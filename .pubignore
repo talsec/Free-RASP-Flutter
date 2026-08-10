@@ -1,3 +1,12 @@
 .agents/
 .cursor/
-example/
+build/
+/pubspec.lock
+example/*
+!example/lib/
+example/lib/*
+!example/lib/main.dart
+test/
+pigeons/
+!**/TalsecRuntime.xcframework/
+!**/TalsecRuntime.xcframework/**

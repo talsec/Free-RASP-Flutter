@@ -49,7 +49,12 @@ android {
 
     defaultConfig {
         minSdkVersion 23
-        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            proguardFiles 'proguard-rules.pro'
+        }
     }
 
     lintOptions {
