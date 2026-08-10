@@ -1,7 +1,18 @@
 .agents/
 .cursor/
-example/
 
+# Root .pubignore replaces root .gitignore for publish — keep build
+# outputs and lockfiles out of the package.
+build/
+/pubspec.lock
+
+# Publish only a minimal example for pub.dev scoring; keep the full
+# Flutter demo app (android/, ios/, lib/, …) out of the package.
+example/*
+!example/main.dart
+
+test/
+pigeons/
 # Pub ignores dot-directories by default (.*). Re-include the signed
 # framework probe data so the published iOS xcframework stays valid.
 !.jbroot/
