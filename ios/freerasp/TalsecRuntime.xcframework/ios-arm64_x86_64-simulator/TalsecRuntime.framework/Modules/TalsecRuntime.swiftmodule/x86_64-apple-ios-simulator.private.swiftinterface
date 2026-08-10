@@ -64,5 +64,9 @@ public enum SecurityThreat : Swift.String, Swift.Codable, Swift.CaseIterable, Sw
     get
   }
 }
+public struct ScreenCaptureBlockError : Swift.Error, Swift.Equatable {
+  public let message: Swift.String
+  public static func == (a: TalsecRuntime.ScreenCaptureBlockError, b: TalsecRuntime.ScreenCaptureBlockError) -> Swift.Bool
+}
 extension TalsecRuntime.SecurityThreat : Swift.Hashable {}
 extension TalsecRuntime.SecurityThreat : Swift.RawRepresentable {}
