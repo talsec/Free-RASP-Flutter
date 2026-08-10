@@ -26,6 +26,7 @@ class SpyThreatListener {
     onObfuscationIssues: () => _log(Threat.obfuscationIssues),
     onMultiInstance: () => _log(Threat.multiInstance),
     onAutomation: () => _log(Threat.automation),
+    onBootloader: () => _log(Threat.bootloader),
   );
 
   static void _log(Threat threat) {
@@ -76,6 +77,8 @@ class SpyThreatListener {
         callback.onLocationSpoofing?.call();
       case Threat.automation:
         callback.onAutomation?.call();
+      case Threat.bootloader:
+        callback.onBootloader?.call();
     }
   }
 }
