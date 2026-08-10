@@ -53,8 +53,6 @@ android {
 
     buildTypes {
         release {
-            // Plugin-level only — do not ship via consumerProguardFiles.
-            // Global options like -flattenpackagehierarchy break AGP 8+ consumers.
             proguardFiles 'proguard-rules.pro'
         }
     }
