@@ -6,10 +6,12 @@
 build/
 /pubspec.lock
 
-# Publish only a minimal example for pub.dev scoring; keep the full
-# Flutter demo app (android/, ios/, lib/, …) out of the package.
+# Publish only the example entrypoint for pub.dev scoring; keep the full
+# Flutter demo app (android/, ios/, widgets, …) out of the package.
 example/*
-!example/main.dart
+!example/lib/
+example/lib/*
+!example/lib/main.dart
 
 test/
 pigeons/
