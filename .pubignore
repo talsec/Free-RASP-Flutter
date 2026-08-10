@@ -8,5 +8,5 @@ example/lib/*
 !example/lib/main.dart
 test/
 pigeons/
-!.jbroot/
-!.jbroot/**
+!**/TalsecRuntime.xcframework/
+!**/TalsecRuntime.xcframework/**
