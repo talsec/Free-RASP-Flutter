@@ -7,7 +7,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Base64
-import com.aheaditec.talsec_security.security.api.TalsecConfig
+import app.talsec.rasp.security.api.TalsecConfig
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject

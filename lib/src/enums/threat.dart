@@ -91,6 +91,11 @@ enum Threat {
   ///
   /// Android only
   automation,
+
+  /// The device bootloader is unlocked or otherwise compromised.
+  ///
+  /// Android only
+  bootloader,
 }
 
 /// An extension on the [Threat] enum to provide additional functionality.
@@ -126,6 +131,7 @@ extension ThreatX on Threat {
   /// * 64690214 - screenRecording
   /// * 859307284 - multiInstance
   /// * 298453120 - automation
+  /// * 1651076936 - bootloader
   static Threat fromInt(int code) {
     switch (code) {
       case 1268968002:
@@ -170,6 +176,8 @@ extension ThreatX on Threat {
         return Threat.locationSpoofing;
       case 298453120:
         return Threat.automation;
+      case 1651076936:
+        return Threat.bootloader;
       default:
         // Unknown data came from native code. This shouldn't normally happen.
         exit(127);

@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.aheaditec.talsec_security.security.api.Talsec
+import app.talsec.rasp.security.api.Talsec
 import io.flutter.Log
 import java.util.function.Consumer
 

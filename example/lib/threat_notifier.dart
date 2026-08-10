@@ -35,6 +35,7 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
       onTimeSpoofing: () => _updateThreat(Threat.timeSpoofing),
       onLocationSpoofing: () => _updateThreat(Threat.locationSpoofing),
       onAutomation: () => _updateThreat(Threat.automation),
+      onBootloader: () => _updateThreat(Threat.bootloader),
     );
 
     final raspExecutionStateCallback =

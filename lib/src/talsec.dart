@@ -311,6 +311,8 @@ class Talsec {
           callback.onLocationSpoofing?.call();
         case Threat.automation:
           callback.onAutomation?.call();
+        case Threat.bootloader:
+          callback.onBootloader?.call();
       }
     });
   }

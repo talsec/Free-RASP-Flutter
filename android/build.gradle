@@ -3,7 +3,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '2.1.0'
-    ext.talsec_version = '18.3.0'
+    ext.talsec_version = '19.2.1'
     repositories {
         google()
         mavenCentral()
@@ -20,7 +20,7 @@ rootProject.allprojects {
         google()
         mavenCentral()
         maven { url 'https://europe-west3-maven.pkg.dev/talsec-artifact-repository/freerasp' }
-        maven { url 'https://jitpack.io' }
+        maven { url 'https://europe-west3-maven.pkg.dev/talsec-artifact-repository/common' }
     }
 }
 

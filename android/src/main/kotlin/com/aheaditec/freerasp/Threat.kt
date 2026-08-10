@@ -47,4 +47,6 @@ internal sealed class Threat(val value: Int) {
     object LocationSpoofing : Threat(653273273)
 
     object Automation : Threat(298453120)
+
+    object Bootloader : Threat(1651076936)
 }

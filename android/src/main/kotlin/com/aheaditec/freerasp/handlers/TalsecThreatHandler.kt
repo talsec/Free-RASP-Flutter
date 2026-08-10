@@ -6,8 +6,8 @@ import com.aheaditec.freerasp.RaspExecutionStateEvent
 import com.aheaditec.freerasp.ScreenProtector
 import com.aheaditec.freerasp.dispatchers.ExecutionStateDispatcher
 import com.aheaditec.freerasp.dispatchers.ThreatDispatcher
-import com.aheaditec.talsec_security.security.api.Talsec
-import com.aheaditec.talsec_security.security.api.TalsecConfig
+import app.talsec.rasp.security.api.Talsec
+import app.talsec.rasp.security.api.TalsecConfig
 import io.flutter.plugin.common.EventChannel.EventSink
 
 /**
