@@ -13,6 +13,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url 'https://europe-west3-maven.pkg.dev/talsec-artifact-repository/plugin' }
     }
 }
 
@@ -20,6 +21,8 @@ plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
     id "com.android.application" version "8.8.1" apply false
     id "org.jetbrains.kotlin.android" version "2.1.0" apply false
+    // TODO: set the real version once app.talsec.plugin with wrapper support is released
+    id "app.talsec.plugin" version "1.1.0" apply false
 }
 
 include ":app"
