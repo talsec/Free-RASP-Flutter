@@ -84,6 +84,12 @@ jobs:
         working-directory: example
         run: flutter build apk --release
 
+      - name: 🔑 License backend hint
+        if: failure()
+        run: |
+          echo "::warning::The example app applies app.talsec.plugin, which requests a license token from portal-backend.talsec.app during the build."
+          echo "::warning::If the log shows 'Cannot resolve license', check that the backend is up and reachable from the runner before investigating this PR."
+
   build-ios:
     runs-on: macos-latest
     needs: test
