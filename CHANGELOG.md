@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.0] - 2026-09-30
+
+- Android SDK version: 19.3.1
+- iOS SDK version: 7.1.4
+
+### Flutter
+
+#### Changed
+
+- Android builds now request a license token from Talsec through the `app.talsec.plugin` Gradle plugin, applied by freeRASP automatically
+
+### Android
+
+#### Changed
+
+- Changed Talsec integration from Maven dependency to the `app.talsec.plugin` Gradle plugin with `talsec { }` configuration block
+
+#### Fixed
+
+- Root detection related bugs causing false positives
+
 ## [8.2.3] - 2026-09-29
 
 - Android SDK version: 19.2.3
