@@ -3,15 +3,18 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '2.1.0'
-    ext.talsec_version = '19.2.3'
+    ext.talsec_version = '19.3.1'
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://europe-west3-maven.pkg.dev/talsec-artifact-repository/plugin' }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:8.8.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // TODO: set the real version once app.talsec.plugin with wrapper support is released
+        classpath 'app.talsec.plugin:talsec-security-plugin:1.1.0'
     }
 }
 
@@ -26,6 +29,7 @@ rootProject.allprojects {
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'app.talsec.plugin'
 
 android {
     if (project.android.hasProperty("namespace")) {
@@ -33,6 +37,8 @@ android {
     }
 
     compileSdk 36
+
+    talsec { hostAppIdentity = true }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
