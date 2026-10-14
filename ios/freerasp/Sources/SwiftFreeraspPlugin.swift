@@ -8,6 +8,9 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
     /// The singleton instance of `SwiftTalsecPlugin`.
     static let instance = SwiftFreeraspPlugin()
     
+    /// Starts the native SDK. Replaceable in tests so the call can be observed without running TalsecRuntime.
+    var talsecStarter: (TalsecConfig) -> Void = { Talsec.start(config: $0) }
+    
     private override init() {}
     
     /// Registers this plugin with the given `FlutterPluginRegistrar`.
@@ -66,7 +69,7 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
             return
         }
         
-        Talsec.start(config: flutterConfig.toNativeConfig())
+        talsecStarter(flutterConfig.toNativeConfig())
 
         // Flutter expects *some* result to be returned even if it's void
         result(nil)
