@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### iOS
+
+#### Fixed
+
+- `Talsec.start` no longer runs on the platform (main) thread. Its keychain work could hang the UI for tens of seconds and get the app killed by the launch watchdog on iOS 26 ([#231](https://github.com/talsec/Free-RASP-Flutter/issues/231)).
+
 ## [8.2.4] - 2026-10-05
 
 - Android SDK version: 19.2.3
