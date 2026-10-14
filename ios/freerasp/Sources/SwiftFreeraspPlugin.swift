@@ -11,6 +11,10 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
     /// Starts the native SDK. Replaceable in tests so the call can be observed without running TalsecRuntime.
     var talsecStarter: (TalsecConfig) -> Void = { Talsec.start(config: $0) }
     
+    /// Serial queue for `Talsec.start`, which performs keychain work over a synchronous XPC call
+    /// and must not block the platform thread.
+    private let startQueue = DispatchQueue(label: "talsec.app/freerasp/start", qos: .userInitiated)
+    
     private override init() {}
     
     /// Registers this plugin with the given `FlutterPluginRegistrar`.
@@ -56,7 +60,7 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
         }
     }
     
-    /// Runs Talsec with given configuration
+    /// Runs Talsec with given configuration on a background queue and replies once it has started.
     ///
     /// - Parameters:
     ///   - args: The arguments received from Flutter which contains configuration
@@ -69,10 +73,15 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
             return
         }
         
-        talsecStarter(flutterConfig.toNativeConfig())
+        let config = flutterConfig.toNativeConfig()
+        startQueue.async { [talsecStarter] in
+            talsecStarter(config)
 
-        // Flutter expects *some* result to be returned even if it's void
-        result(nil)
+            // Flutter expects *some* result to be returned even if it's void
+            DispatchQueue.main.async {
+                result(nil)
+            }
+        }
     }
     
     /// Blocks screen capture for the current UIWindow.
