@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Changed
 
 - Changed Talsec integration from Maven dependency to the `app.talsec.plugin` Gradle plugin with `talsec { }` configuration block
+- The Talsec Gradle plugin requires the app to build with Android Gradle Plugin 8.3 or newer
 
 #### Fixed
 
