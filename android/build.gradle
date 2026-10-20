@@ -38,7 +38,10 @@ android {
 
     compileSdk 36
 
-    talsec { hostAppIdentity = true }
+    talsec {
+        sdkVersion = talsec_version
+        platform = "Flutter"
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -70,7 +73,4 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    // Talsec SDK
-    implementation "com.aheaditec.talsec.security:TalsecSecurity-Community-Flutter:$talsec_version"
 }

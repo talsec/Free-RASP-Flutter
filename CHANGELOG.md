@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Android SDK version: 19.3.1
 - iOS SDK version: 7.1.4
+- Talsec Gradle plugin version: 1.1.0
 
 ### Flutter
 
