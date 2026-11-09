@@ -27,6 +27,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Root detection related bugs causing false positives
 
+
+## [8.2.4] - 2026-10-05
+
+- Android SDK version: 19.2.3
+- iOS SDK version: 8.0.1
+
+### iOS
+
+#### Changed
+
+- Improved logging structure and data enrichment for better Portal insights/reports.
+
+#### Fixed
+
+- Fixed usage of `_dyld_get_shared_cache_range`.
+
 ## [8.2.3] - 2026-09-29
 
 - Android SDK version: 19.2.3
