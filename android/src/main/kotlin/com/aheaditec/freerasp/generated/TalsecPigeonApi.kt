@@ -29,6 +29,22 @@ class FlutterError (
   val details: Any? = null
 ) : Throwable()
 
+/** State of an ongoing call reported by the ongoing call detection. */
+enum class CallState(val raw: Int) {
+  /** A call started while the detection was running. */
+  STARTED(0),
+  /** A call was already in progress when the detection started. */
+  ONGOING(1),
+  /** A previously reported call has ended. */
+  STOPPED(2);
+
+  companion object {
+    fun ofRaw(raw: Int): CallState? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
+
 /** Generated class from Pigeon that represents data sent in messages. */
 data class PackageInfo (
   val packageName: String,
@@ -70,7 +86,6 @@ data class SuspiciousAppInfo (
     fun fromList(pigeonVar_list: List<Any?>): SuspiciousAppInfo {
       val packageInfo = pigeonVar_list[0] as PackageInfo
       val reasons = pigeonVar_list[1] as List<String>
-      @Suppress("UNCHECKED_CAST")
       val permissions = pigeonVar_list[2] as List<String>?
       return SuspiciousAppInfo(packageInfo, reasons, permissions)
     }
@@ -87,11 +102,16 @@ private open class TalsecPigeonApiPigeonCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
     return when (type) {
       129.toByte() -> {
+        return (readValue(buffer) as Long?)?.let {
+          CallState.ofRaw(it.toInt())
+        }
+      }
+      130.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           PackageInfo.fromList(it)
         }
       }
-      130.toByte() -> {
+      131.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           SuspiciousAppInfo.fromList(it)
         }
@@ -101,12 +121,16 @@ private open class TalsecPigeonApiPigeonCodec : StandardMessageCodec() {
   }
   override fun writeValue(stream: ByteArrayOutputStream, value: Any?)   {
     when (value) {
-      is PackageInfo -> {
+      is CallState -> {
         stream.write(129)
+        writeValue(stream, value.raw)
+      }
+      is PackageInfo -> {
+        stream.write(130)
         writeValue(stream, value.toList())
       }
       is SuspiciousAppInfo -> {
-        stream.write(130)
+        stream.write(131)
         writeValue(stream, value.toList())
       }
       else -> super.writeValue(stream, value)
@@ -128,6 +152,23 @@ class TalsecPigeonApi(private val binaryMessenger: BinaryMessenger, private val 
     val channelName = "dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected$separatedMessageChannelSuffix"
     val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
     channel.send(listOf(packageInfoArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(FlutterError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(createConnectionError(channelName)))
+      } 
+    }
+  }
+  fun onOngoingCallDetected(stateArg: CallState, callback: (Result<Unit>) -> Unit)
+{
+    val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
+    val channelName = "dev.flutter.pigeon.freerasp.TalsecPigeonApi.onOngoingCallDetected$separatedMessageChannelSuffix"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(stateArg)) {
       if (it is List<*>) {
         if (it.size > 1) {
           callback(Result.failure(FlutterError(it[0] as String, it[1] as String, it[2] as String?)))

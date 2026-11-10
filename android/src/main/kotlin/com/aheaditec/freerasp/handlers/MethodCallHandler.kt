@@ -1,7 +1,9 @@
 package com.aheaditec.freerasp.handlers
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -15,6 +17,7 @@ import com.aheaditec.freerasp.runResultCatching
 import com.aheaditec.freerasp.toPigeon
 import app.talsec.rasp.security.api.SuspiciousAppInfo
 import app.talsec.rasp.security.api.Talsec
+import app.talsec.rasp.security.api.ThreatListener.CallState
 import io.flutter.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -32,7 +35,22 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
     private val backgroundHandler = Handler(backgroundHandlerThread.looper)
     private val mainHandler = Handler(Looper.getMainLooper())
 
+    private var isOngoingCallDetectionEnabled = false
+
+    /**
+     * The current activity. Ongoing call detection is registered per activity, so it is moved
+     * along when the activity is replaced (e.g. on configuration changes) and stopped when the
+     * activity is detached.
+     */
     internal var activity: Activity? = null
+        set(value) {
+            if (field === value) return
+            if (isOngoingCallDetectionEnabled) {
+                field?.let { Talsec.stopOngoingCallDetection(it) }
+                value?.let { Talsec.startOngoingCallDetection(it) }
+            }
+            field = value
+        }
 
     companion object {
         private const val CHANNEL_NAME: String = "talsec.app/freerasp/methods"
@@ -52,10 +70,21 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
                 }
             }
         }
+
+        override fun onOngoingCall(state: CallState) {
+            talsecPigeon?.onOngoingCallDetected(state.toPigeon()) { result ->
+                result.getOrElse {
+                    Log.e("MethodCallHandlerSink", "Result ended with failure")
+                    throw it
+                }
+            }
+        }
     }
 
     internal interface MethodSink {
         fun onMalwareDetected(packageInfo: List<SuspiciousAppInfo>)
+
+        fun onOngoingCall(state: CallState)
     }
 
     /**
@@ -122,6 +151,12 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
             "getAppIcon" -> getAppIcon(call, result)
             "blockScreenCapture" -> blockScreenCapture(call, result)
             "isScreenCaptureBlocked" -> isScreenCaptureBlocked(result)
+            "blockScreenControl" -> blockScreenControl(call, result)
+            "isScreenControlBlocked" -> isScreenControlBlocked(result)
+            "blockOverlayWindows" -> blockOverlayWindows(call, result)
+            "isOverlayWindowsBlocked" -> isOverlayWindowsBlocked(result)
+            "startOngoingCallDetection" -> startOngoingCallDetection(result)
+            "stopOngoingCallDetection" -> stopOngoingCallDetection(result)
             "storeExternalId" -> storeExternalId(call, result)
             "removeExternalId" -> removeExternalId(result)
             else -> result.notImplemented()
@@ -203,8 +238,101 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
      */
     private fun isScreenCaptureBlocked(result: MethodChannel.Result) {
         runResultCatching(result) {
-            result.success(Talsec.isScreenCaptureBlocked())
+            result.success(Talsec.isScreenCaptureBlocked(requireActivity("check screen capture state")))
         }
+    }
+
+    /**
+     * Blocks or unblocks accessibility services from reading or controlling the screen.
+     *
+     * @param call The method call containing the enable flag.
+     * @param result The result handler of the method call.
+     */
+    private fun blockScreenControl(call: MethodCall, result: MethodChannel.Result) {
+        runResultCatching(result) {
+            val enable = call.argument<Boolean>("enable") ?: throw NullPointerException("Enable flag cannot be null.")
+            Talsec.blockScreenControl(requireActivity("block screen control"), enable)
+            result.success(null)
+        }
+    }
+
+    /**
+     * Checks if screen control is blocked.
+     *
+     * @param result The result handler of the method call.
+     */
+    private fun isScreenControlBlocked(result: MethodChannel.Result) {
+        runResultCatching(result) {
+            result.success(Talsec.isScreenControlBlocked(requireActivity("check screen control state")))
+        }
+    }
+
+    /**
+     * Hides or shows overlay windows of other apps over the activity. Requires Android 12+ and the
+     * HIDE_OVERLAY_WINDOWS permission, otherwise `false` is returned.
+     *
+     * @param call The method call containing the enable flag.
+     * @param result The result handler of the method call.
+     */
+    // Missing permission is suppressed because the decision to use the overlay API is made
+    // by developer, and not enforced by the library.
+    @SuppressLint("MissingPermission")
+    private fun blockOverlayWindows(call: MethodCall, result: MethodChannel.Result) {
+        runResultCatching(result) {
+            val enable = call.argument<Boolean>("enable") ?: throw NullPointerException("Enable flag cannot be null.")
+            val activity = requireActivity("block overlay windows")
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                result.success(false)
+                return@runResultCatching
+            }
+            result.success(Talsec.blockOverlayWindows(activity, enable))
+        }
+    }
+
+    /**
+     * Checks if overlay windows of other apps are hidden over the activity.
+     *
+     * @param result The result handler of the method call.
+     */
+    private fun isOverlayWindowsBlocked(result: MethodChannel.Result) {
+        runResultCatching(result) {
+            result.success(Talsec.isOverlayWindowsBlocked(requireActivity("check overlay windows state")))
+        }
+    }
+
+    /**
+     * Starts the ongoing call detection for the current activity.
+     *
+     * @param result The result handler of the method call.
+     */
+    private fun startOngoingCallDetection(result: MethodChannel.Result) {
+        runResultCatching(result) {
+            val activity = requireActivity("start ongoing call detection")
+            if (!isOngoingCallDetectionEnabled) {
+                Talsec.startOngoingCallDetection(activity)
+                isOngoingCallDetectionEnabled = true
+            }
+            result.success(null)
+        }
+    }
+
+    /**
+     * Stops the ongoing call detection for the current activity.
+     *
+     * @param result The result handler of the method call.
+     */
+    private fun stopOngoingCallDetection(result: MethodChannel.Result) {
+        runResultCatching(result) {
+            if (isOngoingCallDetectionEnabled) {
+                activity?.let { Talsec.stopOngoingCallDetection(it) }
+                isOngoingCallDetectionEnabled = false
+            }
+            result.success(null)
+        }
+    }
+
+    private fun requireActivity(action: String): Activity {
+        return activity ?: throw IllegalStateException("Unable to $action - activity is null")
     }
 
     /**

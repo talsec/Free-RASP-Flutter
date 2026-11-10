@@ -209,6 +209,118 @@ class Talsec {
     }
   }
 
+  /// Prevents accessibility services from reading or controlling the current
+  /// application screen.
+  ///
+  /// Accessibility services are commonly abused by malware to read screen
+  /// content and perform actions on behalf of the user.
+  ///
+  /// Android only
+  Future<void> blockScreenControl({required bool enabled}) async {
+    _checkAndroid();
+    try {
+      await methodChannel
+          .invokeMethod<void>('blockScreenControl', {'enable': enabled});
+    } on PlatformException catch (e) {
+      throw TalsecException.fromPlatformException(e);
+    }
+  }
+
+  /// Checks status of screen control protection.
+  ///
+  /// For more details about screen control protection, see the
+  /// [blockScreenControl] method.
+  ///
+  /// Returns `true` if screen control protection is active, `false`
+  /// otherwise.
+  ///
+  /// Android only
+  Future<bool> isScreenControlBlocked() {
+    _checkAndroid();
+    return _invokeBoolMethod('isScreenControlBlocked');
+  }
+
+  /// Hides overlay windows of other applications over the current application
+  /// screen.
+  ///
+  /// Requires Android 12 (API 31) or newer and the
+  /// `android.permission.HIDE_OVERLAY_WINDOWS` permission in the app's
+  /// `AndroidManifest.xml`.
+  ///
+  /// Returns `true` if the request was applied, `false` otherwise (e.g. on an
+  /// older Android version or when the permission is missing).
+  ///
+  /// Android only
+  Future<bool> blockOverlayWindows({required bool enabled}) {
+    _checkAndroid();
+    return _invokeBoolMethod('blockOverlayWindows', {'enable': enabled});
+  }
+
+  /// Checks whether overlay windows of other applications are hidden over the
+  /// current application screen.
+  ///
+  /// For more details, see the [blockOverlayWindows] method.
+  ///
+  /// Android only
+  Future<bool> isOverlayWindowsBlocked() {
+    _checkAndroid();
+    return _invokeBoolMethod('isOverlayWindowsBlocked');
+  }
+
+  /// Starts the ongoing call detection (cellular and VoIP calls) for the
+  /// current application screen.
+  ///
+  /// Call state changes are reported through [ThreatCallback.onOngoingCall].
+  /// If a call is already in progress when the detection starts, it is
+  /// reported as [CallState.ongoing].
+  ///
+  /// Android only
+  Future<void> startOngoingCallDetection() async {
+    _checkAndroid();
+    try {
+      await methodChannel.invokeMethod<void>('startOngoingCallDetection');
+    } on PlatformException catch (e) {
+      throw TalsecException.fromPlatformException(e);
+    }
+  }
+
+  /// Stops the ongoing call detection started by [startOngoingCallDetection].
+  ///
+  /// Android only
+  Future<void> stopOngoingCallDetection() async {
+    _checkAndroid();
+    try {
+      await methodChannel.invokeMethod<void>('stopOngoingCallDetection');
+    } on PlatformException catch (e) {
+      throw TalsecException.fromPlatformException(e);
+    }
+  }
+
+  Future<bool> _invokeBoolMethod(
+    String method, [
+    Map<String, Object?>? arguments,
+  ]) async {
+    try {
+      final result = await methodChannel.invokeMethod<bool>(method, arguments);
+
+      if (result is! bool) {
+        throw TalsecException(message: '$method returned no result.');
+      }
+
+      return result;
+    } on PlatformException catch (e) {
+      throw TalsecException.fromPlatformException(e);
+    }
+  }
+
+  void _checkAndroid() {
+    if (!Platform.isAndroid) {
+      throw UnimplementedError(
+        'Platform is not supported: $defaultTargetPlatform',
+      );
+    }
+  }
+
   /// Sends given [data] to the backend. Each call overwrites data stored in
   /// the backend.
   ///
@@ -344,6 +456,10 @@ class Talsec {
       switch (event) {
         case RaspExecutionState.allChecksFinished:
           callback.onAllChecksFinished?.call();
+        case RaspExecutionState.criticalChecksFinished:
+          callback.onCriticalChecksFinished?.call();
+        case RaspExecutionState.postponedChecksFinished:
+          callback.onPostponedChecksFinished?.call();
       }
     });
   }

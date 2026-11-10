@@ -12,6 +12,8 @@ import app.talsec.rasp.security.api.SuspiciousAppInfo
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONArray
 import org.json.JSONObject
+import app.talsec.rasp.security.api.ThreatListener.CallState
+import com.aheaditec.freerasp.generated.CallState as FlutterCallState
 import com.aheaditec.freerasp.generated.PackageInfo as FlutterPackageInfo
 import com.aheaditec.freerasp.generated.SuspiciousAppInfo as FlutterSuspiciousAppInfo
 
@@ -116,4 +118,16 @@ internal fun JSONObject.toSuspiciousAppDetectionConfig(): SuspiciousAppDetection
         scanScope,
         reasonMode,
     )
+}
+
+/**
+ * Converts a [CallState] instance to a [com.aheaditec.freerasp.generated.CallState] instance
+ * used by Pigeon package for Flutter.
+ */
+internal fun CallState.toPigeon(): FlutterCallState {
+    return when (this) {
+        CallState.STARTED -> FlutterCallState.STARTED
+        CallState.ONGOING -> FlutterCallState.ONGOING
+        CallState.STOPPED -> FlutterCallState.STOPPED
+    }
 }

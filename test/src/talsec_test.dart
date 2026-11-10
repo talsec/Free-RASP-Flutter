@@ -301,5 +301,87 @@ void main() {
       // Assert
       await expectLater(completer.future, completes);
     });
+
+    test('Should receive Android-only execution states', () {
+      // Arrange
+      final eventChannel = MockEventChannel(
+        eventChannel: Talsec.instance.executionStateChannel,
+        data: [614702, 187429, 952318],
+      );
+      final talsec = Talsec.private(
+        FakeMethodChannel(),
+        FakeEventChannel(),
+        eventChannel.eventChannel,
+      );
+
+      // Act
+      final stream = talsec.onRaspExecutionState;
+
+      // Assert
+      expectLater(
+        stream,
+        emitsInOrder([
+          RaspExecutionState.criticalChecksFinished,
+          RaspExecutionState.allChecksFinished,
+          RaspExecutionState.postponedChecksFinished,
+          emitsDone,
+        ]),
+      );
+    });
+
+    test('attachExecutionStateListener should invoke every callback', () async {
+      // Arrange
+      final eventChannel = MockEventChannel(
+        eventChannel: Talsec.instance.executionStateChannel,
+        data: [614702, 187429, 952318],
+      );
+      final talsec = Talsec.private(
+        FakeMethodChannel(),
+        FakeEventChannel(),
+        eventChannel.eventChannel,
+      );
+
+      final log = <String>[];
+      final completer = Completer<void>();
+      final callback = RaspExecutionStateCallback(
+        onCriticalChecksFinished: () => log.add('critical'),
+        onAllChecksFinished: () => log.add('all'),
+        onPostponedChecksFinished: () {
+          log.add('postponed');
+          completer.complete();
+        },
+      );
+
+      // Act
+      await talsec.attachExecutionStateListener(callback);
+
+      // Assert
+      await expectLater(completer.future, completes);
+      expect(log, ['critical', 'all', 'postponed']);
+    });
+  });
+
+  group('Android-only APIs', () {
+    // Tests run on the host, which is not Android.
+    final talsec = Talsec.private(
+      FakeMethodChannel(),
+      FakeEventChannel(),
+      FakeEventChannel(),
+    );
+
+    final calls = <String, Future<Object?> Function()>{
+      'blockScreenControl': () => talsec.blockScreenControl(enabled: true),
+      'isScreenControlBlocked': talsec.isScreenControlBlocked,
+      'blockOverlayWindows': () => talsec.blockOverlayWindows(enabled: true),
+      'isOverlayWindowsBlocked': talsec.isOverlayWindowsBlocked,
+      'startOngoingCallDetection': talsec.startOngoingCallDetection,
+      'stopOngoingCallDetection': talsec.stopOngoingCallDetection,
+    };
+
+    for (final entry in calls.entries) {
+      test('${entry.key} should throw outside Android', () {
+        expect(entry.value, throwsA(isA<UnimplementedError>()));
+      });
+    }
   });
 }

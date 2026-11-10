@@ -3,11 +3,13 @@ package com.aheaditec.freerasp.dispatchers
 import com.aheaditec.freerasp.Threat
 import com.aheaditec.freerasp.handlers.MethodCallHandler
 import app.talsec.rasp.security.api.SuspiciousAppInfo
+import app.talsec.rasp.security.api.ThreatListener.CallState
 import io.flutter.plugin.common.EventChannel.EventSink
 
 internal object ThreatDispatcher {
     private val threatCache = mutableSetOf<Threat>()
     private val malwareCache = mutableListOf<SuspiciousAppInfo>()
+    private val callStateCache = mutableListOf<CallState>()
     private var isAppInForeground = false
 
     var eventSink: EventSink? = null
@@ -25,6 +27,7 @@ internal object ThreatDispatcher {
             if (value != null) {
                 isAppInForeground = true
                 flushMalwareCache()
+                flushCallStateCache()
             }
         }
 
@@ -35,6 +38,7 @@ internal object ThreatDispatcher {
         }
         if (methodSink != null) {
             flushMalwareCache()
+            flushCallStateCache()
         }
     }
 
@@ -62,6 +66,17 @@ internal object ThreatDispatcher {
         }
     }
 
+    fun dispatchOngoingCall(state: CallState) {
+        if (isAppInForeground && methodSink != null) {
+            methodSink?.onOngoingCall(state)
+        } else {
+            // Keep the order: a call that started and stopped in background is reported as both.
+            synchronized(callStateCache) {
+                callStateCache.add(state)
+            }
+        }
+    }
+
     private fun flushThreatCache() {
         val threats = synchronized(threatCache) {
             val snapshot = threatCache.toSet()
@@ -80,5 +95,14 @@ internal object ThreatDispatcher {
         if (malware.isNotEmpty()) {
             methodSink?.onMalwareDetected(malware)
         }
+    }
+
+    private fun flushCallStateCache() {
+        val states = synchronized(callStateCache) {
+            val snapshot = callStateCache.toList()
+            callStateCache.clear()
+            snapshot
+        }
+        states.forEach { methodSink?.onOngoingCall(it) }
     }
 }

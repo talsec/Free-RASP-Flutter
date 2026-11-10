@@ -36,10 +36,13 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
       onLocationSpoofing: () => _updateThreat(Threat.locationSpoofing),
       onAutomation: () => _updateThreat(Threat.automation),
       onBootloader: () => _updateThreat(Threat.bootloader),
+      onOngoingCall: _updateCallState,
     );
 
-    final raspExecutionStateCallback =
-        RaspExecutionStateCallback(onAllChecksFinished: _updateChecksStatus);
+    final raspExecutionStateCallback = RaspExecutionStateCallback(
+      onAllChecksFinished: _updateChecksStatus,
+      onPostponedChecksFinished: _updatePostponedChecksStatus,
+    );
 
     Talsec.instance.attachListener(threatCallback);
     Talsec.instance.attachExecutionStateListener(raspExecutionStateCallback);
@@ -55,5 +58,13 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
 
   void _updateChecksStatus() {
     state = state.copyWith(allChecksPassed: true);
+  }
+
+  void _updatePostponedChecksStatus() {
+    state = state.copyWith(postponedChecksPassed: true);
+  }
+
+  void _updateCallState(CallState callState) {
+    state = state.copyWith(callState: callState);
   }
 }

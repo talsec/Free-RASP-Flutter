@@ -5,3 +5,6 @@ typedef VoidCallback = void Function();
 
 /// Typedef for malware callback
 typedef MalwareCallback = void Function(List<SuspiciousAppInfo?> packageInfo);
+
+/// Typedef for ongoing call callback
+typedef OngoingCallCallback = void Function(CallState state);

@@ -44,6 +44,7 @@ class ThreatCallback extends TalsecPigeonApi {
     this.onLocationSpoofing,
     this.onAutomation,
     this.onBootloader,
+    this.onOngoingCall,
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -131,4 +132,19 @@ class ThreatCallback extends TalsecPigeonApi {
   ///
   /// Android only
   final MalwareCallback? onMalware;
+
+  @override
+  void onOngoingCallDetected(CallState state) {
+    onOngoingCall?.call(state);
+  }
+
+  /// This method is called when an ongoing call (cellular or VoIP) starts,
+  /// is already in progress, or stops while ongoing call detection is
+  /// running.
+  ///
+  /// Detection has to be started with
+  /// `Talsec.instance.startOngoingCallDetection()`.
+  ///
+  /// Android only
+  final OngoingCallCallback? onOngoingCall;
 }

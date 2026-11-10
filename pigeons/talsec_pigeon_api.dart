@@ -37,9 +37,22 @@ class SuspiciousAppInfo {
   final List<String>? permissions;
 }
 
+/// State of an ongoing call reported by the ongoing call detection.
+enum CallState {
+  /// A call started while the detection was running.
+  started,
+
+  /// A call was already in progress when the detection started.
+  ongoing,
+
+  /// A previously reported call has ended.
+  stopped,
+}
+
 @FlutterApi()
 // Migrate whole Talsec API to pigeon
-// ignore: one_member_abstracts
 abstract class TalsecPigeonApi {
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo);
+
+  void onOngoingCallDetected(CallState state);
 }

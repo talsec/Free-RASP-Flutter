@@ -19,6 +19,18 @@ List<Object?> wrapResponse(
   return <Object?>[error.code, error.message, error.details];
 }
 
+/// State of an ongoing call reported by the ongoing call detection.
+enum CallState {
+  /// A call started while the detection was running.
+  started,
+
+  /// A call was already in progress when the detection started.
+  ongoing,
+
+  /// A previously reported call has ended.
+  stopped,
+}
+
 class PackageInfo {
   PackageInfo({
     required this.packageName,
@@ -98,11 +110,14 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    } else if (value is PackageInfo) {
+    } else if (value is CallState) {
       buffer.putUint8(129);
+      writeValue(buffer, value.index);
+    } else if (value is PackageInfo) {
+      buffer.putUint8(130);
       writeValue(buffer, value.encode());
     } else if (value is SuspiciousAppInfo) {
-      buffer.putUint8(130);
+      buffer.putUint8(131);
       writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
@@ -113,8 +128,11 @@ class _PigeonCodec extends StandardMessageCodec {
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
       case 129:
-        return PackageInfo.decode(readValue(buffer)!);
+        final int? value = readValue(buffer) as int?;
+        return value == null ? null : CallState.values[value];
       case 130:
+        return PackageInfo.decode(readValue(buffer)!);
+      case 131:
         return SuspiciousAppInfo.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
@@ -126,6 +144,8 @@ abstract class TalsecPigeonApi {
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
 
   void onMalwareDetected(List<SuspiciousAppInfo> packageInfo);
+
+  void onOngoingCallDetected(CallState state);
 
   static void setUp(
     TalsecPigeonApi? api, {
@@ -154,6 +174,35 @@ abstract class TalsecPigeonApi {
               'Argument for dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected was null, expected non-null List<SuspiciousAppInfo>.');
           try {
             api.onMalwareDetected(arg_packageInfo!);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+    {
+      final BasicMessageChannel<
+          Object?> pigeonVar_channel = BasicMessageChannel<
+              Object?>(
+          'dev.flutter.pigeon.freerasp.TalsecPigeonApi.onOngoingCallDetected$messageChannelSuffix',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (api == null) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          assert(message != null,
+              'Argument for dev.flutter.pigeon.freerasp.TalsecPigeonApi.onOngoingCallDetected was null.');
+          final List<Object?> args = (message as List<Object?>?)!;
+          final CallState? arg_state = (args[0] as CallState?);
+          assert(arg_state != null,
+              'Argument for dev.flutter.pigeon.freerasp.TalsecPigeonApi.onOngoingCallDetected was null, expected non-null CallState.');
+          try {
+            api.onOngoingCallDetected(arg_state!);
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);

@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, avoid_redundant_argument_values
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
@@ -60,6 +62,11 @@ Future<void> _initializeTalsec() async {
   );
 
   await Talsec.instance.start(config);
+
+  if (Platform.isAndroid) {
+    // Report cellular and VoIP calls through ThreatCallback.onOngoingCall
+    await Talsec.instance.startOngoingCallDetection();
+  }
 }
 
 /// The root widget of the application
@@ -205,10 +212,35 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ],
                 ),
               ),
+              if (Platform.isAndroid) ...[
+                ProtectionToggle(
+                  title: 'Screen Control',
+                  isBlocked: Talsec.instance.isScreenControlBlocked,
+                  block: Talsec.instance.blockScreenControl,
+                ),
+                ProtectionToggle(
+                  title: 'Overlay Windows',
+                  isBlocked: Talsec.instance.isOverlayWindowsBlocked,
+                  block: ({required enabled}) =>
+                      Talsec.instance.blockOverlayWindows(enabled: enabled),
+                ),
+              ],
               ListTile(
                 title: const Text('Check Rounds Completed'),
                 trailing: SafetyIcon(isDetected: !threatState.allChecksPassed),
               ),
+              if (Platform.isAndroid) ...[
+                ListTile(
+                  title: const Text('Postponed Checks Completed'),
+                  trailing: SafetyIcon(
+                    isDetected: !threatState.postponedChecksPassed,
+                  ),
+                ),
+                ListTile(
+                  title: const Text('Ongoing Call'),
+                  trailing: Text(threatState.callState?.name ?? 'none'),
+                ),
+              ],
               Expanded(
                 child: ThreatListView(threats: threatState.detectedThreats),
               ),

@@ -21,8 +21,26 @@ class RaspExecutionStateCallback {
   /// checks have been completed by the native security engine.
   RaspExecutionStateCallback({
     this.onAllChecksFinished,
+    this.onCriticalChecksFinished,
+    this.onPostponedChecksFinished,
   });
 
-  /// Callback invoked when all security checks are completed.
+  /// Callback invoked when all standard security checks are completed.
+  ///
+  /// On Android, this is invoked after the fast checks are completed, while
+  /// the postponed checks still run. Use [onPostponedChecksFinished] to know
+  /// when the initial evaluation has fully ended.
   final VoidCallback? onAllChecksFinished;
+
+  /// Callback invoked when the critical security checks are completed,
+  /// before the non-critical checks.
+  ///
+  /// Android only
+  final VoidCallback? onCriticalChecksFinished;
+
+  /// Callback invoked when the postponed security checks are completed,
+  /// which ends the initial evaluation.
+  ///
+  /// Android only
+  final VoidCallback? onPostponedChecksFinished;
 }

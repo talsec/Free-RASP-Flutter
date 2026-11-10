@@ -5,7 +5,63 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [8.4.0] - 2026-11-10
+
+- Android SDK version: 20.0.1
+- iOS SDK version: 8.0.1
+
+### Flutter
+
+#### Added
+
+- `ThreatCallback.onOngoingCall` callback with the new `CallState` enum (`started`, `ongoing`, `stopped`), driven by `Talsec.startOngoingCallDetection()` and `Talsec.stopOngoingCallDetection()` (Android only)
+- `Talsec.blockScreenControl()` and `Talsec.isScreenControlBlocked()` to prevent accessibility services from reading or controlling the app screen (Android only)
+- `Talsec.blockOverlayWindows()` and `Talsec.isOverlayWindowsBlocked()` to hide overlay windows of other apps (Android 12+ only, requires the `HIDE_OVERLAY_WINDOWS` permission)
+- `RaspExecutionStateCallback.onCriticalChecksFinished` and `RaspExecutionStateCallback.onPostponedChecksFinished`, with matching `RaspExecutionState` values (Android only)
+
+#### Changed
+
+- On Android, `onAllChecksFinished` is now triggered when the fast checks are completed, where it was triggered before; the postponed checks may still run afterwards
+- On Android, `Talsec.isScreenCaptureBlocked()` reports the protection state of the current activity
+
+### Android
+
+#### Breaking Changes
+
+- ❗️Breaking: `ThreatListener.RaspExecutionState.onAllChecksFinished()` was removed and replaced by two callbacks:
+    - `onFastChecksFinished()` is triggered after the fast standard checks are completed (where `onAllChecksFinished()` used to be triggered)
+    - `onPostponedChecksFinished()` is triggered after the postponed/deep checks are completed
+- ❗️Breaking: Modified method `Talsec.isScreenCaptureBlocked(activity: Activity): Boolean` which now takes activity as parameter, and returns if the given activity view is protected against screen capture
+- ❗️Breaking: Renamed Maven coordinates from `com.aheaditec.talsec.security:TalsecSecurity-{flavor}`
+
+#### Added
+
+- Added `isScreenControlBlocked(activity: Activity): Boolean` to check if the screen control protection is set for given activity
+- Added `blockScreenControl(activity: Activity, enable: Boolean)` to prevent accessibility services from reading or controlling an activity's screen
+- Added `blockOverlayWindows(activity: Activity, enable: Boolean): Boolean` to hide overlay windows of other apps over the given activity (Android 12+, requires `HIDE_OVERLAY_WINDOWS` permission)
+- Added `isOverlayWindowsBlocked(activity: Activity): Boolean` to check if overlay windows are hidden for given activity
+- Added a new `Ongoing Call` detection engine (VoIP, Cellular)
+    - started/paused per activity with `startOngoingCallDetection` / `stopOngoingCallDetection`
+    - new callback `onOngoingCall(CallState)` in `ThreatListener.ThreatDetected`
+    - new `CallState` enum with 3 call states (`STARTED`)
+- Added callback `onCriticalChecksFinished()` in `ThreatListener.RaspExecutionState`, which is triggered after critical checks are completed
+
+#### Fixed
+
+- Improved hook detection to prevent collisions with running VPN services and to better work with the device resources (threads/RAM)
+- Fixed a release crash during root detection when a checked package is not installed
+- Fixed a crash in `ScreenProtector.unregisterScreenCallbacks` on Android 15+ when several activities registered screen callbacks
+- Fixed intermittent build failures of apps using the SDK (`NullPointerException: Cannot read field "d"`, shown by Gradle as `[CIRCULAR REFERENCE]`) caused by invalid bytecode in some SDK builds
+- Fixed `killOnBypass` closing the app when the same threat was reported twice in quick succession
+
+#### Changed
+
+- Improved Bootloader detection
+- Extended emulator detection with additional device-property and ABI checks
+- Improved logging structure and data enrichment for better Portal insights/reports
+- Refactoring of the time spoofing detection which improves the performance of the freeRASP check execution
+- Improved the performance of the App integrity check
+- Updated CA bundle
 
 ### iOS
 
