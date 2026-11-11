@@ -8,6 +8,7 @@ import app.talsec.rasp.flutter.dispatchers.ExecutionStateDispatcher
 import app.talsec.rasp.flutter.dispatchers.ThreatDispatcher
 import app.talsec.rasp.security.api.Talsec
 import app.talsec.rasp.security.api.TalsecConfig
+import app.talsec.rasp.security.api.TalsecMode
 import io.flutter.plugin.common.EventChannel.EventSink
 
 /**
@@ -24,7 +25,7 @@ internal object TalsecThreatHandler {
      */
     internal fun start(context: Context, config: TalsecConfig) {
         attachListener(context)
-        Talsec.start(context, config)
+        Talsec.start(context, config, TalsecMode.BACKGROUND)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             ScreenProtector.enable()
         }
