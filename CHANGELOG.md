@@ -29,18 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Android
 
-#### Added
-
-- Added `isScreenControlBlocked(activity: Activity): Boolean` to check if the screen control protection is set for given activity
-- Added `blockScreenControl(activity: Activity, enable: Boolean)` to prevent accessibility services from reading or controlling an activity's screen
-- Added `blockOverlayWindows(activity: Activity, enable: Boolean): Boolean` to hide overlay windows of other apps over the given activity (Android 12+, requires `HIDE_OVERLAY_WINDOWS` permission)
-- Added `isOverlayWindowsBlocked(activity: Activity): Boolean` to check if overlay windows are hidden for given activity
-- Added a new `Ongoing Call` detection engine (VoIP, Cellular)
-    - started/paused per activity with `startOngoingCallDetection` / `stopOngoingCallDetection`
-    - new callback `onOngoingCall(CallState)` in `ThreatListener.ThreatDetected`
-    - new `CallState` enum with 3 call states (`STARTED`)
-- Added callback `onCriticalChecksFinished()` in `ThreatListener.RaspExecutionState`, which is triggered after critical checks are completed
-
 #### Fixed
 
 - Improved hook detection to prevent collisions with running VPN services and to better work with the device resources (threads/RAM)
@@ -51,10 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Changed
 
-- `ThreatListener.RaspExecutionState.onAllChecksFinished()` was removed and replaced by two callbacks:
-    - `onFastChecksFinished()` is triggered after the fast standard checks are completed (where `onAllChecksFinished()` used to be triggered)
-    - `onPostponedChecksFinished()` is triggered after the postponed/deep checks are completed
-- Modified method `Talsec.isScreenCaptureBlocked(activity: Activity): Boolean` which now takes activity as parameter, and returns if the given activity view is protected against screen capture
 - Deprecated the freeRASP Maven coordinates (`com.aheaditec.talsec.security:TalsecSecurity-{flavor}`)
 - Improved Bootloader detection
 - Extended emulator detection with additional device-property and ABI checks
