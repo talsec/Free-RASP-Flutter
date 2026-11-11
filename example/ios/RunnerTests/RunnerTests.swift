@@ -14,7 +14,7 @@ class RunnerTests: XCTestCase {
 
     private let validConfig = """
         {"watcherMail":"security@example.com","isProd":false,\
-        "iosConfig":{"bundleIds":["app.talsec.freeraspExample"],"teamId":"ABCDE12345"}}
+        "iosConfig":{"appBundleIds":["app.talsec.freeraspExample"],"appTeamId":"ABCDE12345"}}
         """
 
     override func setUp() {
