@@ -10,8 +10,8 @@ class AndroidConfig {
   /// Android configuration fields
   AndroidConfig({
     required this.packageName,
-    required this.signingCertHashes,
-    this.supportedStores = const [],
+    required this.certificateHashes,
+    this.supportedAlternativeStores = const [],
     this.suspiciousAppDetectionConfig,
   }) {
     ConfigVerifier.verifyAndroid(this);
@@ -28,10 +28,10 @@ class AndroidConfig {
   final String packageName;
 
   /// List of expected signing hashes.
-  final List<String> signingCertHashes;
+  final List<String> certificateHashes;
 
   /// List of supported sources where application can be installed from.
-  final List<String> supportedStores;
+  final List<String> supportedAlternativeStores;
 
   /// Suspicious app detection configuration for Android.
   final SuspiciousAppDetectionConfig? suspiciousAppDetectionConfig;

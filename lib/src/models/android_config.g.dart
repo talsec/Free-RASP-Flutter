@@ -9,10 +9,10 @@ part of 'android_config.dart';
 AndroidConfig _$AndroidConfigFromJson(Map<String, dynamic> json) =>
     AndroidConfig(
       packageName: json['packageName'] as String,
-      signingCertHashes: (json['signingCertHashes'] as List<dynamic>)
+      certificateHashes: (json['certificateHashes'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      supportedStores: (json['supportedStores'] as List<dynamic>?)
+      supportedAlternativeStores: (json['supportedAlternativeStores'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
@@ -25,8 +25,8 @@ AndroidConfig _$AndroidConfigFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$AndroidConfigToJson(AndroidConfig instance) {
   final val = <String, dynamic>{
     'packageName': instance.packageName,
-    'signingCertHashes': instance.signingCertHashes,
-    'supportedStores': instance.supportedStores,
+    'certificateHashes': instance.certificateHashes,
+    'supportedAlternativeStores': instance.supportedAlternativeStores,
   };
 
   void writeNotNull(String key, dynamic value) {

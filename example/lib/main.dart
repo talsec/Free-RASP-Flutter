@@ -38,8 +38,8 @@ Future<void> _initializeTalsec() async {
   final config = TalsecConfig(
     androidConfig: AndroidConfig(
       packageName: 'com.aheaditec.freeraspExample',
-      signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
-      supportedStores: ['com.sec.android.app.samsungapps'],
+      certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+      supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
       suspiciousAppDetectionConfig: const SuspiciousAppDetectionConfig(
         packageNames: ['com.aheaditec.freeraspExample'],
         requestedPermissions: [
@@ -53,8 +53,8 @@ Future<void> _initializeTalsec() async {
       ),
     ),
     iosConfig: IOSConfig(
-      bundleIds: ['com.aheaditec.freeraspExample'],
-      teamId: 'M8AK35...',
+      appBundleIds: ['com.aheaditec.freeraspExample'],
+      appTeamId: 'M8AK35...',
     ),
     watcherMail: 'your_mail@example.com',
     isProd: true,

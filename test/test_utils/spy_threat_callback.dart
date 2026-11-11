@@ -11,7 +11,7 @@ class SpyThreatListener {
     onAppIntegrity: () => _log(Threat.appIntegrity),
     onDebug: () => _log(Threat.debug),
     onDeviceBinding: () => _log(Threat.deviceBinding),
-    onDeviceID: () => _log(Threat.deviceId),
+    onDeviceID: () => _log(Threat.deviceID),
     onHooks: () => _log(Threat.hooks),
     onPasscode: () => _log(Threat.passcode),
     onPrivilegedAccess: () => _log(Threat.privilegedAccess),
@@ -20,7 +20,7 @@ class SpyThreatListener {
     onUnofficialStore: () => _log(Threat.unofficialStore),
     onSystemVPN: () => _log(Threat.systemVPN),
     onDevMode: () => _log(Threat.devMode),
-    onADBEnabled: () => _log(Threat.adbEnabled),
+    onAdbEnabled: () => _log(Threat.adbEnabled),
     onScreenshot: () => _log(Threat.screenshot),
     onScreenRecording: () => _log(Threat.screenRecording),
     onObfuscationIssues: () => _log(Threat.obfuscationIssues),
@@ -53,7 +53,7 @@ class SpyThreatListener {
         callback.onUnofficialStore?.call();
       case Threat.passcode:
         callback.onPasscode?.call();
-      case Threat.deviceId:
+      case Threat.deviceID:
         callback.onDeviceID?.call();
       case Threat.secureHardwareNotAvailable:
         callback.onSecureHardwareNotAvailable?.call();
@@ -62,15 +62,15 @@ class SpyThreatListener {
       case Threat.devMode:
         callback.onDevMode?.call();
       case Threat.adbEnabled:
-        callback.onADBEnabled?.call();
+        callback.onAdbEnabled?.call();
       case Threat.screenshot:
         callback.onScreenshot?.call();
       case Threat.screenRecording:
         callback.onScreenRecording?.call();
       case Threat.multiInstance:
         callback.onMultiInstance?.call();
-      case Threat.unsecureWiFi:
-        callback.onUnsecureWiFi?.call();
+      case Threat.unsecureWifi:
+        callback.onUnsecureWifi?.call();
       case Threat.timeSpoofing:
         callback.onTimeSpoofing?.call();
       case Threat.locationSpoofing:

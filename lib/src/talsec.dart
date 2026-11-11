@@ -5,8 +5,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
-import 'package:freerasp/src/errors/external_id_failure_exception.dart';
-import 'package:freerasp/src/errors/malware_failure_exception.dart';
 import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 
 /// A class which maintains all security related operations.
@@ -139,12 +137,19 @@ class Talsec {
   }
 
   /// Starts freeRASP with configuration provided in [config].
-  Future<void> start(TalsecConfig config) {
+  ///
+  /// Throws a [ConfigurationException] when the config for the current
+  /// platform is missing, or a [TalsecException] when the start fails.
+  Future<void> start(TalsecConfig config) async {
     _checkConfig(config);
-    return methodChannel.invokeMethod(
-      'start',
-      {'config': jsonEncode(config.toJson())},
-    );
+    try {
+      await methodChannel.invokeMethod<void>(
+        'start',
+        {'config': jsonEncode(config.toJson())},
+      );
+    } on PlatformException catch (e) {
+      throw TalsecException.fromPlatformException(e);
+    }
   }
 
   /// Adds [packageName] to the whitelist.
@@ -157,16 +162,15 @@ class Talsec {
   /// whitelist, you need to remove application data or reinstall the
   /// application.
   Future<void> addToWhitelist(String packageName) async {
-    if (!Platform.isAndroid) {
-      throw UnimplementedError(
-        'Platform is not supported: $defaultTargetPlatform}',
+    _checkAndroid();
+    try {
+      await methodChannel.invokeMethod<void>(
+        'addToWhitelist',
+        {'packageName': packageName},
       );
+    } on PlatformException catch (e) {
+      throw MalwareFailureException.fromPlatformException(e);
     }
-
-    return methodChannel.invokeMethod(
-      'addToWhitelist',
-      {'packageName': packageName},
-    );
   }
 
   /// Prevents the screen from being captured.
@@ -183,7 +187,7 @@ class Talsec {
       await methodChannel
           .invokeMethod('blockScreenCapture', {'enable': enabled});
     } on PlatformException catch (e) {
-      throw Exception('Failed to call block screen capture: ${e.message}');
+      throw TalsecException.fromPlatformException(e);
     }
   }
 
@@ -205,7 +209,7 @@ class Talsec {
 
       return result;
     } on PlatformException catch (e) {
-      throw Exception('Failed to check screen capture state: ${e.message}');
+      throw TalsecException.fromPlatformException(e);
     }
   }
 
@@ -315,8 +319,8 @@ class Talsec {
 
   void _checkAndroid() {
     if (!Platform.isAndroid) {
-      throw UnimplementedError(
-        'Platform is not supported: $defaultTargetPlatform',
+      throw UnsupportedPlatformException(
+        message: 'Platform is not supported: $defaultTargetPlatform',
       );
     }
   }
@@ -362,7 +366,9 @@ class Talsec {
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
-        throw UnimplementedError('Platform is not supported');
+        throw UnsupportedPlatformException(
+          message: 'Platform is not supported: $defaultTargetPlatform',
+        );
     }
   }
 
@@ -387,7 +393,7 @@ class Talsec {
           callback.onDebug?.call();
         case Threat.passcode:
           callback.onPasscode?.call();
-        case Threat.deviceId:
+        case Threat.deviceID:
           callback.onDeviceID?.call();
         case Threat.simulator:
           callback.onSimulator?.call();
@@ -408,15 +414,15 @@ class Talsec {
         case Threat.devMode:
           callback.onDevMode?.call();
         case Threat.adbEnabled:
-          callback.onADBEnabled?.call();
+          callback.onAdbEnabled?.call();
         case Threat.screenshot:
           callback.onScreenshot?.call();
         case Threat.screenRecording:
           callback.onScreenRecording?.call();
         case Threat.multiInstance:
           callback.onMultiInstance?.call();
-        case Threat.unsecureWiFi:
-          callback.onUnsecureWiFi?.call();
+        case Threat.unsecureWifi:
+          callback.onUnsecureWifi?.call();
         case Threat.timeSpoofing:
           callback.onTimeSpoofing?.call();
         case Threat.locationSpoofing:
@@ -475,16 +481,11 @@ class Talsec {
   /// Throws a [TalsecException] with error message description if
   /// the app with given package name couldn't be obtained.
   Future<String> getAppIcon(String packageName) async {
-    if (!Platform.isAndroid) {
-      throw UnimplementedError(
-        'Platform is not supported: $defaultTargetPlatform}',
-      );
-    }
-
+    _checkAndroid();
     try {
       return await _getAppIcon(packageName);
     } on PlatformException catch (e) {
-      throw TalsecException.fromPlatformException(e);
+      throw MalwareFailureException.fromPlatformException(e);
     }
   }
 

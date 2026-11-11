@@ -34,12 +34,12 @@ class ThreatCallback extends TalsecPigeonApi {
     this.onSecureHardwareNotAvailable,
     this.onSystemVPN,
     this.onDevMode,
-    this.onADBEnabled,
+    this.onAdbEnabled,
     this.onMalware,
     this.onScreenshot,
     this.onScreenRecording,
     this.onMultiInstance,
-    this.onUnsecureWiFi,
+    this.onUnsecureWifi,
     this.onTimeSpoofing,
     this.onLocationSpoofing,
     this.onAutomation,
@@ -94,7 +94,7 @@ class ThreatCallback extends TalsecPigeonApi {
   final VoidCallback? onDevMode;
 
   /// This method is called when the device has active ADB (Android Debug)
-  final VoidCallback? onADBEnabled;
+  final VoidCallback? onAdbEnabled;
 
   /// This method is called when screenshot detected
   final VoidCallback? onScreenshot;
@@ -106,7 +106,7 @@ class ThreatCallback extends TalsecPigeonApi {
   final VoidCallback? onMultiInstance;
 
   /// This method is called when unsecure WiFi is detected
-  final VoidCallback? onUnsecureWiFi;
+  final VoidCallback? onUnsecureWifi;
 
   /// This method is called when time manipulation is detected
   final VoidCallback? onTimeSpoofing;

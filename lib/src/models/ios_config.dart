@@ -8,8 +8,8 @@ part 'ios_config.g.dart';
 class IOSConfig {
   /// iOS configuration fields
   IOSConfig({
-    required this.bundleIds,
-    required this.teamId,
+    required this.appBundleIds,
+    required this.appTeamId,
   }) {
     ConfigVerifier.verifyIOS(this);
   }
@@ -22,8 +22,8 @@ class IOSConfig {
   Map<String, dynamic> toJson() => _$IOSConfigToJson(this);
 
   /// Bundle ID of the app.
-  final List<String> bundleIds;
+  final List<String> appBundleIds;
 
   /// Team ID of the app.
-  final String teamId;
+  final String appTeamId;
 }

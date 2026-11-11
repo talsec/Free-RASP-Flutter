@@ -17,7 +17,7 @@ enum Threat {
   /// The application was reinstalled.
   ///
   /// iOS only.
-  deviceId,
+  deviceID,
 
   /// The application is running on a simulator, potentially indicating  that
   /// it is being analyzed or reverse engineered.
@@ -77,7 +77,7 @@ enum Threat {
   /// or weak security protocol.
   ///
   /// Android only
-  unsecureWiFi,
+  unsecureWifi,
 
   /// This method is called when the device time is manipulated
   timeSpoofing,
@@ -116,7 +116,7 @@ extension ThreatX on Threat {
   /// * 209533833 - hooks
   /// * 55943254 - overlay
   /// * 1293399086 - passcode
-  /// * 1514211414 - deviceId
+  /// * 1514211414 - deviceID
   /// * 477190884 - simulator
   /// * 1115787534 - appIntegrity
   /// * 1001443554 - obfuscationIssues
@@ -141,7 +141,7 @@ extension ThreatX on Threat {
       case 1293399086:
         return Threat.passcode;
       case 1514211414:
-        return Threat.deviceId;
+        return Threat.deviceID;
       case 477190884:
         return Threat.simulator;
       case 1115787534:
@@ -169,7 +169,7 @@ extension ThreatX on Threat {
       case 859307284:
         return Threat.multiInstance;
       case 363588890:
-        return Threat.unsecureWiFi;
+        return Threat.unsecureWifi;
       case 189105221:
         return Threat.timeSpoofing;
       case 653273273:

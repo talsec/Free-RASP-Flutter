@@ -19,12 +19,12 @@ void main() {
     const mockWatcherMail = 'your_mail@example.com';
     final mockAndroidConfig = AndroidConfig(
       packageName: 'com.aheaditec.freeraspExample',
-      signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
-      supportedStores: ['com.sec.android.app.samsungapps'],
+      certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+      supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
     );
     final mockIOSConfig = IOSConfig(
-      bundleIds: ['com.aheaditec.freeraspExample'],
-      teamId: 'M8AK35...',
+      appBundleIds: ['com.aheaditec.freeraspExample'],
+      appTeamId: 'M8AK35...',
     );
 
     tearDown(log.clear);
@@ -376,11 +376,13 @@ void main() {
       'isOverlayWindowsBlocked': talsec.isOverlayWindowsBlocked,
       'startOngoingCallDetection': talsec.startOngoingCallDetection,
       'stopOngoingCallDetection': talsec.stopOngoingCallDetection,
+      'addToWhitelist': () => talsec.addToWhitelist('com.example.app'),
+      'getAppIcon': () => talsec.getAppIcon('com.example.app'),
     };
 
     for (final entry in calls.entries) {
       test('${entry.key} should throw outside Android', () {
-        expect(entry.value, throwsA(isA<UnimplementedError>()));
+        expect(entry.value, throwsA(isA<UnsupportedPlatformException>()));
       });
     }
   });
