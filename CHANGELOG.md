@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `onFastChecksFinished()` is triggered after the fast standard checks are completed (where `onAllChecksFinished()` used to be triggered)
     - `onPostponedChecksFinished()` is triggered after the postponed/deep checks are completed
 - ❗️Breaking: Modified method `Talsec.isScreenCaptureBlocked(activity: Activity): Boolean` which now takes activity as parameter, and returns if the given activity view is protected against screen capture
-- ❗️Breaking: Renamed Maven coordinates from `com.aheaditec.talsec.security:TalsecSecurity-{flavor}`
+- ❗️Breaking: Deprecated the freeRASP Maven coordinates (`com.aheaditec.talsec.security:TalsecSecurity-{flavor}`)
 
 #### Added
 
