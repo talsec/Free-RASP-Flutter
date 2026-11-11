@@ -4,9 +4,9 @@ import 'package:pigeon/pigeon.dart';
   PigeonOptions(
     dartOut: 'lib/src/generated/talsec_pigeon_api.g.dart',
     kotlinOut:
-        'android/src/main/kotlin/com/aheaditec/freerasp/generated/TalsecPigeonApi.kt',
+        'android/src/main/kotlin/app/talsec/rasp/flutter/generated/TalsecPigeonApi.kt',
     input: 'pigeons/talsec_pigeon_api.dart',
-    kotlinOptions: KotlinOptions(package: 'com.aheaditec.freerasp.generated'),
+    kotlinOptions: KotlinOptions(package: 'app.talsec.rasp.flutter.generated'),
   ),
 )
 class PackageInfo {

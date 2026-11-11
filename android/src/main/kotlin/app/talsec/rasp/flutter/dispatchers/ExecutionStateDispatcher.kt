@@ -1,6 +1,6 @@
-package com.aheaditec.freerasp.dispatchers
+package app.talsec.rasp.flutter.dispatchers
 
-import com.aheaditec.freerasp.RaspExecutionStateEvent
+import app.talsec.rasp.flutter.RaspExecutionStateEvent
 import io.flutter.plugin.common.EventChannel.EventSink
 
 internal object ExecutionStateDispatcher {

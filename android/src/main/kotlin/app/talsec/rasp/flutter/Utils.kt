@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp
+package app.talsec.rasp.flutter
 
 import android.content.Context
 import android.graphics.Bitmap

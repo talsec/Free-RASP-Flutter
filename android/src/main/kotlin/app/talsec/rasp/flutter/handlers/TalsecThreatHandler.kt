@@ -1,11 +1,11 @@
-package com.aheaditec.freerasp.handlers
+package app.talsec.rasp.flutter.handlers
 
 import android.content.Context
 import android.os.Build
-import com.aheaditec.freerasp.RaspExecutionStateEvent
-import com.aheaditec.freerasp.ScreenProtector
-import com.aheaditec.freerasp.dispatchers.ExecutionStateDispatcher
-import com.aheaditec.freerasp.dispatchers.ThreatDispatcher
+import app.talsec.rasp.flutter.RaspExecutionStateEvent
+import app.talsec.rasp.flutter.ScreenProtector
+import app.talsec.rasp.flutter.dispatchers.ExecutionStateDispatcher
+import app.talsec.rasp.flutter.dispatchers.ThreatDispatcher
 import app.talsec.rasp.security.api.Talsec
 import app.talsec.rasp.security.api.TalsecConfig
 import io.flutter.plugin.common.EventChannel.EventSink

@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp
+package app.talsec.rasp.flutter
 
 import android.app.Activity
 import android.content.Context
@@ -6,10 +6,10 @@ import android.os.Build
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.aheaditec.freerasp.handlers.ExecutionStateStreamHandler
-import com.aheaditec.freerasp.handlers.MethodCallHandler
-import com.aheaditec.freerasp.handlers.StreamHandler
-import com.aheaditec.freerasp.handlers.TalsecThreatHandler
+import app.talsec.rasp.flutter.handlers.ExecutionStateStreamHandler
+import app.talsec.rasp.flutter.handlers.MethodCallHandler
+import app.talsec.rasp.flutter.handlers.StreamHandler
+import app.talsec.rasp.flutter.handlers.TalsecThreatHandler
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding

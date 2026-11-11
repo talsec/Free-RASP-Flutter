@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp
+package app.talsec.rasp.flutter
 
 import android.content.Context
 import android.content.pm.PackageInfo
@@ -13,9 +13,9 @@ import io.flutter.plugin.common.MethodChannel
 import org.json.JSONArray
 import org.json.JSONObject
 import app.talsec.rasp.security.api.ThreatListener.CallState
-import com.aheaditec.freerasp.generated.CallState as FlutterCallState
-import com.aheaditec.freerasp.generated.PackageInfo as FlutterPackageInfo
-import com.aheaditec.freerasp.generated.SuspiciousAppInfo as FlutterSuspiciousAppInfo
+import app.talsec.rasp.flutter.generated.CallState as FlutterCallState
+import app.talsec.rasp.flutter.generated.PackageInfo as FlutterPackageInfo
+import app.talsec.rasp.flutter.generated.SuspiciousAppInfo as FlutterSuspiciousAppInfo
 
 /**
  * Executes the provided block of code and catches any exceptions thrown by it, returning the
@@ -34,10 +34,10 @@ internal inline fun runResultCatching(result: MethodChannel.Result, block: () ->
 }
 
 /**
- * Converts a [SuspiciousAppInfo] instance to a [com.aheaditec.freerasp.generated.SuspiciousAppInfo]
+ * Converts a [SuspiciousAppInfo] instance to a [app.talsec.rasp.flutter.generated.SuspiciousAppInfo]
  * instance used by Pigeon package for Flutter.
  *
- * @return A new [com.aheaditec.freerasp.generated.SuspiciousAppInfo] object with information from
+ * @return A new [app.talsec.rasp.flutter.generated.SuspiciousAppInfo] object with information from
  * this [SuspiciousAppInfo].
  */
 internal fun SuspiciousAppInfo.toPigeon(context: Context): FlutterSuspiciousAppInfo {
@@ -45,10 +45,10 @@ internal fun SuspiciousAppInfo.toPigeon(context: Context): FlutterSuspiciousAppI
 }
 
 /**
- * Converts a [PackageInfo] instance to a [com.aheaditec.freerasp.generated.PackageInfo] instance
+ * Converts a [PackageInfo] instance to a [app.talsec.rasp.flutter.generated.PackageInfo] instance
  * used by Pigeon package for Flutter.
  *
- * @return A new [com.aheaditec.freerasp.generated.PackageInfo] object with information from
+ * @return A new [app.talsec.rasp.flutter.generated.PackageInfo] object with information from
  * this [PackageInfo].
  */
 private fun PackageInfo.toPigeon(context: Context): FlutterPackageInfo {
@@ -121,7 +121,7 @@ internal fun JSONObject.toSuspiciousAppDetectionConfig(): SuspiciousAppDetection
 }
 
 /**
- * Converts a [CallState] instance to a [com.aheaditec.freerasp.generated.CallState] instance
+ * Converts a [CallState] instance to a [app.talsec.rasp.flutter.generated.CallState] instance
  * used by Pigeon package for Flutter.
  */
 internal fun CallState.toPigeon(): FlutterCallState {
