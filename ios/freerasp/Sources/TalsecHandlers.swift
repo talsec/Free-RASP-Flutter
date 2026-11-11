@@ -26,8 +26,9 @@ extension SecurityThreatCenter: SecurityThreatHandler, TalsecRuntime.RaspExecuti
         ThreatDispatcher.shared.dispatch(threat: securityThreat)
     }
     
+    // The iOS SDK reports its standard checks as a single "all checks" event, which maps to fastChecksFinished.
     public func onAllChecksFinished() {
-        ExecutionStateDispatcher.shared.dispatch(event: .allChecksFinished)
+        ExecutionStateDispatcher.shared.dispatch(event: .fastChecksFinished)
     }
 }
 

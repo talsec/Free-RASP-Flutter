@@ -272,7 +272,7 @@ void main() {
       expectLater(
         stream,
         emitsInOrder([
-          RaspExecutionState.allChecksFinished,
+          RaspExecutionState.fastChecksFinished,
           emitsDone,
         ]),
       );
@@ -292,7 +292,7 @@ void main() {
 
       final completer = Completer<void>();
       final callback = RaspExecutionStateCallback(
-        onAllChecksFinished: completer.complete,
+        onFastChecksFinished: completer.complete,
       );
 
       // Act
@@ -322,7 +322,7 @@ void main() {
         stream,
         emitsInOrder([
           RaspExecutionState.criticalChecksFinished,
-          RaspExecutionState.allChecksFinished,
+          RaspExecutionState.fastChecksFinished,
           RaspExecutionState.postponedChecksFinished,
           emitsDone,
         ]),
@@ -345,7 +345,7 @@ void main() {
       final completer = Completer<void>();
       final callback = RaspExecutionStateCallback(
         onCriticalChecksFinished: () => log.add('critical'),
-        onAllChecksFinished: () => log.add('all'),
+        onFastChecksFinished: () => log.add('all'),
         onPostponedChecksFinished: () {
           log.add('postponed');
           completer.complete();

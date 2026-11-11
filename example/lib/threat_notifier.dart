@@ -40,7 +40,7 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
     );
 
     final raspExecutionStateCallback = RaspExecutionStateCallback(
-      onAllChecksFinished: _updateChecksStatus,
+      onFastChecksFinished: _updateChecksStatus,
       onPostponedChecksFinished: _updatePostponedChecksStatus,
     );
 

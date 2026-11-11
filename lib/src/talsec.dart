@@ -454,8 +454,8 @@ class Talsec {
     await detachExecutionStateListener();
     _executionStateSubscription ??= onRaspExecutionState.listen((event) {
       switch (event) {
-        case RaspExecutionState.allChecksFinished:
-          callback.onAllChecksFinished?.call();
+        case RaspExecutionState.fastChecksFinished:
+          callback.onFastChecksFinished?.call();
         case RaspExecutionState.criticalChecksFinished:
           callback.onCriticalChecksFinished?.call();
         case RaspExecutionState.postponedChecksFinished:
