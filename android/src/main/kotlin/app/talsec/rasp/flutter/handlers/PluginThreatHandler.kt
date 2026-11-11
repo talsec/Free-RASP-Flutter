@@ -1,10 +1,10 @@
-package com.aheaditec.freerasp.handlers
+package app.talsec.rasp.flutter.handlers
 
 import android.content.Context
-import com.aheaditec.freerasp.RaspExecutionStateEvent
-import com.aheaditec.freerasp.Threat
-import com.aheaditec.freerasp.dispatchers.ExecutionStateDispatcher
-import com.aheaditec.freerasp.dispatchers.ThreatDispatcher
+import app.talsec.rasp.flutter.RaspExecutionStateEvent
+import app.talsec.rasp.flutter.Threat
+import app.talsec.rasp.flutter.dispatchers.ExecutionStateDispatcher
+import app.talsec.rasp.flutter.dispatchers.ThreatDispatcher
 import app.talsec.rasp.security.api.SuspiciousAppInfo
 import app.talsec.rasp.security.api.ThreatListener
 import app.talsec.rasp.security.api.ThreatListener.CallState

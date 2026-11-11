@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp
+package app.talsec.rasp.flutter
 
 internal sealed class RaspExecutionStateEvent(val value: Int) {
     object FastChecksFinished : RaspExecutionStateEvent(187429)

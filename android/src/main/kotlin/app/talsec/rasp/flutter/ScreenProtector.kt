@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp
+package app.talsec.rasp.flutter
 
 import android.annotation.SuppressLint
 import android.app.Activity

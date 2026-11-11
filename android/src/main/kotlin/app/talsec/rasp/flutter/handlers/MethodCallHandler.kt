@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp.handlers
+package app.talsec.rasp.flutter.handlers
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -10,11 +10,11 @@ import android.os.Looper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.aheaditec.freerasp.Utils
-import com.aheaditec.freerasp.generated.TalsecPigeonApi
-import com.aheaditec.freerasp.resolve
-import com.aheaditec.freerasp.runResultCatching
-import com.aheaditec.freerasp.toPigeon
+import app.talsec.rasp.flutter.Utils
+import app.talsec.rasp.flutter.generated.TalsecPigeonApi
+import app.talsec.rasp.flutter.resolve
+import app.talsec.rasp.flutter.runResultCatching
+import app.talsec.rasp.flutter.toPigeon
 import app.talsec.rasp.security.api.SuspiciousAppInfo
 import app.talsec.rasp.security.api.Talsec
 import app.talsec.rasp.security.api.ThreatListener.CallState

@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp.handlers
+package app.talsec.rasp.flutter.handlers
 
 import io.flutter.Log
 import io.flutter.plugin.common.BinaryMessenger
