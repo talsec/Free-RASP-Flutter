@@ -29,14 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Android
 
-#### Breaking Changes
-
-- ❗️Breaking: `ThreatListener.RaspExecutionState.onAllChecksFinished()` was removed and replaced by two callbacks:
-    - `onFastChecksFinished()` is triggered after the fast standard checks are completed (where `onAllChecksFinished()` used to be triggered)
-    - `onPostponedChecksFinished()` is triggered after the postponed/deep checks are completed
-- ❗️Breaking: Modified method `Talsec.isScreenCaptureBlocked(activity: Activity): Boolean` which now takes activity as parameter, and returns if the given activity view is protected against screen capture
-- ❗️Breaking: Deprecated the freeRASP Maven coordinates (`com.aheaditec.talsec.security:TalsecSecurity-{flavor}`)
-
 #### Added
 
 - Added `isScreenControlBlocked(activity: Activity): Boolean` to check if the screen control protection is set for given activity
@@ -59,6 +51,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Changed
 
+- `ThreatListener.RaspExecutionState.onAllChecksFinished()` was removed and replaced by two callbacks:
+    - `onFastChecksFinished()` is triggered after the fast standard checks are completed (where `onAllChecksFinished()` used to be triggered)
+    - `onPostponedChecksFinished()` is triggered after the postponed/deep checks are completed
+- Modified method `Talsec.isScreenCaptureBlocked(activity: Activity): Boolean` which now takes activity as parameter, and returns if the given activity view is protected against screen capture
+- Deprecated the freeRASP Maven coordinates (`com.aheaditec.talsec.security:TalsecSecurity-{flavor}`)
 - Improved Bootloader detection
 - Extended emulator detection with additional device-property and ABI checks
 - Improved logging structure and data enrichment for better Portal insights/reports
