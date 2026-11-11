@@ -236,13 +236,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                     isDetected: !threatState.postponedChecksPassed,
                   ),
                 ),
-                ListTile(
-                  title: const Text('Ongoing Call'),
-                  trailing: Text(threatState.callState?.name ?? 'none'),
-                ),
               ],
               Expanded(
-                child: ThreatListView(threats: threatState.detectedThreats),
+                child: ThreatListView(
+                  threats: threatState.detectedThreats,
+                  showOngoingCall: Platform.isAndroid,
+                  callState: threatState.callState,
+                ),
               ),
             ],
           ),
