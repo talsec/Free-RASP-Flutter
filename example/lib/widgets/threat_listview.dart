@@ -35,7 +35,16 @@ class ThreatListView extends StatelessWidget {
         if (index == Threat.values.length) {
           final isDetected =
               callState == CallState.started || callState == CallState.ongoing;
-          return _ThreatTile(name: 'OngoingCall', isDetected: isDetected);
+          return _ThreatTile(
+            name: 'OngoingCall',
+            isDetected: isDetected,
+            subtitle: switch (callState) {
+              null => 'Not detected',
+              CallState.started => 'Started',
+              CallState.ongoing => 'Ongoing',
+              CallState.stopped => 'Stopped',
+            },
+          );
         }
 
         final currentThreat = Threat.values[index];
@@ -50,16 +59,21 @@ class ThreatListView extends StatelessWidget {
 }
 
 class _ThreatTile extends StatelessWidget {
-  const _ThreatTile({required this.name, required this.isDetected});
+  const _ThreatTile({
+    required this.name,
+    required this.isDetected,
+    this.subtitle,
+  });
 
   final String name;
   final bool isDetected;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(name),
-      subtitle: Text(isDetected ? 'Danger' : 'Safe'),
+      subtitle: Text(subtitle ?? (isDetected ? 'Danger' : 'Safe')),
       trailing: SafetyIcon(isDetected: isDetected),
     );
   }
