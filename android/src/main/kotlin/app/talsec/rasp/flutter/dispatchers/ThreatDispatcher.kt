@@ -1,14 +1,20 @@
 package app.talsec.rasp.flutter.dispatchers
 
 import app.talsec.rasp.flutter.Threat
-import app.talsec.rasp.flutter.handlers.MethodCallHandler
-import app.talsec.rasp.security.api.SuspiciousAppInfo
+import app.talsec.rasp.flutter.toFlutterName
 import app.talsec.rasp.security.api.ThreatListener.CallState
 import io.flutter.plugin.common.EventChannel.EventSink
 
+/**
+ * Sends detections to Flutter over the threat [EventSink], in the order in which they occur.
+ *
+ * A plain threat is sent as its [Int] code. A detection with a payload is sent as a map with a
+ * `type` key: `malware` (with `suspiciousApps`) or `ongoingCall` (with `state`). Detections that
+ * occur while the app is in background or no listener is attached are cached and sent later.
+ */
 internal object ThreatDispatcher {
     private val threatCache = mutableSetOf<Threat>()
-    private val malwareCache = mutableListOf<SuspiciousAppInfo>()
+    private val malwareCache = mutableListOf<Map<String, Any?>>()
     private val callStateCache = mutableListOf<CallState>()
     private var isAppInForeground = false
 
@@ -17,28 +23,14 @@ internal object ThreatDispatcher {
             field = value
             if (value != null) {
                 isAppInForeground = true
-                flushThreatCache()
-            }
-        }
-
-    var methodSink: MethodCallHandler.MethodSink? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                isAppInForeground = true
-                flushMalwareCache()
-                flushCallStateCache()
+                flushCache()
             }
         }
 
     fun onResume() {
         isAppInForeground = true
         if (eventSink != null) {
-            flushThreatCache()
-        }
-        if (methodSink != null) {
-            flushMalwareCache()
-            flushCallStateCache()
+            flushCache()
         }
     }
 
@@ -56,9 +48,12 @@ internal object ThreatDispatcher {
         }
     }
 
-    fun dispatchMalware(apps: List<SuspiciousAppInfo>) {
-        if (isAppInForeground && methodSink != null) {
-            methodSink?.onMalwareDetected(apps)
+    /**
+     * @param apps The suspicious apps, already converted with `toFlutterMap`.
+     */
+    fun dispatchMalware(apps: List<Map<String, Any?>>) {
+        if (isAppInForeground && eventSink != null) {
+            eventSink?.success(malwareEvent(apps))
         } else {
             synchronized(malwareCache) {
                 malwareCache.addAll(apps)
@@ -67,14 +62,20 @@ internal object ThreatDispatcher {
     }
 
     fun dispatchOngoingCall(state: CallState) {
-        if (isAppInForeground && methodSink != null) {
-            methodSink?.onOngoingCall(state)
+        if (isAppInForeground && eventSink != null) {
+            eventSink?.success(ongoingCallEvent(state))
         } else {
             // Keep the order: a call that started and stopped in background is reported as both.
             synchronized(callStateCache) {
                 callStateCache.add(state)
             }
         }
+    }
+
+    private fun flushCache() {
+        flushThreatCache()
+        flushMalwareCache()
+        flushCallStateCache()
     }
 
     private fun flushThreatCache() {
@@ -88,12 +89,12 @@ internal object ThreatDispatcher {
 
     private fun flushMalwareCache() {
         val malware = synchronized(malwareCache) {
-            val snapshot = malwareCache.toMutableList()
+            val snapshot = malwareCache.toList()
             malwareCache.clear()
             snapshot
         }
         if (malware.isNotEmpty()) {
-            methodSink?.onMalwareDetected(malware)
+            eventSink?.success(malwareEvent(malware))
         }
     }
 
@@ -103,6 +104,12 @@ internal object ThreatDispatcher {
             callStateCache.clear()
             snapshot
         }
-        states.forEach { methodSink?.onOngoingCall(it) }
+        states.forEach { eventSink?.success(ongoingCallEvent(it)) }
     }
+
+    private fun malwareEvent(apps: List<Map<String, Any?>>): Map<String, Any?> =
+        mapOf("type" to "malware", "suspiciousApps" to apps)
+
+    private fun ongoingCallEvent(state: CallState): Map<String, Any?> =
+        mapOf("type" to "ongoingCall", "state" to state.toFlutterName())
 }

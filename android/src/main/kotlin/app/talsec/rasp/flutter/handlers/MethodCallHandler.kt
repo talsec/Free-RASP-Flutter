@@ -11,13 +11,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import app.talsec.rasp.flutter.Utils
-import app.talsec.rasp.flutter.generated.TalsecPigeonApi
 import app.talsec.rasp.flutter.resolve
 import app.talsec.rasp.flutter.runResultCatching
-import app.talsec.rasp.flutter.toPigeon
-import app.talsec.rasp.security.api.SuspiciousAppInfo
 import app.talsec.rasp.security.api.Talsec
-import app.talsec.rasp.security.api.ThreatListener.CallState
 import io.flutter.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -30,7 +26,6 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
     private var context: Context? = null
     private var methodChannel: MethodChannel? = null
-    private var talsecPigeon: TalsecPigeonApi? = null
     private val backgroundHandlerThread = HandlerThread("BackgroundThread").apply { start() }
     private val backgroundHandler = Handler(backgroundHandlerThread.looper)
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -56,37 +51,6 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
         private const val CHANNEL_NAME: String = "talsec.app/freerasp/methods"
     }
 
-    private val sink = object : MethodSink {
-        override fun onMalwareDetected(packageInfo: List<SuspiciousAppInfo>) {
-            context?.let { context ->
-                val pigeonPackageInfo = packageInfo.map { it.toPigeon(context) }
-                talsecPigeon?.onMalwareDetected(pigeonPackageInfo) { result ->
-                    // Parse the result (which is Unit so we can ignore it) or throw an exception
-                    // Exceptions are translated to Flutter errors automatically
-                    result.getOrElse {
-                        Log.e("MethodCallHandlerSink", "Result ended with failure")
-                        throw it
-                    }
-                }
-            }
-        }
-
-        override fun onOngoingCall(state: CallState) {
-            talsecPigeon?.onOngoingCallDetected(state.toPigeon()) { result ->
-                result.getOrElse {
-                    Log.e("MethodCallHandlerSink", "Result ended with failure")
-                    throw it
-                }
-            }
-        }
-    }
-
-    internal interface MethodSink {
-        fun onMalwareDetected(packageInfo: List<SuspiciousAppInfo>)
-
-        fun onOngoingCall(state: CallState)
-    }
-
     /**
      * Creates a new [MethodChannel] with the specified [BinaryMessenger] instance. Sets this class
      * as the [MethodCallHandler].
@@ -106,9 +70,6 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
         }
 
         this.context = context
-        this.talsecPigeon = TalsecPigeonApi(messenger)
-
-        TalsecThreatHandler.attachMethodSink(sink)
     }
 
     /**
@@ -119,9 +80,6 @@ internal class MethodCallHandler : MethodCallHandler, LifecycleEventObserver {
         methodChannel = null
 
         this.context = null
-        this.talsecPigeon = null
-
-        TalsecThreatHandler.detachMethodSink()
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {

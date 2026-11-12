@@ -1,4 +1,5 @@
-import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
+import 'package:freerasp/src/enums/call_state.dart';
+import 'package:freerasp/src/models/suspicious_app_info.dart';
 
 /// Typedef for void methods
 typedef VoidCallback = void Function();

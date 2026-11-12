@@ -34,20 +34,6 @@ void main() {
       expect(SpyThreatListener.log[Threat.unofficialStore], 0);
       expect(SpyThreatListener.log[Threat.obfuscationIssues], 0);
     });
-
-    test('Should forward ongoing call state', () {
-      // Arrange
-      final states = <CallState>[];
-      final callback = ThreatCallback(onOngoingCall: states.add);
-
-      // Act
-      callback
-        ..onOngoingCallDetected(CallState.started)
-        ..onOngoingCallDetected(CallState.stopped);
-
-      // Assert
-      expect(states, [CallState.started, CallState.stopped]);
-    });
   });
 }
 

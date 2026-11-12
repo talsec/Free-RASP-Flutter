@@ -12,7 +12,7 @@ class MockEventChannel {
   }
 
   final EventChannel eventChannel;
-  final List<int> data;
+  final List<Object?> data;
   final List<PlatformException> exceptions;
 
   MockStreamHandler _handler() {
