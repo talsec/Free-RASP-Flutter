@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Android package (namespace) of the plugin renamed from `com.aheaditec.freerasp` to `app.talsec.rasp.flutter`, following the Android SDK's `app.talsec.rasp`
 - On Android, `Talsec.isScreenCaptureBlocked()` reports the protection state of the current activity
+- On Android, freeRASP now starts in background mode (`TalsecMode.BACKGROUND`), so the initialization and synchronous checks no longer run on the main thread
 
 ### Android
 
