@@ -11,7 +11,7 @@ import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 ///
 /// For tests of this package only; it is not exported from
 /// `package:freerasp/freerasp.dart`.
-@internal
+@visibleForTesting
 Talsec createTalsecForTesting(
   MethodChannel methodChannel,
   EventChannel eventChannel,
