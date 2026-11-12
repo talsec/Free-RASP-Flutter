@@ -10,7 +10,7 @@ import 'package:freerasp/freerasp.dart';
 ///
 /// For tests of this package only; it is not exported from
 /// `package:freerasp/freerasp.dart`.
-@internal
+@visibleForTesting
 Talsec createTalsecForTesting(
   MethodChannel methodChannel,
   EventChannel eventChannel,
