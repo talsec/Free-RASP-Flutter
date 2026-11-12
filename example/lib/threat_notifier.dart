@@ -52,8 +52,8 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
     state = state.copyWith(detectedThreats: {...state.detectedThreats, threat});
   }
 
-  void _updateMalware(List<SuspiciousAppInfo?> malware) {
-    state = state.copyWith(detectedMalware: malware.nonNulls.toList());
+  void _updateMalware(List<SuspiciousAppInfo> malware) {
+    state = state.copyWith(detectedMalware: malware);
   }
 
   void _updateChecksStatus() {

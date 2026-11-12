@@ -4,7 +4,9 @@ import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
 typedef VoidCallback = void Function();
 
 /// Typedef for malware callback
-typedef MalwareCallback = void Function(List<SuspiciousAppInfo?> packageInfo);
+typedef MalwareCallback = void Function(
+  List<SuspiciousAppInfo> suspiciousApps,
+);
 
 /// Typedef for ongoing call callback
 typedef OngoingCallCallback = void Function(CallState state);

@@ -52,7 +52,7 @@ enum CallState {
 @FlutterApi()
 // Migrate whole Talsec API to pigeon
 abstract class TalsecPigeonApi {
-  void onMalwareDetected(List<SuspiciousAppInfo> packageInfo);
+  void onMalwareDetected(List<SuspiciousAppInfo> suspiciousApps);
 
   void onOngoingCallDetected(CallState state);
 }

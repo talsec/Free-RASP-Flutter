@@ -5,6 +5,6 @@ export 'src/errors/errors.dart';
 export 'src/generated/talsec_pigeon_api.g.dart'
     show CallState, PackageInfo, SuspiciousAppInfo;
 export 'src/models/models.dart';
-export 'src/talsec.dart';
+export 'src/talsec.dart' hide createTalsecForTesting;
 export 'src/typedefs.dart';
 export 'src/utils/utils.dart' hide ConfigVerifier;

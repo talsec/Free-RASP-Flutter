@@ -12,10 +12,11 @@ AndroidConfig _$AndroidConfigFromJson(Map<String, dynamic> json) =>
       certificateHashes: (json['certificateHashes'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      supportedAlternativeStores: (json['supportedAlternativeStores'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
+      supportedAlternativeStores:
+          (json['supportedAlternativeStores'] as List<dynamic>?)
+                  ?.map((e) => e as String)
+                  .toList() ??
+              const [],
       suspiciousAppDetectionConfig: json['suspiciousAppDetectionConfig'] == null
           ? null
           : SuspiciousAppDetectionConfig.fromJson(

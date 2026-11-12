@@ -7,6 +7,18 @@ import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
 import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 
+/// Creates a [Talsec] instance that communicates over the given channels.
+///
+/// For tests of this package only; it is not exported from
+/// `package:freerasp/freerasp.dart`.
+@internal
+Talsec createTalsecForTesting(
+  MethodChannel methodChannel,
+  EventChannel eventChannel,
+  EventChannel executionStateChannel,
+) =>
+    Talsec._(methodChannel, eventChannel, executionStateChannel);
+
 /// A class which maintains all security related operations.
 ///
 /// To get started, you can obtain the singleton instance of [Talsec] by
@@ -27,55 +39,50 @@ import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 /// singleton is initialized. However, subsequent calls to the instance getter
 /// will return the same singleton instance without any additional delay.
 class Talsec {
-  /// Private constructor for internal and testing purposes.
-  @visibleForTesting
-  Talsec.private(
-    this.methodChannel,
-    this.eventChannel,
-    this.executionStateChannel,
+  Talsec._(
+    this._methodChannel,
+    this._eventChannel,
+    this._executionStateChannel,
   );
 
   /// Named channel used to communicate with platform plugins.
   ///
   /// When threat is detected on platform side, [int] is sent which is then
   /// transformed into [Threat] using [ThreatX.fromInt].
-  static const EventChannel _eventChannel =
+  static const EventChannel _defaultEventChannel =
       EventChannel('talsec.app/freerasp/events');
 
   /// Named channel used to communicate with platform plugins.
   ///
   /// Transforms data and function calls such as [start].
-  static const MethodChannel _methodChannel =
+  static const MethodChannel _defaultMethodChannel =
       MethodChannel('talsec.app/freerasp/methods');
 
   /// Named channel used to communicate with platform plugins.
   ///
   /// Stream of execution state events.
-  static const EventChannel _executionStateChannel =
+  static const EventChannel _defaultExecutionStateChannel =
       EventChannel('talsec.app/freerasp/execution_state');
 
   /// Private [Talsec] variable which holds current instance of class.
-  static final _instance = Talsec.private(
-    _methodChannel,
-    _eventChannel,
-    _executionStateChannel,
+  static final _instance = Talsec._(
+    _defaultMethodChannel,
+    _defaultEventChannel,
+    _defaultExecutionStateChannel,
   );
 
   /// Initialize Talsec lazily/obtain current instance of Talsec.
   static Talsec get instance => _instance;
 
   /// [MethodChannel] used to interact with native platform.
-  @visibleForTesting
-  late final MethodChannel methodChannel;
+  final MethodChannel _methodChannel;
 
   /// [EventChannel] used to receive Threats from the native platform.
-  @visibleForTesting
-  late final EventChannel eventChannel;
+  final EventChannel _eventChannel;
 
   /// [EventChannel] used to receive execution state events from the native
   /// platform.
-  @visibleForTesting
-  late final EventChannel executionStateChannel;
+  final EventChannel _executionStateChannel;
 
   StreamSubscription<Threat>? _streamSubscription;
   StreamSubscription<RaspExecutionState>? _executionStateSubscription;
@@ -111,10 +118,10 @@ class Talsec {
       return _onThreatDetected!;
     }
 
-    _onThreatDetected = eventChannel
+    _onThreatDetected = _eventChannel
         .receiveBroadcastStream()
         .cast<int>()
-        .map(ThreatX.fromInt)
+        .map((code) => _decodeOrAbort(code, ThreatX.fromInt))
         .handleError(_handleStreamError);
 
     return _onThreatDetected!;
@@ -127,10 +134,10 @@ class Talsec {
       return _onRaspExecutionState!;
     }
 
-    _onRaspExecutionState = executionStateChannel
+    _onRaspExecutionState = _executionStateChannel
         .receiveBroadcastStream()
         .cast<int>()
-        .map(RaspExecutionStateX.fromInt)
+        .map((code) => _decodeOrAbort(code, RaspExecutionStateX.fromInt))
         .handleError(_handleStreamError);
 
     return _onRaspExecutionState!;
@@ -143,7 +150,7 @@ class Talsec {
   Future<void> start(TalsecConfig config) async {
     _checkConfig(config);
     try {
-      await methodChannel.invokeMethod<void>(
+      await _methodChannel.invokeMethod<void>(
         'start',
         {'config': jsonEncode(config.toJson())},
       );
@@ -164,7 +171,7 @@ class Talsec {
   Future<void> addToWhitelist(String packageName) async {
     _checkAndroid();
     try {
-      await methodChannel.invokeMethod<void>(
+      await _methodChannel.invokeMethod<void>(
         'addToWhitelist',
         {'packageName': packageName},
       );
@@ -184,7 +191,7 @@ class Talsec {
   ///
   Future<void> blockScreenCapture({required bool enabled}) async {
     try {
-      await methodChannel
+      await _methodChannel
           .invokeMethod('blockScreenCapture', {'enable': enabled});
     } on PlatformException catch (e) {
       throw TalsecException.fromPlatformException(e);
@@ -201,7 +208,7 @@ class Talsec {
   Future<bool> isScreenCaptureBlocked() async {
     try {
       final result =
-          await methodChannel.invokeMethod<bool>('isScreenCaptureBlocked');
+          await _methodChannel.invokeMethod<bool>('isScreenCaptureBlocked');
 
       if (result is! bool) {
         throw const TalsecException(message: 'Screen capture state failed.');
@@ -223,7 +230,7 @@ class Talsec {
   Future<void> blockScreenControl({required bool enabled}) async {
     _checkAndroid();
     try {
-      await methodChannel
+      await _methodChannel
           .invokeMethod<void>('blockScreenControl', {'enable': enabled});
     } on PlatformException catch (e) {
       throw TalsecException.fromPlatformException(e);
@@ -282,7 +289,7 @@ class Talsec {
   Future<void> startOngoingCallDetection() async {
     _checkAndroid();
     try {
-      await methodChannel.invokeMethod<void>('startOngoingCallDetection');
+      await _methodChannel.invokeMethod<void>('startOngoingCallDetection');
     } on PlatformException catch (e) {
       throw TalsecException.fromPlatformException(e);
     }
@@ -294,7 +301,7 @@ class Talsec {
   Future<void> stopOngoingCallDetection() async {
     _checkAndroid();
     try {
-      await methodChannel.invokeMethod<void>('stopOngoingCallDetection');
+      await _methodChannel.invokeMethod<void>('stopOngoingCallDetection');
     } on PlatformException catch (e) {
       throw TalsecException.fromPlatformException(e);
     }
@@ -305,7 +312,7 @@ class Talsec {
     Map<String, Object?>? arguments,
   ]) async {
     try {
-      final result = await methodChannel.invokeMethod<bool>(method, arguments);
+      final result = await _methodChannel.invokeMethod<bool>(method, arguments);
 
       if (result is! bool) {
         throw TalsecException(message: '$method returned no result.');
@@ -331,7 +338,8 @@ class Talsec {
   /// Throws a [ExternalIdFailureException] when storing failed.
   Future<void> storeExternalId(String data) async {
     try {
-      await methodChannel.invokeMethod<void>('storeExternalId', {'data': data});
+      await _methodChannel
+          .invokeMethod<void>('storeExternalId', {'data': data});
     } on PlatformException catch (e) {
       throw ExternalIdFailureException.fromPlatformException(e);
     }
@@ -342,7 +350,7 @@ class Talsec {
   /// Throws a [ExternalIdFailureException] when removing failed.
   Future<void> removeExternalId() async {
     try {
-      await methodChannel.invokeMethod<void>('removeExternalId');
+      await _methodChannel.invokeMethod<void>('removeExternalId');
     } on PlatformException catch (e) {
       throw ExternalIdFailureException.fromPlatformException(e);
     }
@@ -444,6 +452,21 @@ class Talsec {
     _streamSubscription = null;
   }
 
+  /// Decodes a [code] received from the native platform.
+  ///
+  /// An unknown code means that the communication with the native platform was
+  /// tampered with, so the app is terminated, like in the other freeRASP
+  /// plugins.
+  static T _decodeOrAbort<T>(int code, T Function(int) decode) {
+    try {
+      return decode(code);
+      // fromInt reports an unknown code with an ArgumentError.
+      // ignore: avoid_catching_errors
+    } on ArgumentError {
+      exit(127);
+    }
+  }
+
   void _handleStreamError(Object error) {
     if (error is PlatformException) {
       throw TalsecException.fromPlatformException(error);
@@ -491,7 +514,7 @@ class Talsec {
 
   Future<String> _getAppIcon(String packageName) async {
     final args = {'packageName': packageName};
-    final result = await methodChannel.invokeMethod<String>(
+    final result = await _methodChannel.invokeMethod<String>(
       'getAppIcon',
       args,
     );

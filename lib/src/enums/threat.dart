@@ -1,5 +1,3 @@
-import 'dart:io';
-
 /// Possible threats which can occur in Flutter app.
 enum Threat {
   /// The application is being hooked (e.g. Frida), indicating that the app is
@@ -102,8 +100,8 @@ enum Threat {
 extension ThreatX on Threat {
   /// Converts a [int] code to an instance of the [Threat] enum.
   ///
-  /// Kills an app if the given int [code] does not match any of the predefined
-  /// values for the [Threat] enum.
+  /// Throws an [ArgumentError] if the given int [code] does not match any of
+  /// the predefined values for the [Threat] enum.
   ///
   /// Example usage:
   ///
@@ -111,10 +109,9 @@ extension ThreatX on Threat {
   /// final threat = ThreatX.fromInt(1268968002); // Threat.debug
   /// ```
   ///
-  /// Shared error codes:
+  /// Threat codes:
   /// * 1268968002 - debug
   /// * 209533833 - hooks
-  /// * 55943254 - overlay
   /// * 1293399086 - passcode
   /// * 1514211414 - deviceID
   /// * 477190884 - simulator
@@ -130,6 +127,9 @@ extension ThreatX on Threat {
   /// * 705651459 - screenshot
   /// * 64690214 - screenRecording
   /// * 859307284 - multiInstance
+  /// * 363588890 - unsecureWifi
+  /// * 189105221 - timeSpoofing
+  /// * 653273273 - locationSpoofing
   /// * 298453120 - automation
   /// * 1651076936 - bootloader
   static Threat fromInt(int code) {
@@ -179,8 +179,7 @@ extension ThreatX on Threat {
       case 1651076936:
         return Threat.bootloader;
       default:
-        // Unknown data came from native code. This shouldn't normally happen.
-        exit(127);
+        throw ArgumentError('Unknown threat code: $code');
     }
   }
 }

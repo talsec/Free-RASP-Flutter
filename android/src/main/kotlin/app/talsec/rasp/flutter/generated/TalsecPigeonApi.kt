@@ -146,12 +146,12 @@ class TalsecPigeonApi(private val binaryMessenger: BinaryMessenger, private val 
       TalsecPigeonApiPigeonCodec()
     }
   }
-  fun onMalwareDetected(packageInfoArg: List<SuspiciousAppInfo>, callback: (Result<Unit>) -> Unit)
+  fun onMalwareDetected(suspiciousAppsArg: List<SuspiciousAppInfo>, callback: (Result<Unit>) -> Unit)
 {
     val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
     val channelName = "dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected$separatedMessageChannelSuffix"
     val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-    channel.send(listOf(packageInfoArg)) {
+    channel.send(listOf(suspiciousAppsArg)) {
       if (it is List<*>) {
         if (it.size > 1) {
           callback(Result.failure(FlutterError(it[0] as String, it[1] as String, it[2] as String?)))

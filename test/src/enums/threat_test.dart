@@ -63,4 +63,8 @@ void main() {
       expect(ThreatX.fromInt(1651076936), Threat.bootloader);
     },
   );
+
+  test('ThreatX.fromInt should throw ArgumentError for unknown code', () {
+    expect(() => ThreatX.fromInt(55943254), throwsArgumentError);
+  });
 }

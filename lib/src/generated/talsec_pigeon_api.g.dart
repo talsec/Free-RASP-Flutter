@@ -143,7 +143,7 @@ class _PigeonCodec extends StandardMessageCodec {
 abstract class TalsecPigeonApi {
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
 
-  void onMalwareDetected(List<SuspiciousAppInfo> packageInfo);
+  void onMalwareDetected(List<SuspiciousAppInfo> suspiciousApps);
 
   void onOngoingCallDetected(CallState state);
 
@@ -168,12 +168,12 @@ abstract class TalsecPigeonApi {
           assert(message != null,
               'Argument for dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected was null.');
           final List<Object?> args = (message as List<Object?>?)!;
-          final List<SuspiciousAppInfo>? arg_packageInfo =
+          final List<SuspiciousAppInfo>? arg_suspiciousApps =
               (args[0] as List<Object?>?)?.cast<SuspiciousAppInfo>();
-          assert(arg_packageInfo != null,
+          assert(arg_suspiciousApps != null,
               'Argument for dev.flutter.pigeon.freerasp.TalsecPigeonApi.onMalwareDetected was null, expected non-null List<SuspiciousAppInfo>.');
           try {
-            api.onMalwareDetected(arg_packageInfo!);
+            api.onMalwareDetected(arg_suspiciousApps!);
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);

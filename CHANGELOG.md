@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `IOSConfig.bundleIds` renamed to `appBundleIds` and `IOSConfig.teamId` renamed to `appTeamId`, matching the iOS SDK and the other freeRASP plugins. The JSON keys used by `toJson`/`fromJson` change accordingly
 - `ThreatCallback.onADBEnabled` renamed to `onAdbEnabled` and `ThreatCallback.onUnsecureWiFi` renamed to `onUnsecureWifi`; `Threat.deviceId` renamed to `deviceID` and `Threat.unsecureWiFi` renamed to `unsecureWifi`, matching the other freeRASP plugins
 - All `Talsec` methods now throw only `TalsecException` or its subclasses: Android-only methods throw the new `UnsupportedPlatformException` (code `unsupported-platform`) instead of `UnimplementedError`, `blockScreenCapture`/`isScreenCaptureBlocked` no longer throw a generic `Exception`, `start` wraps platform errors in `TalsecException`, and `addToWhitelist`/`getAppIcon` throw `MalwareFailureException`
+- `MalwareCallback` now receives a `List<SuspiciousAppInfo>` without nullable items, and its parameter is renamed from `packageInfo` to `suspiciousApps`
+- The `Talsec.private` constructor and the `methodChannel`, `eventChannel` and `executionStateChannel` fields are no longer public; use `Talsec.instance`
+- `ThreatX.fromInt` throws an `ArgumentError` for an unknown code instead of terminating the app. The app is still terminated when the native side sends an unknown threat code, and now also for an unknown execution state code, like in the other freeRASP plugins
 
 #### Added
 

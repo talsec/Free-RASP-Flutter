@@ -124,8 +124,8 @@ class ThreatCallback extends TalsecPigeonApi {
   final VoidCallback? onBootloader;
 
   @override
-  void onMalwareDetected(List<SuspiciousAppInfo> packageInfo) {
-    onMalware?.call(packageInfo);
+  void onMalwareDetected(List<SuspiciousAppInfo> suspiciousApps) {
+    onMalware?.call(suspiciousApps);
   }
 
   /// This method is called when malware is detected.
