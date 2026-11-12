@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:freerasp/src/models/package_info.dart';
+import 'package:meta/meta.dart';
 
 /// An application reported by the malware detection.
 @immutable
@@ -38,8 +38,8 @@ class SuspiciousAppInfo {
   bool operator ==(Object other) =>
       other is SuspiciousAppInfo &&
       other.packageInfo == packageInfo &&
-      listEquals(other.reasons, reasons) &&
-      listEquals(other.permissions, permissions);
+      _listEquals(other.reasons, reasons) &&
+      _listEquals(other.permissions, permissions);
 
   @override
   int get hashCode => Object.hash(
@@ -51,4 +51,13 @@ class SuspiciousAppInfo {
   @override
   String toString() => 'SuspiciousAppInfo(packageInfo: $packageInfo, '
       'reasons: $reasons, permissions: $permissions)';
+}
+
+bool _listEquals(List<String>? a, List<String>? b) {
+  if (identical(a, b)) return true;
+  if (a == null || b == null || a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
 }
