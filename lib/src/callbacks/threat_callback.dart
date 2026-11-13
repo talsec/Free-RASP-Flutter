@@ -1,4 +1,3 @@
-import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
 import 'package:freerasp/src/typedefs.dart';
 
 /// A class which represents a set of callbacks that are used to notify the
@@ -18,7 +17,7 @@ import 'package:freerasp/src/typedefs.dart';
 /// // Attaching callback to Talsec
 /// Talsec.instance.attachListener(callback);
 /// ```
-class ThreatCallback extends TalsecPigeonApi {
+class ThreatCallback {
   /// Constructs a [ThreatCallback] instance.
   ThreatCallback({
     this.onHooks,
@@ -123,20 +122,10 @@ class ThreatCallback extends TalsecPigeonApi {
   /// Android only
   final VoidCallback? onBootloader;
 
-  @override
-  void onMalwareDetected(List<SuspiciousAppInfo> suspiciousApps) {
-    onMalware?.call(suspiciousApps);
-  }
-
   /// This method is called when malware is detected.
   ///
   /// Android only
   final MalwareCallback? onMalware;
-
-  @override
-  void onOngoingCallDetected(CallState state) {
-    onOngoingCall?.call(state);
-  }
 
   /// This method is called when an ongoing call (cellular or VoIP) starts,
   /// is already in progress, or stops while ongoing call detection is

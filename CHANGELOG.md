@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `MalwareCallback` now receives a `List<SuspiciousAppInfo>` without nullable items, and its parameter is renamed from `packageInfo` to `suspiciousApps`
 - The `Talsec.private` constructor and the `methodChannel`, `eventChannel` and `executionStateChannel` fields are no longer public; use `Talsec.instance`
 - `ThreatX.fromInt` throws an `ArgumentError` for an unknown code instead of terminating the app. The app is still terminated when the native side sends an unknown threat code, and now also for an unknown execution state code, like in the other freeRASP plugins
+- `ThreatCallback` no longer extends the generated `TalsecPigeonApi`; its `onMalwareDetected` and `onOngoingCallDetected` methods are removed, use the `onMalware` and `onOngoingCall` callbacks instead
+- `PackageInfo` and `SuspiciousAppInfo` are now immutable classes with value equality; their fields are final and the `encode`/`decode` methods are removed
 
 #### Added
 
@@ -36,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Android package (namespace) of the plugin renamed from `com.aheaditec.freerasp` to `app.talsec.rasp.flutter`, following the Android SDK's `app.talsec.rasp`
 - On Android, `Talsec.isScreenCaptureBlocked()` reports the protection state of the current activity
 - On Android, freeRASP now starts in background mode (`TalsecMode.BACKGROUND`), so the initialization and synchronous checks no longer run on the main thread
+- Malware and ongoing call detections are delivered over the same channel as the other threats, so `ThreatCallback` receives all detections in the order in which they occur. The plugin no longer uses Pigeon
 
 ### Android
 

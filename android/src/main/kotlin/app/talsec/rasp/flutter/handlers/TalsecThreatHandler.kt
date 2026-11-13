@@ -133,14 +133,6 @@ internal object TalsecThreatHandler {
     internal fun detachExecutionStateSink() {
         ExecutionStateDispatcher.eventSink = null
     }
-
-    internal fun attachMethodSink(sink: MethodCallHandler.MethodSink) {
-        ThreatDispatcher.methodSink = sink
-    }
-
-    internal fun detachMethodSink() {
-        ThreatDispatcher.methodSink = null
-    }
 }
 
 
