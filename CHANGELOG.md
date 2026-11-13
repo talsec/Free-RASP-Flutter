@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Breaking
 
 - `RaspExecutionStateCallback.onAllChecksFinished` renamed to `onFastChecksFinished` and `RaspExecutionState.allChecksFinished` renamed to `fastChecksFinished`. On Android, it is triggered when the fast checks are completed, while the postponed checks may still run; on iOS, when all checks are completed
+- `AndroidConfig.signingCertHashes` renamed to `certificateHashes` and `AndroidConfig.supportedStores` renamed to `supportedAlternativeStores`, matching the Android SDK and the other freeRASP plugins
+- `IOSConfig.bundleIds` renamed to `appBundleIds` and `IOSConfig.teamId` renamed to `appTeamId`, matching the iOS SDK and the other freeRASP plugins. The JSON keys used by `toJson`/`fromJson` change accordingly
+- `ThreatCallback.onADBEnabled` renamed to `onAdbEnabled` and `ThreatCallback.onUnsecureWiFi` renamed to `onUnsecureWifi`; `Threat.deviceId` renamed to `deviceID` and `Threat.unsecureWiFi` renamed to `unsecureWifi`, matching the other freeRASP plugins
+- All `Talsec` methods now throw only `TalsecException` or its subclasses: Android-only methods throw the new `UnsupportedPlatformException` (code `unsupported-platform`) instead of `UnimplementedError`, `blockScreenCapture`/`isScreenCaptureBlocked` no longer throw a generic `Exception`, `start` wraps platform errors in `TalsecException`, and `addToWhitelist`/`getAppIcon` throw `MalwareFailureException`
+- `MalwareCallback` now receives a `List<SuspiciousAppInfo>` without nullable items, and its parameter is renamed from `packageInfo` to `suspiciousApps`
+- The `Talsec.private` constructor and the `methodChannel`, `eventChannel` and `executionStateChannel` fields are no longer public; use `Talsec.instance`
+- `ThreatX.fromInt` throws an `ArgumentError` for an unknown code instead of terminating the app. The app is still terminated when the native side sends an unknown threat code, and now also for an unknown execution state code, like in the other freeRASP plugins
+- `ThreatCallback` no longer extends the generated `TalsecPigeonApi`; its `onMalwareDetected` and `onOngoingCallDetected` methods are removed, use the `onMalware` and `onOngoingCall` callbacks instead
+- `PackageInfo` and `SuspiciousAppInfo` are now immutable classes with value equality; their fields are final and the `encode`/`decode` methods are removed
 
 #### Added
 
@@ -22,12 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Talsec.blockScreenControl()` and `Talsec.isScreenControlBlocked()` to prevent accessibility services from reading or controlling the app screen (Android only)
 - `Talsec.blockOverlayWindows()` and `Talsec.isOverlayWindowsBlocked()` to hide overlay windows of other apps (Android 12+ only, requires the `HIDE_OVERLAY_WINDOWS` permission)
 - `RaspExecutionStateCallback.onCriticalChecksFinished` and `RaspExecutionStateCallback.onPostponedChecksFinished`, with matching `RaspExecutionState` values (Android only)
+- `ExternalIdFailureException` and `MalwareFailureException` are now exported, so they can be caught by type
 
 #### Changed
 
 - Android package (namespace) of the plugin renamed from `com.aheaditec.freerasp` to `app.talsec.rasp.flutter`, following the Android SDK's `app.talsec.rasp`
 - On Android, `Talsec.isScreenCaptureBlocked()` reports the protection state of the current activity
 - On Android, freeRASP now starts in background mode (`TalsecMode.BACKGROUND`), so the initialization and synchronous checks no longer run on the main thread
+- Malware and ongoing call detections are delivered over the same channel as the other threats, so `ThreatCallback` receives all detections in the order in which they occur. The plugin no longer uses Pigeon
 
 ### Android
 

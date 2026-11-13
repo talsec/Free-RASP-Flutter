@@ -7,6 +7,5 @@ example/*
 example/lib/*
 !example/lib/main.dart
 test/
-pigeons/
 !**/TalsecRuntime.xcframework/
 !**/TalsecRuntime.xcframework/**

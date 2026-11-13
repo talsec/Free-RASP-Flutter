@@ -14,12 +14,12 @@ void main() {
 
   final androidConfig = AndroidConfig(
     packageName: packageName,
-    signingCertHashes: signingHashes,
+    certificateHashes: signingHashes,
   );
 
   final iosConfig = IOSConfig(
-    bundleIds: appBundleIds,
-    teamId: appTeamId,
+    appBundleIds: appBundleIds,
+    appTeamId: appTeamId,
   );
 
   test('Provide configuration for each platform', () {

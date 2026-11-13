@@ -14,7 +14,7 @@ void main() {
     expect(threatValues[0], Threat.hooks);
     expect(threatValues[1], Threat.debug);
     expect(threatValues[2], Threat.passcode);
-    expect(threatValues[3], Threat.deviceId);
+    expect(threatValues[3], Threat.deviceID);
     expect(threatValues[4], Threat.simulator);
     expect(threatValues[5], Threat.appIntegrity);
     expect(threatValues[6], Threat.obfuscationIssues);
@@ -28,7 +28,7 @@ void main() {
     expect(threatValues[14], Threat.screenshot);
     expect(threatValues[15], Threat.screenRecording);
     expect(threatValues[16], Threat.multiInstance);
-    expect(threatValues[17], Threat.unsecureWiFi);
+    expect(threatValues[17], Threat.unsecureWifi);
     expect(threatValues[18], Threat.timeSpoofing);
     expect(threatValues[19], Threat.locationSpoofing);
     expect(threatValues[20], Threat.automation);
@@ -42,7 +42,7 @@ void main() {
       expect(ThreatX.fromInt(1268968002), Threat.debug);
       expect(ThreatX.fromInt(209533833), Threat.hooks);
       expect(ThreatX.fromInt(1293399086), Threat.passcode);
-      expect(ThreatX.fromInt(1514211414), Threat.deviceId);
+      expect(ThreatX.fromInt(1514211414), Threat.deviceID);
       expect(ThreatX.fromInt(477190884), Threat.simulator);
       expect(ThreatX.fromInt(1115787534), Threat.appIntegrity);
       expect(ThreatX.fromInt(1001443554), Threat.obfuscationIssues);
@@ -56,11 +56,15 @@ void main() {
       expect(ThreatX.fromInt(705651459), Threat.screenshot);
       expect(ThreatX.fromInt(64690214), Threat.screenRecording);
       expect(ThreatX.fromInt(859307284), Threat.multiInstance);
-      expect(ThreatX.fromInt(363588890), Threat.unsecureWiFi);
+      expect(ThreatX.fromInt(363588890), Threat.unsecureWifi);
       expect(ThreatX.fromInt(189105221), Threat.timeSpoofing);
       expect(ThreatX.fromInt(653273273), Threat.locationSpoofing);
       expect(ThreatX.fromInt(298453120), Threat.automation);
       expect(ThreatX.fromInt(1651076936), Threat.bootloader);
     },
   );
+
+  test('ThreatX.fromInt should throw ArgumentError for unknown code', () {
+    expect(() => ThreatX.fromInt(55943254), throwsArgumentError);
+  });
 }

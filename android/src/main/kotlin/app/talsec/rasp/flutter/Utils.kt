@@ -26,8 +26,8 @@ internal object Utils {
         val killOnBypass = json.optBoolean("killOnBypass")
         val androidConfig = json.getJSONObject("androidConfig")
         val packageName = androidConfig.getString("packageName")
-        val certificateHashes = androidConfig.extractArray<String>("signingCertHashes")
-        val alternativeStores = androidConfig.extractArray<String>("supportedStores")
+        val certificateHashes = androidConfig.extractArray<String>("certificateHashes")
+        val alternativeStores = androidConfig.extractArray<String>("supportedAlternativeStores")
 
         val builder = TalsecConfig.Builder(packageName, certificateHashes)
             .watcherMail(watcherMail)

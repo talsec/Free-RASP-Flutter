@@ -10,7 +10,7 @@ class ConfigVerifier {
   /// Verifies if provided [androidConfig] is valid.
   /// Verification is run only if current TargetPlatform is Android.
   /// Verifies [AndroidConfig.packageName] presence and validity of provided
-  /// [AndroidConfig.signingCertHashes].
+  /// [AndroidConfig.certificateHashes].
   ///
   /// Throws [ConfigurationException] if config is invalid.
   static void verifyAndroid(AndroidConfig androidConfig) {
@@ -24,15 +24,15 @@ class ConfigVerifier {
       );
     }
 
-    if (androidConfig.signingCertHashes.isEmpty) {
+    if (androidConfig.certificateHashes.isEmpty) {
       throw const ConfigurationException(
-        message: 'signingCertHashes cannot be empty',
+        message: 'certificateHashes cannot be empty',
       );
     }
 
-    _verifyHashesFormat(androidConfig.signingCertHashes);
+    _verifyHashesFormat(androidConfig.certificateHashes);
 
-    _verifyHashesValidity(androidConfig.signingCertHashes);
+    _verifyHashesValidity(androidConfig.certificateHashes);
   }
 
   static void _verifyHashLength(String hash) {
@@ -65,7 +65,7 @@ class ConfigVerifier {
 
   /// Verifies if provided [iOSConfig] is valid.
   /// Verification is run only if current TargetPlatform is iOS.
-  /// Verifies [IOSConfig.bundleIds] and [IOSConfig.teamId] presence.
+  /// Verifies [IOSConfig.appBundleIds] and [IOSConfig.appTeamId] presence.
   ///
   /// Throws [ConfigurationException] if config is invalid.
   static void verifyIOS(IOSConfig iOSConfig) {
@@ -73,13 +73,13 @@ class ConfigVerifier {
       return;
     }
 
-    if (iOSConfig.bundleIds.isEmpty) {
+    if (iOSConfig.appBundleIds.isEmpty) {
       throw const ConfigurationException(
         message: 'bundle IDs cannot be empty',
       );
     }
 
-    if (iOSConfig.teamId.isEmpty) {
+    if (iOSConfig.appTeamId.isEmpty) {
       throw const ConfigurationException(
         message: 'team ID cannot be empty',
       );

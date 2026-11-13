@@ -5,9 +5,18 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freerasp/freerasp.dart';
-import 'package:freerasp/src/errors/external_id_failure_exception.dart';
-import 'package:freerasp/src/errors/malware_failure_exception.dart';
-import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
+
+/// Creates a [Talsec] instance that communicates over the given channels.
+///
+/// For tests of this package only; it is not exported from
+/// `package:freerasp/freerasp.dart`.
+@visibleForTesting
+Talsec createTalsecForTesting(
+  MethodChannel methodChannel,
+  EventChannel eventChannel,
+  EventChannel executionStateChannel,
+) =>
+    Talsec._(methodChannel, eventChannel, executionStateChannel);
 
 /// A class which maintains all security related operations.
 ///
@@ -29,59 +38,55 @@ import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart' as pigeon;
 /// singleton is initialized. However, subsequent calls to the instance getter
 /// will return the same singleton instance without any additional delay.
 class Talsec {
-  /// Private constructor for internal and testing purposes.
-  @visibleForTesting
-  Talsec.private(
-    this.methodChannel,
-    this.eventChannel,
-    this.executionStateChannel,
+  Talsec._(
+    this._methodChannel,
+    this._eventChannel,
+    this._executionStateChannel,
   );
 
   /// Named channel used to communicate with platform plugins.
   ///
   /// When threat is detected on platform side, [int] is sent which is then
   /// transformed into [Threat] using [ThreatX.fromInt].
-  static const EventChannel _eventChannel =
+  static const EventChannel _defaultEventChannel =
       EventChannel('talsec.app/freerasp/events');
 
   /// Named channel used to communicate with platform plugins.
   ///
   /// Transforms data and function calls such as [start].
-  static const MethodChannel _methodChannel =
+  static const MethodChannel _defaultMethodChannel =
       MethodChannel('talsec.app/freerasp/methods');
 
   /// Named channel used to communicate with platform plugins.
   ///
   /// Stream of execution state events.
-  static const EventChannel _executionStateChannel =
+  static const EventChannel _defaultExecutionStateChannel =
       EventChannel('talsec.app/freerasp/execution_state');
 
   /// Private [Talsec] variable which holds current instance of class.
-  static final _instance = Talsec.private(
-    _methodChannel,
-    _eventChannel,
-    _executionStateChannel,
+  static final _instance = Talsec._(
+    _defaultMethodChannel,
+    _defaultEventChannel,
+    _defaultExecutionStateChannel,
   );
 
   /// Initialize Talsec lazily/obtain current instance of Talsec.
   static Talsec get instance => _instance;
 
   /// [MethodChannel] used to interact with native platform.
-  @visibleForTesting
-  late final MethodChannel methodChannel;
+  final MethodChannel _methodChannel;
 
   /// [EventChannel] used to receive Threats from the native platform.
-  @visibleForTesting
-  late final EventChannel eventChannel;
+  final EventChannel _eventChannel;
 
   /// [EventChannel] used to receive execution state events from the native
   /// platform.
-  @visibleForTesting
-  late final EventChannel executionStateChannel;
+  final EventChannel _executionStateChannel;
 
-  StreamSubscription<Threat>? _streamSubscription;
+  StreamSubscription<Object?>? _streamSubscription;
   StreamSubscription<RaspExecutionState>? _executionStateSubscription;
 
+  Stream<Object?>? _events;
   Stream<Threat>? _onThreatDetected;
   Stream<RaspExecutionState>? _onRaspExecutionState;
 
@@ -113,14 +118,18 @@ class Talsec {
       return _onThreatDetected!;
     }
 
-    _onThreatDetected = eventChannel
-        .receiveBroadcastStream()
+    _onThreatDetected = _threatEvents
+        .where((event) => event is int)
         .cast<int>()
-        .map(ThreatX.fromInt)
-        .handleError(_handleStreamError);
+        .map((code) => _decodeOrAbort(code, ThreatX.fromInt));
 
     return _onThreatDetected!;
   }
+
+  /// Broadcast stream of all events of the threat channel: an [int] threat
+  /// code, or a map with the payload of a malware or ongoing call detection.
+  Stream<Object?> get _threatEvents => _events ??=
+      _eventChannel.receiveBroadcastStream().handleError(_handleStreamError);
 
   /// Returns a broadcast stream. When RASP execution state changes
   /// [onRaspExecutionState] receives what state it is.
@@ -129,22 +138,29 @@ class Talsec {
       return _onRaspExecutionState!;
     }
 
-    _onRaspExecutionState = executionStateChannel
+    _onRaspExecutionState = _executionStateChannel
         .receiveBroadcastStream()
         .cast<int>()
-        .map(RaspExecutionStateX.fromInt)
+        .map((code) => _decodeOrAbort(code, RaspExecutionStateX.fromInt))
         .handleError(_handleStreamError);
 
     return _onRaspExecutionState!;
   }
 
   /// Starts freeRASP with configuration provided in [config].
-  Future<void> start(TalsecConfig config) {
+  ///
+  /// Throws a [ConfigurationException] when the config for the current
+  /// platform is missing, or a [TalsecException] when the start fails.
+  Future<void> start(TalsecConfig config) async {
     _checkConfig(config);
-    return methodChannel.invokeMethod(
-      'start',
-      {'config': jsonEncode(config.toJson())},
-    );
+    try {
+      await _methodChannel.invokeMethod<void>(
+        'start',
+        {'config': jsonEncode(config.toJson())},
+      );
+    } on PlatformException catch (e) {
+      throw TalsecException.fromPlatformException(e);
+    }
   }
 
   /// Adds [packageName] to the whitelist.
@@ -157,16 +173,15 @@ class Talsec {
   /// whitelist, you need to remove application data or reinstall the
   /// application.
   Future<void> addToWhitelist(String packageName) async {
-    if (!Platform.isAndroid) {
-      throw UnimplementedError(
-        'Platform is not supported: $defaultTargetPlatform}',
+    _checkAndroid();
+    try {
+      await _methodChannel.invokeMethod<void>(
+        'addToWhitelist',
+        {'packageName': packageName},
       );
+    } on PlatformException catch (e) {
+      throw MalwareFailureException.fromPlatformException(e);
     }
-
-    return methodChannel.invokeMethod(
-      'addToWhitelist',
-      {'packageName': packageName},
-    );
   }
 
   /// Prevents the screen from being captured.
@@ -180,10 +195,10 @@ class Talsec {
   ///
   Future<void> blockScreenCapture({required bool enabled}) async {
     try {
-      await methodChannel
+      await _methodChannel
           .invokeMethod('blockScreenCapture', {'enable': enabled});
     } on PlatformException catch (e) {
-      throw Exception('Failed to call block screen capture: ${e.message}');
+      throw TalsecException.fromPlatformException(e);
     }
   }
 
@@ -197,7 +212,7 @@ class Talsec {
   Future<bool> isScreenCaptureBlocked() async {
     try {
       final result =
-          await methodChannel.invokeMethod<bool>('isScreenCaptureBlocked');
+          await _methodChannel.invokeMethod<bool>('isScreenCaptureBlocked');
 
       if (result is! bool) {
         throw const TalsecException(message: 'Screen capture state failed.');
@@ -205,7 +220,7 @@ class Talsec {
 
       return result;
     } on PlatformException catch (e) {
-      throw Exception('Failed to check screen capture state: ${e.message}');
+      throw TalsecException.fromPlatformException(e);
     }
   }
 
@@ -219,7 +234,7 @@ class Talsec {
   Future<void> blockScreenControl({required bool enabled}) async {
     _checkAndroid();
     try {
-      await methodChannel
+      await _methodChannel
           .invokeMethod<void>('blockScreenControl', {'enable': enabled});
     } on PlatformException catch (e) {
       throw TalsecException.fromPlatformException(e);
@@ -278,7 +293,7 @@ class Talsec {
   Future<void> startOngoingCallDetection() async {
     _checkAndroid();
     try {
-      await methodChannel.invokeMethod<void>('startOngoingCallDetection');
+      await _methodChannel.invokeMethod<void>('startOngoingCallDetection');
     } on PlatformException catch (e) {
       throw TalsecException.fromPlatformException(e);
     }
@@ -290,7 +305,7 @@ class Talsec {
   Future<void> stopOngoingCallDetection() async {
     _checkAndroid();
     try {
-      await methodChannel.invokeMethod<void>('stopOngoingCallDetection');
+      await _methodChannel.invokeMethod<void>('stopOngoingCallDetection');
     } on PlatformException catch (e) {
       throw TalsecException.fromPlatformException(e);
     }
@@ -301,7 +316,7 @@ class Talsec {
     Map<String, Object?>? arguments,
   ]) async {
     try {
-      final result = await methodChannel.invokeMethod<bool>(method, arguments);
+      final result = await _methodChannel.invokeMethod<bool>(method, arguments);
 
       if (result is! bool) {
         throw TalsecException(message: '$method returned no result.');
@@ -315,8 +330,8 @@ class Talsec {
 
   void _checkAndroid() {
     if (!Platform.isAndroid) {
-      throw UnimplementedError(
-        'Platform is not supported: $defaultTargetPlatform',
+      throw UnsupportedPlatformException(
+        message: 'Platform is not supported: $defaultTargetPlatform',
       );
     }
   }
@@ -327,7 +342,8 @@ class Talsec {
   /// Throws a [ExternalIdFailureException] when storing failed.
   Future<void> storeExternalId(String data) async {
     try {
-      await methodChannel.invokeMethod<void>('storeExternalId', {'data': data});
+      await _methodChannel
+          .invokeMethod<void>('storeExternalId', {'data': data});
     } on PlatformException catch (e) {
       throw ExternalIdFailureException.fromPlatformException(e);
     }
@@ -338,7 +354,7 @@ class Talsec {
   /// Throws a [ExternalIdFailureException] when removing failed.
   Future<void> removeExternalId() async {
     try {
-      await methodChannel.invokeMethod<void>('removeExternalId');
+      await _methodChannel.invokeMethod<void>('removeExternalId');
     } on PlatformException catch (e) {
       throw ExternalIdFailureException.fromPlatformException(e);
     }
@@ -362,7 +378,9 @@ class Talsec {
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
-        throw UnimplementedError('Platform is not supported');
+        throw UnsupportedPlatformException(
+          message: 'Platform is not supported: $defaultTargetPlatform',
+        );
     }
   }
 
@@ -370,63 +388,105 @@ class Talsec {
   /// already attached, current one will be detached and replaced with
   /// [callback].
   ///
-  /// When invoked, functions starts listening to [onThreatDetected] and turns
-  /// stream events into function callbacks of [ThreatCallback].
+  /// When invoked, functions starts listening to the threat events and turns
+  /// them into function callbacks of [ThreatCallback], in the order in which
+  /// they were detected.
   ///
   /// When threat is detected, respective callback of [ThreatCallback] is
   /// invoked.
   Future<void> attachListener(ThreatCallback callback) async {
-    pigeon.TalsecPigeonApi.setUp(callback);
-
     await detachListener();
-    _streamSubscription ??= onThreatDetected.listen((event) {
-      switch (event) {
-        case Threat.hooks:
-          callback.onHooks?.call();
-        case Threat.debug:
-          callback.onDebug?.call();
-        case Threat.passcode:
-          callback.onPasscode?.call();
-        case Threat.deviceId:
-          callback.onDeviceID?.call();
-        case Threat.simulator:
-          callback.onSimulator?.call();
-        case Threat.appIntegrity:
-          callback.onAppIntegrity?.call();
-        case Threat.obfuscationIssues:
-          callback.onObfuscationIssues?.call();
-        case Threat.deviceBinding:
-          callback.onDeviceBinding?.call();
-        case Threat.unofficialStore:
-          callback.onUnofficialStore?.call();
-        case Threat.privilegedAccess:
-          callback.onPrivilegedAccess?.call();
-        case Threat.secureHardwareNotAvailable:
-          callback.onSecureHardwareNotAvailable?.call();
-        case Threat.systemVPN:
-          callback.onSystemVPN?.call();
-        case Threat.devMode:
-          callback.onDevMode?.call();
-        case Threat.adbEnabled:
-          callback.onADBEnabled?.call();
-        case Threat.screenshot:
-          callback.onScreenshot?.call();
-        case Threat.screenRecording:
-          callback.onScreenRecording?.call();
-        case Threat.multiInstance:
-          callback.onMultiInstance?.call();
-        case Threat.unsecureWiFi:
-          callback.onUnsecureWiFi?.call();
-        case Threat.timeSpoofing:
-          callback.onTimeSpoofing?.call();
-        case Threat.locationSpoofing:
-          callback.onLocationSpoofing?.call();
-        case Threat.automation:
-          callback.onAutomation?.call();
-        case Threat.bootloader:
-          callback.onBootloader?.call();
+    _streamSubscription ??= _threatEvents.listen(
+      (event) => _dispatchThreatEvent(callback, event),
+    );
+  }
+
+  void _dispatchThreatEvent(ThreatCallback callback, Object? event) {
+    switch (event) {
+      case final int code:
+        _dispatchThreat(callback, _decodeOrAbort(code, ThreatX.fromInt));
+      case final Map<Object?, Object?> payload:
+        _dispatchPayload(callback, payload);
+      default:
+        // Unknown data came from the native platform.
+        exit(127);
+    }
+  }
+
+  /// Delivers a malware or ongoing call detection.
+  ///
+  /// An unexpected payload is handled like an unknown threat code.
+  void _dispatchPayload(
+    ThreatCallback callback,
+    Map<Object?, Object?> payload,
+  ) {
+    final void Function() deliver;
+    try {
+      switch (payload['type']) {
+        case 'malware':
+          final apps = (payload['suspiciousApps']! as List<Object?>)
+              .map((app) => SuspiciousAppInfo.fromMap(app! as Map))
+              .toList();
+          deliver = () => callback.onMalware?.call(apps);
+        case 'ongoingCall':
+          final state = CallState.values.byName(payload['state']! as String);
+          deliver = () => callback.onOngoingCall?.call(state);
+        default:
+          exit(127);
       }
-    });
+    } on Object {
+      exit(127);
+    }
+    deliver();
+  }
+
+  void _dispatchThreat(ThreatCallback callback, Threat threat) {
+    switch (threat) {
+      case Threat.hooks:
+        callback.onHooks?.call();
+      case Threat.debug:
+        callback.onDebug?.call();
+      case Threat.passcode:
+        callback.onPasscode?.call();
+      case Threat.deviceID:
+        callback.onDeviceID?.call();
+      case Threat.simulator:
+        callback.onSimulator?.call();
+      case Threat.appIntegrity:
+        callback.onAppIntegrity?.call();
+      case Threat.obfuscationIssues:
+        callback.onObfuscationIssues?.call();
+      case Threat.deviceBinding:
+        callback.onDeviceBinding?.call();
+      case Threat.unofficialStore:
+        callback.onUnofficialStore?.call();
+      case Threat.privilegedAccess:
+        callback.onPrivilegedAccess?.call();
+      case Threat.secureHardwareNotAvailable:
+        callback.onSecureHardwareNotAvailable?.call();
+      case Threat.systemVPN:
+        callback.onSystemVPN?.call();
+      case Threat.devMode:
+        callback.onDevMode?.call();
+      case Threat.adbEnabled:
+        callback.onAdbEnabled?.call();
+      case Threat.screenshot:
+        callback.onScreenshot?.call();
+      case Threat.screenRecording:
+        callback.onScreenRecording?.call();
+      case Threat.multiInstance:
+        callback.onMultiInstance?.call();
+      case Threat.unsecureWifi:
+        callback.onUnsecureWifi?.call();
+      case Threat.timeSpoofing:
+        callback.onTimeSpoofing?.call();
+      case Threat.locationSpoofing:
+        callback.onLocationSpoofing?.call();
+      case Threat.automation:
+        callback.onAutomation?.call();
+      case Threat.bootloader:
+        callback.onBootloader?.call();
+    }
   }
 
   /// Removes instance of latest [ThreatCallback]. Also cancels
@@ -436,6 +496,21 @@ class Talsec {
   Future<void> detachListener() async {
     await _streamSubscription?.cancel();
     _streamSubscription = null;
+  }
+
+  /// Decodes a [code] received from the native platform.
+  ///
+  /// An unknown code means that the communication with the native platform was
+  /// tampered with, so the app is terminated, like in the other freeRASP
+  /// plugins.
+  static T _decodeOrAbort<T>(int code, T Function(int) decode) {
+    try {
+      return decode(code);
+      // fromInt reports an unknown code with an ArgumentError.
+      // ignore: avoid_catching_errors
+    } on ArgumentError {
+      exit(127);
+    }
   }
 
   void _handleStreamError(Object error) {
@@ -475,22 +550,17 @@ class Talsec {
   /// Throws a [TalsecException] with error message description if
   /// the app with given package name couldn't be obtained.
   Future<String> getAppIcon(String packageName) async {
-    if (!Platform.isAndroid) {
-      throw UnimplementedError(
-        'Platform is not supported: $defaultTargetPlatform}',
-      );
-    }
-
+    _checkAndroid();
     try {
       return await _getAppIcon(packageName);
     } on PlatformException catch (e) {
-      throw TalsecException.fromPlatformException(e);
+      throw MalwareFailureException.fromPlatformException(e);
     }
   }
 
   Future<String> _getAppIcon(String packageName) async {
     final args = {'packageName': packageName};
-    final result = await methodChannel.invokeMethod<String>(
+    final result = await _methodChannel.invokeMethod<String>(
       'getAppIcon',
       args,
     );

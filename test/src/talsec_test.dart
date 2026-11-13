@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:freerasp/freerasp.dart';
+import 'package:freerasp/src/talsec.dart' show createTalsecForTesting;
 
 import '../test_utils/test_utils.dart';
 
@@ -19,12 +20,12 @@ void main() {
     const mockWatcherMail = 'your_mail@example.com';
     final mockAndroidConfig = AndroidConfig(
       packageName: 'com.aheaditec.freeraspExample',
-      signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
-      supportedStores: ['com.sec.android.app.samsungapps'],
+      certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+      supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
     );
     final mockIOSConfig = IOSConfig(
-      bundleIds: ['com.aheaditec.freeraspExample'],
-      teamId: 'M8AK35...',
+      appBundleIds: ['com.aheaditec.freeraspExample'],
+      appTeamId: 'M8AK35...',
     );
 
     tearDown(log.clear);
@@ -43,7 +44,7 @@ void main() {
           watcherMail: mockWatcherMail,
         );
         // Act
-        final talsec = Talsec.private(
+        final talsec = createTalsecForTesting(
           methodChannel.methodChannel,
           FakeEventChannel(),
           FakeEventChannel(),
@@ -70,7 +71,7 @@ void main() {
           watcherMail: mockWatcherMail,
         );
         // Act
-        final talsec = Talsec.private(
+        final talsec = createTalsecForTesting(
           methodChannel.methodChannel,
           FakeEventChannel(),
           FakeEventChannel(),
@@ -93,7 +94,7 @@ void main() {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
 
         // Act
-        final talsec = Talsec.private(
+        final talsec = createTalsecForTesting(
           methodChannel.methodChannel,
           FakeEventChannel(),
           FakeEventChannel(),
@@ -122,7 +123,7 @@ void main() {
         );
 
         // Act
-        final talsec = Talsec.private(
+        final talsec = createTalsecForTesting(
           methodChannel.methodChannel,
           FakeEventChannel(),
           FakeEventChannel(),
@@ -157,13 +158,13 @@ void main() {
     test('Should receive stream of Threats', () {
       // Arrange
       final eventChannel = MockEventChannel(
-        eventChannel: Talsec.instance.eventChannel,
+        eventChannel: const EventChannel('talsec.app/freerasp/events'),
         data: [
           44506749,
           1115787534,
         ],
       );
-      final talsec = Talsec.private(
+      final talsec = createTalsecForTesting(
         FakeMethodChannel(),
         eventChannel.eventChannel,
         FakeEventChannel(),
@@ -185,11 +186,11 @@ void main() {
 
     test('Should transform every $PlatformException into $TalsecException', () {
       final eventChannel = MockEventChannel(
-        eventChannel: Talsec.instance.eventChannel,
+        eventChannel: const EventChannel('talsec.app/freerasp/events'),
         data: [],
         exceptions: [PlatformException(code: 'dummy-code')],
       );
-      final talsec = Talsec.private(
+      final talsec = createTalsecForTesting(
         FakeMethodChannel(),
         eventChannel.eventChannel,
         FakeEventChannel(),
@@ -216,14 +217,14 @@ void main() {
 
     test('Should survive thrown exception when listening', () {
       final eventChannel = MockEventChannel(
-        eventChannel: Talsec.instance.eventChannel,
+        eventChannel: const EventChannel('talsec.app/freerasp/events'),
         data: [
           44506749,
           1115787534,
         ],
         exceptions: [PlatformException(code: 'dummy-code')],
       );
-      final talsec = Talsec.private(
+      final talsec = createTalsecForTesting(
         FakeMethodChannel(),
         eventChannel.eventChannel,
         FakeEventChannel(),
@@ -256,10 +257,10 @@ void main() {
     test('Should receive stream of RaspExecutionState', () {
       // Arrange
       final eventChannel = MockEventChannel(
-        eventChannel: Talsec.instance.executionStateChannel,
+        eventChannel: const EventChannel('talsec.app/freerasp/execution_state'),
         data: [187429],
       );
-      final talsec = Talsec.private(
+      final talsec = createTalsecForTesting(
         FakeMethodChannel(),
         FakeEventChannel(),
         eventChannel.eventChannel,
@@ -281,10 +282,10 @@ void main() {
     test('attachExecutionStateListener should invoke callback', () async {
       // Arrange
       final eventChannel = MockEventChannel(
-        eventChannel: Talsec.instance.executionStateChannel,
+        eventChannel: const EventChannel('talsec.app/freerasp/execution_state'),
         data: [187429],
       );
-      final talsec = Talsec.private(
+      final talsec = createTalsecForTesting(
         FakeMethodChannel(),
         FakeEventChannel(),
         eventChannel.eventChannel,
@@ -305,10 +306,10 @@ void main() {
     test('Should receive Android-only execution states', () {
       // Arrange
       final eventChannel = MockEventChannel(
-        eventChannel: Talsec.instance.executionStateChannel,
+        eventChannel: const EventChannel('talsec.app/freerasp/execution_state'),
         data: [614702, 187429, 952318],
       );
-      final talsec = Talsec.private(
+      final talsec = createTalsecForTesting(
         FakeMethodChannel(),
         FakeEventChannel(),
         eventChannel.eventChannel,
@@ -332,10 +333,10 @@ void main() {
     test('attachExecutionStateListener should invoke every callback', () async {
       // Arrange
       final eventChannel = MockEventChannel(
-        eventChannel: Talsec.instance.executionStateChannel,
+        eventChannel: const EventChannel('talsec.app/freerasp/execution_state'),
         data: [614702, 187429, 952318],
       );
-      final talsec = Talsec.private(
+      final talsec = createTalsecForTesting(
         FakeMethodChannel(),
         FakeEventChannel(),
         eventChannel.eventChannel,
@@ -363,7 +364,7 @@ void main() {
 
   group('Android-only APIs', () {
     // Tests run on the host, which is not Android.
-    final talsec = Talsec.private(
+    final talsec = createTalsecForTesting(
       FakeMethodChannel(),
       FakeEventChannel(),
       FakeEventChannel(),
@@ -376,11 +377,13 @@ void main() {
       'isOverlayWindowsBlocked': talsec.isOverlayWindowsBlocked,
       'startOngoingCallDetection': talsec.startOngoingCallDetection,
       'stopOngoingCallDetection': talsec.stopOngoingCallDetection,
+      'addToWhitelist': () => talsec.addToWhitelist('com.example.app'),
+      'getAppIcon': () => talsec.getAppIcon('com.example.app'),
     };
 
     for (final entry in calls.entries) {
       test('${entry.key} should throw outside Android', () {
-        expect(entry.value, throwsA(isA<UnimplementedError>()));
+        expect(entry.value, throwsA(isA<UnsupportedPlatformException>()));
       });
     }
   });

@@ -11,7 +11,7 @@ void main() {
       const validHash = 'AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0=';
       final config = AndroidConfig(
         packageName: 'packageName',
-        signingCertHashes: [validHash],
+        certificateHashes: [validHash],
       );
 
       // Act & Assert
@@ -26,7 +26,7 @@ void main() {
       expect(
         () => AndroidConfig(
           packageName: 'packageName',
-          signingCertHashes: [invalidHash],
+          certificateHashes: [invalidHash],
         ),
         throwsA(isA<ConfigurationException>()),
       );
@@ -43,7 +43,7 @@ void main() {
       expect(
         () => AndroidConfig(
           packageName: 'packageName',
-          signingCertHashes: [validHash, invalidHash],
+          certificateHashes: [validHash, invalidHash],
         ),
         throwsA(isA<ConfigurationException>()),
       );
@@ -53,7 +53,7 @@ void main() {
       expect(
         () => AndroidConfig(
           packageName: 'packageName',
-          signingCertHashes: [],
+          certificateHashes: [],
         ),
         throwsA(isA<ConfigurationException>()),
       );
@@ -67,7 +67,7 @@ void main() {
       expect(
         () => AndroidConfig(
           packageName: '',
-          signingCertHashes: [validHash],
+          certificateHashes: [validHash],
         ),
         throwsA(isA<ConfigurationException>()),
       );
@@ -76,16 +76,16 @@ void main() {
     test('Should encode TalsecConfig to String', () {
       // Arrange
       const expectedString =
-          '{"androidConfig":{"packageName":"com.aheaditec.freeraspExample","signingCertHashes":["AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0="],"supportedStores":["com.sec.android.app.samsungapps"]},"iosConfig":{"bundleIds":["com.aheaditec.freeraspExample"],"teamId":"M8AK35..."},"watcherMail":"test_mail@example.com","isProd":false}';
+          '{"androidConfig":{"packageName":"com.aheaditec.freeraspExample","certificateHashes":["AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0="],"supportedAlternativeStores":["com.sec.android.app.samsungapps"]},"iosConfig":{"appBundleIds":["com.aheaditec.freeraspExample"],"appTeamId":"M8AK35..."},"watcherMail":"test_mail@example.com","isProd":false}';
       final config = TalsecConfig(
         androidConfig: AndroidConfig(
           packageName: 'com.aheaditec.freeraspExample',
-          signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
-          supportedStores: ['com.sec.android.app.samsungapps'],
+          certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+          supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
         ),
         iosConfig: IOSConfig(
-          bundleIds: ['com.aheaditec.freeraspExample'],
-          teamId: 'M8AK35...',
+          appBundleIds: ['com.aheaditec.freeraspExample'],
+          appTeamId: 'M8AK35...',
         ),
         watcherMail: 'test_mail@example.com',
         isProd: false,
@@ -103,19 +103,19 @@ void main() {
       final expectedConfig = TalsecConfig(
         androidConfig: AndroidConfig(
           packageName: 'com.aheaditec.freeraspExample',
-          signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
-          supportedStores: ['com.sec.android.app.samsungapps'],
+          certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+          supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
         ),
         iosConfig: IOSConfig(
-          bundleIds: ['com.aheaditec.freeraspExample'],
-          teamId: 'M8AK35...',
+          appBundleIds: ['com.aheaditec.freeraspExample'],
+          appTeamId: 'M8AK35...',
         ),
         watcherMail: 'test_mail@example.com',
         isProd: false,
       );
 
       const config =
-          '{"androidConfig":{"packageName":"com.aheaditec.freeraspExample","signingCertHashes":["AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0="],"supportedStores":["com.sec.android.app.samsungapps"]},"iosConfig":{"bundleIds":["com.aheaditec.freeraspExample"],"teamId":"M8AK35..."},"watcherMail":"test_mail@example.com","isProd":false}';
+          '{"androidConfig":{"packageName":"com.aheaditec.freeraspExample","certificateHashes":["AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0="],"supportedAlternativeStores":["com.sec.android.app.samsungapps"]},"iosConfig":{"appBundleIds":["com.aheaditec.freeraspExample"],"appTeamId":"M8AK35..."},"watcherMail":"test_mail@example.com","isProd":false}';
 
       // Act
       final actualConfig =
@@ -131,12 +131,12 @@ void main() {
         equals(expectedConfig.isProd),
       );
       expect(
-        actualConfig.androidConfig?.signingCertHashes,
-        equals(expectedConfig.androidConfig?.signingCertHashes),
+        actualConfig.androidConfig?.certificateHashes,
+        equals(expectedConfig.androidConfig?.certificateHashes),
       );
       expect(
-        actualConfig.iosConfig?.bundleIds,
-        equals(expectedConfig.iosConfig?.bundleIds),
+        actualConfig.iosConfig?.appBundleIds,
+        equals(expectedConfig.iosConfig?.appBundleIds),
       );
     });
   });
