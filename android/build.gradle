@@ -1,9 +1,9 @@
-group 'com.aheaditec.freerasp'
+group 'app.talsec.rasp.flutter'
 version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '2.1.0'
-    ext.talsec_version = '19.3.1'
+    ext.talsec_version = '20.0.1'
     repositories {
         google()
         mavenCentral()
@@ -32,7 +32,7 @@ apply plugin: 'app.talsec.plugin'
 
 android {
     if (project.android.hasProperty("namespace")) {
-        namespace("com.aheaditec.freerasp")
+        namespace("app.talsec.rasp.flutter")
     }
 
     compileSdk 36

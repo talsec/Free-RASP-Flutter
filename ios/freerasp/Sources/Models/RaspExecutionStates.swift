@@ -1,3 +1,3 @@
 enum RaspExecutionStates: Int {
-    case allChecksFinished = 187429
+    case fastChecksFinished = 187429
 }

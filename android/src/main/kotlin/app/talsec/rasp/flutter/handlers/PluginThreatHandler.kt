@@ -1,12 +1,14 @@
-package com.aheaditec.freerasp.handlers
+package app.talsec.rasp.flutter.handlers
 
 import android.content.Context
-import com.aheaditec.freerasp.RaspExecutionStateEvent
-import com.aheaditec.freerasp.Threat
-import com.aheaditec.freerasp.dispatchers.ExecutionStateDispatcher
-import com.aheaditec.freerasp.dispatchers.ThreatDispatcher
+import app.talsec.rasp.flutter.RaspExecutionStateEvent
+import app.talsec.rasp.flutter.Threat
+import app.talsec.rasp.flutter.dispatchers.ExecutionStateDispatcher
+import app.talsec.rasp.flutter.dispatchers.ThreatDispatcher
+import app.talsec.rasp.flutter.toFlutterMap
 import app.talsec.rasp.security.api.SuspiciousAppInfo
 import app.talsec.rasp.security.api.ThreatListener
+import app.talsec.rasp.security.api.ThreatListener.CallState
 import app.talsec.rasp.security.api.ThreatListener.DeviceState
 import app.talsec.rasp.security.api.ThreatListener.RaspExecutionState
 import app.talsec.rasp.security.api.ThreatListener.ThreatDetected
@@ -17,6 +19,9 @@ import app.talsec.rasp.security.api.ThreatListener.ThreatDetected
  * listener when a security threat is detected.
  */
 internal object PluginThreatHandler {
+
+    /** Application context, used to resolve the details of apps reported as malware. */
+    private var appContext: Context? = null
 
     private val threatDetected = object : ThreatDetected() {
         override fun onPrivilegedAccess() {
@@ -52,7 +57,8 @@ internal object PluginThreatHandler {
         }
 
         override fun onMalware(suspiciousApps: List<SuspiciousAppInfo>) {
-            ThreatDispatcher.dispatchMalware(suspiciousApps)
+            val context = appContext ?: return
+            ThreatDispatcher.dispatchMalware(suspiciousApps.map { it.toFlutterMap(context) })
         }
 
         override fun onScreenshot() {
@@ -86,6 +92,10 @@ internal object PluginThreatHandler {
         override fun onBootloader() {
             ThreatDispatcher.dispatchThreat(Threat.Bootloader)
         }
+
+        override fun onOngoingCall(state: CallState) {
+            ThreatDispatcher.dispatchOngoingCall(state)
+        }
     }
 
     private val deviceState = object : DeviceState() {
@@ -111,14 +121,23 @@ internal object PluginThreatHandler {
     }
 
     private val raspExecutionState = object : RaspExecutionState() {
-        override fun onAllChecksFinished() {
-            ExecutionStateDispatcher.dispatch(RaspExecutionStateEvent.AllChecksFinished)
+        override fun onCriticalChecksFinished() {
+            ExecutionStateDispatcher.dispatch(RaspExecutionStateEvent.CriticalChecksFinished)
+        }
+
+        override fun onFastChecksFinished() {
+            ExecutionStateDispatcher.dispatch(RaspExecutionStateEvent.FastChecksFinished)
+        }
+
+        override fun onPostponedChecksFinished() {
+            ExecutionStateDispatcher.dispatch(RaspExecutionStateEvent.PostponedChecksFinished)
         }
     }
 
     private val internalListener = ThreatListener(threatDetected, deviceState, raspExecutionState)
 
     internal fun registerListener(context: Context) {
+        appContext = context.applicationContext
         internalListener.registerListener(context)
     }
 

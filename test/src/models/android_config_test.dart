@@ -12,8 +12,8 @@ void main() {
 
       androidConfig = AndroidConfig(
         packageName: 'com.example.app',
-        signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
-        supportedStores: ['adb'],
+        certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+        supportedAlternativeStores: ['adb'],
       );
     });
 
@@ -21,25 +21,25 @@ void main() {
       expect(androidConfig, isA<AndroidConfig>());
       expect(androidConfig.packageName, 'com.example.app');
       expect(
-        androidConfig.signingCertHashes,
+        androidConfig.certificateHashes,
         ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       );
-      expect(androidConfig.supportedStores, ['adb']);
+      expect(androidConfig.supportedAlternativeStores, ['adb']);
     });
 
     test('Should create AndroidConfig instance with empty stores', () {
       final androidConfig = AndroidConfig(
         packageName: 'com.example.app',
-        signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+        certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       );
 
       expect(androidConfig, isA<AndroidConfig>());
       expect(androidConfig.packageName, 'com.example.app');
       expect(
-        androidConfig.signingCertHashes,
+        androidConfig.certificateHashes,
         ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       );
-      expect(androidConfig.supportedStores, <String>[]);
+      expect(androidConfig.supportedAlternativeStores, <String>[]);
     });
 
     test('Should convert AndroidConfig to JSON', () {
@@ -48,17 +48,17 @@ void main() {
       expect(json, isA<Map<String, dynamic>>());
       expect(json['packageName'], 'com.example.app');
       expect(
-        json['signingCertHashes'],
+        json['certificateHashes'],
         ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       );
-      expect(json['supportedStores'], ['adb']);
+      expect(json['supportedAlternativeStores'], ['adb']);
     });
 
     test('Should create AndroidConfig instance from JSON', () {
       final json = {
         'packageName': 'com.example.app',
-        'signingCertHashes': ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
-        'supportedStores': ['adb'],
+        'certificateHashes': ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+        'supportedAlternativeStores': ['adb'],
       };
 
       final androidConfigFromJson = AndroidConfig.fromJson(json);
@@ -66,17 +66,17 @@ void main() {
       expect(androidConfigFromJson, isA<AndroidConfig>());
       expect(androidConfigFromJson.packageName, 'com.example.app');
       expect(
-        androidConfigFromJson.signingCertHashes,
+        androidConfigFromJson.certificateHashes,
         ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       );
-      expect(androidConfigFromJson.supportedStores, ['adb']);
+      expect(androidConfigFromJson.supportedAlternativeStores, ['adb']);
     });
 
     test('Should create AndroidConfig instance with empty stores from JSON',
         () {
       final json = {
         'packageName': 'com.example.app',
-        'signingCertHashes': ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+        'certificateHashes': ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       };
 
       final androidConfigFromJson = AndroidConfig.fromJson(json);
@@ -84,10 +84,10 @@ void main() {
       expect(androidConfigFromJson, isA<AndroidConfig>());
       expect(androidConfigFromJson.packageName, 'com.example.app');
       expect(
-        androidConfigFromJson.signingCertHashes,
+        androidConfigFromJson.certificateHashes,
         ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
       );
-      expect(androidConfigFromJson.supportedStores, <String>[]);
+      expect(androidConfigFromJson.supportedAlternativeStores, <String>[]);
     });
 
     test('Should verify AndroidConfig using ConfigVerifier', () {
@@ -101,7 +101,7 @@ void main() {
       expect(
         () => AndroidConfig(
           packageName: '',
-          signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+          certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
         ),
         throwsA(isA<ConfigurationException>()),
       );
@@ -111,7 +111,7 @@ void main() {
       expect(
         () => AndroidConfig(
           packageName: 'com.example.app',
-          signingCertHashes: [],
+          certificateHashes: [],
         ),
         throwsA(isA<ConfigurationException>()),
       );
@@ -121,7 +121,7 @@ void main() {
       expect(
         () => AndroidConfig(
           packageName: 'com.example.app',
-          signingCertHashes: ['invalid'],
+          certificateHashes: ['invalid'],
         ),
         throwsA(isA<ConfigurationException>()),
       );
@@ -130,7 +130,7 @@ void main() {
     test('Should serialize suspiciousAppDetectionConfig to JSON', () {
       final config = AndroidConfig(
         packageName: 'com.example.app',
-        signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+        certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
         suspiciousAppDetectionConfig: const SuspiciousAppDetectionConfig(
           packageNames: ['com.malware.app'],
           scanScope: ScanScope(scopeType: ScopeType.all),
@@ -159,7 +159,7 @@ void main() {
     test('Should deserialize suspiciousAppDetectionConfig from JSON', () {
       final json = {
         'packageName': 'com.example.app',
-        'signingCertHashes': ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+        'certificateHashes': ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
         'suspiciousAppDetectionConfig': {
           'packageNames': ['com.malware.app'],
           'scanScope': {'scopeType': 'SIDELOADED_AND_OEM'},

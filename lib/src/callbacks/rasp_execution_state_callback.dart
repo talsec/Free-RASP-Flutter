@@ -6,8 +6,8 @@ import 'package:freerasp/src/typedefs.dart';
 /// Example usage:
 /// ```dart
 /// final callback = RaspExecutionStateCallback(
-///   onAllChecksFinished: () {
-///     print('All security checks have been completed');
+///   onFastChecksFinished: () {
+///     print('Fast security checks have been completed');
 ///     // Update UI or perform additional actions
 ///   },
 /// );
@@ -17,12 +17,30 @@ import 'package:freerasp/src/typedefs.dart';
 class RaspExecutionStateCallback {
   /// Creates a new [RaspExecutionStateCallback] instance.
   ///
-  /// The [onAllChecksFinished] callback will be invoked when all security
-  /// checks have been completed by the native security engine.
+  /// The [onFastChecksFinished] callback will be invoked when the fast
+  /// security checks have been completed by the native security engine.
   RaspExecutionStateCallback({
-    this.onAllChecksFinished,
+    this.onFastChecksFinished,
+    this.onCriticalChecksFinished,
+    this.onPostponedChecksFinished,
   });
 
-  /// Callback invoked when all security checks are completed.
-  final VoidCallback? onAllChecksFinished;
+  /// Callback invoked when the fast (standard) security checks are completed.
+  ///
+  /// On Android, the postponed checks may still run afterwards; use
+  /// [onPostponedChecksFinished] to know when the initial evaluation has fully
+  /// ended. On iOS, this is invoked when all security checks are completed.
+  final VoidCallback? onFastChecksFinished;
+
+  /// Callback invoked when the critical security checks are completed,
+  /// before the non-critical checks.
+  ///
+  /// Android only
+  final VoidCallback? onCriticalChecksFinished;
+
+  /// Callback invoked when the postponed security checks are completed,
+  /// which ends the initial evaluation.
+  ///
+  /// Android only
+  final VoidCallback? onPostponedChecksFinished;
 }

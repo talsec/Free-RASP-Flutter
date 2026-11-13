@@ -1,4 +1,3 @@
-import 'package:freerasp/src/generated/talsec_pigeon_api.g.dart';
 import 'package:freerasp/src/typedefs.dart';
 
 /// A class which represents a set of callbacks that are used to notify the
@@ -18,7 +17,7 @@ import 'package:freerasp/src/typedefs.dart';
 /// // Attaching callback to Talsec
 /// Talsec.instance.attachListener(callback);
 /// ```
-class ThreatCallback extends TalsecPigeonApi {
+class ThreatCallback {
   /// Constructs a [ThreatCallback] instance.
   ThreatCallback({
     this.onHooks,
@@ -34,16 +33,17 @@ class ThreatCallback extends TalsecPigeonApi {
     this.onSecureHardwareNotAvailable,
     this.onSystemVPN,
     this.onDevMode,
-    this.onADBEnabled,
+    this.onAdbEnabled,
     this.onMalware,
     this.onScreenshot,
     this.onScreenRecording,
     this.onMultiInstance,
-    this.onUnsecureWiFi,
+    this.onUnsecureWifi,
     this.onTimeSpoofing,
     this.onLocationSpoofing,
     this.onAutomation,
     this.onBootloader,
+    this.onOngoingCall,
   });
 
   /// This method is called when a threat related dynamic hooking (e.g. Frida)
@@ -93,7 +93,7 @@ class ThreatCallback extends TalsecPigeonApi {
   final VoidCallback? onDevMode;
 
   /// This method is called when the device has active ADB (Android Debug)
-  final VoidCallback? onADBEnabled;
+  final VoidCallback? onAdbEnabled;
 
   /// This method is called when screenshot detected
   final VoidCallback? onScreenshot;
@@ -105,7 +105,7 @@ class ThreatCallback extends TalsecPigeonApi {
   final VoidCallback? onMultiInstance;
 
   /// This method is called when unsecure WiFi is detected
-  final VoidCallback? onUnsecureWiFi;
+  final VoidCallback? onUnsecureWifi;
 
   /// This method is called when time manipulation is detected
   final VoidCallback? onTimeSpoofing;
@@ -122,13 +122,18 @@ class ThreatCallback extends TalsecPigeonApi {
   /// Android only
   final VoidCallback? onBootloader;
 
-  @override
-  void onMalwareDetected(List<SuspiciousAppInfo> packageInfo) {
-    onMalware?.call(packageInfo);
-  }
-
   /// This method is called when malware is detected.
   ///
   /// Android only
   final MalwareCallback? onMalware;
+
+  /// This method is called when an ongoing call (cellular or VoIP) starts,
+  /// is already in progress, or stops while ongoing call detection is
+  /// running.
+  ///
+  /// Detection has to be started with
+  /// `Talsec.instance.startOngoingCallDetection()`.
+  ///
+  /// Android only
+  final OngoingCallCallback? onOngoingCall;
 }

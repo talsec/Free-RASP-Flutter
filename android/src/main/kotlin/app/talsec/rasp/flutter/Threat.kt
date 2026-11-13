@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp
+package app.talsec.rasp.flutter
 
 /**
  * Sealed class to represent the error codes.

@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, avoid_redundant_argument_values
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freerasp/freerasp.dart';
@@ -36,8 +38,8 @@ Future<void> _initializeTalsec() async {
   final config = TalsecConfig(
     androidConfig: AndroidConfig(
       packageName: 'com.aheaditec.freeraspExample',
-      signingCertHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
-      supportedStores: ['com.sec.android.app.samsungapps'],
+      certificateHashes: ['AKoRuyLMM91E7lX/Zqp3u4jMmd0A7hH/Iqozu0TMVd0='],
+      supportedAlternativeStores: ['com.sec.android.app.samsungapps'],
       suspiciousAppDetectionConfig: const SuspiciousAppDetectionConfig(
         packageNames: ['com.aheaditec.freeraspExample'],
         requestedPermissions: [
@@ -51,8 +53,8 @@ Future<void> _initializeTalsec() async {
       ),
     ),
     iosConfig: IOSConfig(
-      bundleIds: ['com.aheaditec.freeraspExample'],
-      teamId: 'M8AK35...',
+      appBundleIds: ['com.aheaditec.freeraspExample'],
+      appTeamId: 'M8AK35...',
     ),
     watcherMail: 'your_mail@example.com',
     isProd: true,
@@ -60,6 +62,11 @@ Future<void> _initializeTalsec() async {
   );
 
   await Talsec.instance.start(config);
+
+  if (Platform.isAndroid) {
+    // Report cellular and VoIP calls through ThreatCallback.onOngoingCall
+    await Talsec.instance.startOngoingCallDetection();
+  }
 }
 
 /// The root widget of the application
@@ -205,12 +212,37 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ],
                 ),
               ),
+              if (Platform.isAndroid) ...[
+                ProtectionToggle(
+                  title: 'Screen Control',
+                  isBlocked: Talsec.instance.isScreenControlBlocked,
+                  block: Talsec.instance.blockScreenControl,
+                ),
+                ProtectionToggle(
+                  title: 'Overlay Windows',
+                  isBlocked: Talsec.instance.isOverlayWindowsBlocked,
+                  block: ({required enabled}) =>
+                      Talsec.instance.blockOverlayWindows(enabled: enabled),
+                ),
+              ],
               ListTile(
                 title: const Text('Check Rounds Completed'),
                 trailing: SafetyIcon(isDetected: !threatState.allChecksPassed),
               ),
+              if (Platform.isAndroid) ...[
+                ListTile(
+                  title: const Text('Postponed Checks Completed'),
+                  trailing: SafetyIcon(
+                    isDetected: !threatState.postponedChecksPassed,
+                  ),
+                ),
+              ],
               Expanded(
-                child: ThreatListView(threats: threatState.detectedThreats),
+                child: ThreatListView(
+                  threats: threatState.detectedThreats,
+                  showOngoingCall: Platform.isAndroid,
+                  callState: threatState.callState,
+                ),
               ),
             ],
           ),

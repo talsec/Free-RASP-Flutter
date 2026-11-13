@@ -1,4 +1,4 @@
-package com.aheaditec.freerasp
+package app.talsec.rasp.flutter
 
 import android.content.Context
 import android.content.pm.PackageInfo
@@ -12,8 +12,7 @@ import app.talsec.rasp.security.api.SuspiciousAppInfo
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONArray
 import org.json.JSONObject
-import com.aheaditec.freerasp.generated.PackageInfo as FlutterPackageInfo
-import com.aheaditec.freerasp.generated.SuspiciousAppInfo as FlutterSuspiciousAppInfo
+import app.talsec.rasp.security.api.ThreatListener.CallState
 
 /**
  * Executes the provided block of code and catches any exceptions thrown by it, returning the
@@ -32,31 +31,27 @@ internal inline fun runResultCatching(result: MethodChannel.Result, block: () ->
 }
 
 /**
- * Converts a [SuspiciousAppInfo] instance to a [com.aheaditec.freerasp.generated.SuspiciousAppInfo]
- * instance used by Pigeon package for Flutter.
- *
- * @return A new [com.aheaditec.freerasp.generated.SuspiciousAppInfo] object with information from
- * this [SuspiciousAppInfo].
+ * Converts a [SuspiciousAppInfo] to the map that the Dart `SuspiciousAppInfo.fromMap` reads.
  */
-internal fun SuspiciousAppInfo.toPigeon(context: Context): FlutterSuspiciousAppInfo {
-    return FlutterSuspiciousAppInfo(this.packageInfo.toPigeon(context), this.reasons.toList(), this.permissions?.toList())
+internal fun SuspiciousAppInfo.toFlutterMap(context: Context): Map<String, Any?> {
+    return mapOf(
+        "packageInfo" to packageInfo.toFlutterMap(context),
+        "reasons" to reasons.toList(),
+        "permissions" to permissions?.toList(),
+    )
 }
 
 /**
- * Converts a [PackageInfo] instance to a [com.aheaditec.freerasp.generated.PackageInfo] instance
- * used by Pigeon package for Flutter.
- *
- * @return A new [com.aheaditec.freerasp.generated.PackageInfo] object with information from
- * this [PackageInfo].
+ * Converts a [PackageInfo] to the map that the Dart `PackageInfo.fromMap` reads.
  */
-private fun PackageInfo.toPigeon(context: Context): FlutterPackageInfo {
-    return FlutterPackageInfo(
-        packageName = packageName,
-        appName = applicationInfo?.let {
-            context.packageManager.getApplicationLabel(it) as String
+private fun PackageInfo.toFlutterMap(context: Context): Map<String, Any?> {
+    return mapOf(
+        "packageName" to packageName,
+        "appName" to applicationInfo?.let {
+            context.packageManager.getApplicationLabel(it).toString()
         },
-        version = getVersionString(),
-        installerStore = Utils.getInstallerPackageName(context, packageName),
+        "version" to getVersionString(),
+        "installerStore" to Utils.getInstallerPackageName(context, packageName),
     )
 }
 
@@ -116,4 +111,15 @@ internal fun JSONObject.toSuspiciousAppDetectionConfig(): SuspiciousAppDetection
         scanScope,
         reasonMode,
     )
+}
+
+/**
+ * Converts a [CallState] to the name of the Dart `CallState` value.
+ */
+internal fun CallState.toFlutterName(): String {
+    return when (this) {
+        CallState.STARTED -> "started"
+        CallState.ONGOING -> "ongoing"
+        CallState.STOPPED -> "stopped"
+    }
 }

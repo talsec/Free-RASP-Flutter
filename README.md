@@ -35,6 +35,8 @@ Key features are the detection and prevention of
 * Unlocked or compromised bootloader
 * Hooking framework (e.g., Frida, LSPosed, Shadow)
 * UI automation and driven-input attacks (e.g., Appium)
+* Ongoing cellular and VoIP calls during sensitive flows (Android)
+* Screen control by accessibility services and overlay windows of other apps (Android)
 * Untrusted installation method
 * App Data Migration protection
 
