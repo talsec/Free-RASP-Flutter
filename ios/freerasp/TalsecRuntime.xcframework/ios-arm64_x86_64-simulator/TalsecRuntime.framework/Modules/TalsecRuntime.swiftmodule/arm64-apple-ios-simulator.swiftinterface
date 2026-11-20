@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
+// swift-compiler-version: Apple Swift version 6.2 effective-5.10 (swiftlang-6.2.0.19.9 clang-1700.3.19.1)
 // swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name TalsecRuntime
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface -interface-compiler-version 6.1.2
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2
 import CryptoKit
 import Darwin
 import Foundation
@@ -23,7 +23,9 @@ public protocol SecurityThreatHandler {
   func threatDetected(_ securityThreat: TalsecRuntime.SecurityThreat)
 }
 public protocol RaspExecutionState {
-  func onAllChecksFinished()
+  func onCriticalChecksFinished()
+  func onFastChecksFinished()
+  func onPostponedChecksFinished()
 }
 @_hasMissingDesignatedInitializers public class SecurityThreatCenter {
   @objc deinit
@@ -33,13 +35,16 @@ public struct TalsecConfig {
   public let appTeamId: Swift.String
   public let watcherMailAddress: Swift.String?
   public let isProd: Swift.Bool?
+  #if compiler(>=5.3) && $NonescapableTypes
   public init(appBundleIds: [Swift.String], appTeamId: Swift.String, watcherMailAddress: Swift.String?, isProd: Swift.Bool? = true)
+  #endif
 }
 @_hasMissingDesignatedInitializers public class Talsec {
   public static func start(config: TalsecRuntime.TalsecConfig)
   public static func blockScreenCapture(enable: Swift.Bool, window: UIKit.UIWindow)
   public static func isScreenCaptureBlocked(in window: UIKit.UIWindow) -> Swift.Bool
   public static func storeExternalId(externalId: Swift.String)
+  public static func removeExternalId()
   @objc deinit
 }
 public enum SecurityThreat : Swift.String, Swift.Codable, Swift.CaseIterable, Swift.Equatable {
@@ -58,7 +63,9 @@ public enum SecurityThreat : Swift.String, Swift.Codable, Swift.CaseIterable, Sw
   case screenshot
   case screenRecording
   case timeSpoofing
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
+  #endif
   public typealias AllCases = [TalsecRuntime.SecurityThreat]
   public typealias RawValue = Swift.String
   nonisolated public static var allCases: [TalsecRuntime.SecurityThreat] {
