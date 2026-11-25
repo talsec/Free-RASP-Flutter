@@ -361,27 +361,25 @@ class Talsec {
   }
 
   void _checkConfig(TalsecConfig config) {
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        if (config.androidConfig == null) {
-          throw const ConfigurationException(
-            message: 'Android config is required for Android platform',
-          );
-        }
-      case TargetPlatform.iOS:
-        if (config.iosConfig == null) {
-          throw const ConfigurationException(
-            message: 'iOS config is required for iOS platform',
-          );
-        }
-      case TargetPlatform.fuchsia:
-      case TargetPlatform.linux:
-      case TargetPlatform.macOS:
-      case TargetPlatform.windows:
-        throw UnsupportedPlatformException(
-          message: 'Platform is not supported: $defaultTargetPlatform',
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      if (config.androidConfig == null) {
+        throw const ConfigurationException(
+          message: 'Android config is required for Android platform',
         );
+      }
+      return;
     }
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      if (config.iosConfig == null) {
+        throw const ConfigurationException(
+          message: 'iOS config is required for iOS platform',
+        );
+      }
+      return;
+    }
+    throw UnsupportedPlatformException(
+      message: 'Platform is not supported: $defaultTargetPlatform',
+    );
   }
 
   /// Attaches instance of [ThreatCallback] to Talsec. If [ThreatCallback] is
