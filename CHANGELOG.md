@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.1.0] - 2026-11-20
+
+- Android SDK version: 20.0.1
+- iOS SDK version: 9.0.0
+
+### Flutter
+
+#### Changed
+
+- `RaspExecutionStateCallback.onCriticalChecksFinished` and `RaspExecutionStateCallback.onPostponedChecksFinished`, with matching `RaspExecutionState` values, are now also triggered on iOS
+- On iOS, `onFastChecksFinished` is triggered when the fast checks are completed, while the postponed checks may still run, the same as on Android
+
+### iOS
+
+#### Added
+
+- Improved app integrity detection.
+
+#### Changed
+
+- Improved jailbreak detection.
+- Updated CA bundle.
+- Updated `OpenSSL` dependency to `3.5.8`.
+- Updated `curl` dependency to `8.22.0`.
+- Reduced the SDK size.
+
+#### Fixed
+
+- Fixed crash in frida port scanning.
+- Fixed stack overflow crash when `blockScreenCapture` is enabled.
+- Fixed missing app integrity detection details in logs for builds with a provisioning profile.
+- Fixed placement of app integrity certificate details in logs.
+
 ## [9.0.0] - 2026-11-11
 
 - Android SDK version: 20.0.1

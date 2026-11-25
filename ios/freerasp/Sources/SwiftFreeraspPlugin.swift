@@ -137,22 +137,26 @@ public class SwiftFreeraspPlugin: NSObject, FlutterPlugin, FlutterStreamHandler 
         }
     }
     
-    /// Stores the external ID in user defaults.
+    /// Stores the external ID through the Talsec SDK. A missing value removes it.
     ///
     /// - Parameters:
     ///   - data: The data to be stored.
     ///   - result: The `FlutterResult` object to be returned to the caller.
     private func storeExternalId(data: String?, result: @escaping FlutterResult){
-        UserDefaults.standard.set(data, forKey: "app.talsec.externalid")
+        if let data = data {
+            Talsec.storeExternalId(externalId: data)
+        } else {
+            Talsec.removeExternalId()
+        }
         result(nil)
     }
 
-    /// Removes the external ID from user defaults.
+    /// Removes the external ID through the Talsec SDK.
     ///
     /// - Parameters:
     ///   - result: The `FlutterResult` object to be returned to the caller.
     private func removeExternalId(result: @escaping FlutterResult){
-        UserDefaults.standard.removeObject(forKey: "app.talsec.externalid")
+        Talsec.removeExternalId()
         result(nil)
     }
     

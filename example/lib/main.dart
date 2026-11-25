@@ -226,17 +226,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ),
               ],
               ListTile(
-                title: const Text('Check Rounds Completed'),
+                title: const Text('Critical Checks Completed'),
+                trailing: SafetyIcon(
+                  isDetected: !threatState.criticalChecksPassed,
+                ),
+              ),
+              ListTile(
+                title: const Text('Fast Checks Completed'),
                 trailing: SafetyIcon(isDetected: !threatState.allChecksPassed),
               ),
-              if (Platform.isAndroid) ...[
-                ListTile(
-                  title: const Text('Postponed Checks Completed'),
-                  trailing: SafetyIcon(
-                    isDetected: !threatState.postponedChecksPassed,
-                  ),
+              ListTile(
+                title: const Text('Postponed Checks Completed'),
+                trailing: SafetyIcon(
+                  isDetected: !threatState.postponedChecksPassed,
                 ),
-              ],
+              ),
               Expanded(
                 child: ThreatListView(
                   threats: threatState.detectedThreats,

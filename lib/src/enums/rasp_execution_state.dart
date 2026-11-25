@@ -3,20 +3,15 @@
 enum RaspExecutionState {
   /// The fast (standard) security checks have been completed.
   ///
-  /// On Android, the postponed checks may still run afterwards. On iOS, this
-  /// is triggered when all security checks have been completed.
+  /// The postponed checks may still run afterwards.
   fastChecksFinished,
 
   /// The critical security checks have been completed, before the
   /// non-critical checks.
-  ///
-  /// Android only
   criticalChecksFinished,
 
   /// The postponed security checks have been completed, which ends the
   /// initial evaluation.
-  ///
-  /// Android only
   postponedChecksFinished,
 }
 

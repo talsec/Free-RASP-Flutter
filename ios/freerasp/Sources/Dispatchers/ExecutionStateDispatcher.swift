@@ -2,7 +2,8 @@ import Foundation
 
 class ExecutionStateDispatcher {
     static let shared = ExecutionStateDispatcher()
-    private var cache: Set<RaspExecutionStates> = []
+    // Ordered, so a listener attached late still receives the states in the order they occurred
+    private var cache: [RaspExecutionStates] = []
     private let lock = NSLock()
     
     var listener: ((RaspExecutionStates) -> Void)? {
@@ -19,8 +20,8 @@ class ExecutionStateDispatcher {
         
         if let listener = listener {
             listener(event)
-        } else {
-            cache.insert(event)
+        } else if !cache.contains(event) {
+            cache.append(event)
         }
     }
 

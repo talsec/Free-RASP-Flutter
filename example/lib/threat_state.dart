@@ -6,6 +6,7 @@ class ThreatState {
   factory ThreatState.initial() => const ThreatState._(
         detectedThreats: {},
         detectedMalware: [],
+        criticalChecksPassed: false,
         allChecksPassed: false,
         postponedChecksPassed: false,
         callState: null,
@@ -14,6 +15,7 @@ class ThreatState {
   const ThreatState._({
     required this.detectedThreats,
     required this.detectedMalware,
+    required this.criticalChecksPassed,
     required this.allChecksPassed,
     required this.postponedChecksPassed,
     required this.callState,
@@ -21,6 +23,7 @@ class ThreatState {
 
   final Set<Threat> detectedThreats;
   final List<SuspiciousAppInfo> detectedMalware;
+  final bool criticalChecksPassed;
   final bool allChecksPassed;
   final bool postponedChecksPassed;
   final CallState? callState;
@@ -28,6 +31,7 @@ class ThreatState {
   ThreatState copyWith({
     Set<Threat>? detectedThreats,
     List<SuspiciousAppInfo>? detectedMalware,
+    bool? criticalChecksPassed,
     bool? allChecksPassed,
     bool? postponedChecksPassed,
     CallState? callState,
@@ -36,6 +40,7 @@ class ThreatState {
       detectedThreats: detectedThreats ?? this.detectedThreats,
       detectedMalware:
           detectedMalware?.nonNulls.toList() ?? this.detectedMalware,
+      criticalChecksPassed: criticalChecksPassed ?? this.criticalChecksPassed,
       allChecksPassed: allChecksPassed ?? this.allChecksPassed,
       postponedChecksPassed:
           postponedChecksPassed ?? this.postponedChecksPassed,

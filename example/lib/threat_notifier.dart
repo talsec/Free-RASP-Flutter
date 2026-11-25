@@ -40,6 +40,7 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
     );
 
     final raspExecutionStateCallback = RaspExecutionStateCallback(
+      onCriticalChecksFinished: _updateCriticalChecksStatus,
       onFastChecksFinished: _updateChecksStatus,
       onPostponedChecksFinished: _updatePostponedChecksStatus,
     );
@@ -54,6 +55,10 @@ class ThreatNotifier extends AutoDisposeNotifier<ThreatState> {
 
   void _updateMalware(List<SuspiciousAppInfo> malware) {
     state = state.copyWith(detectedMalware: malware);
+  }
+
+  void _updateCriticalChecksStatus() {
+    state = state.copyWith(criticalChecksPassed: true);
   }
 
   void _updateChecksStatus() {
